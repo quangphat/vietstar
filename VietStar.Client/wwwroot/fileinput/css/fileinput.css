@@ -213,7 +213,7 @@
     margin: 8px;
     border: 1px solid #ddd;
     box-shadow: 1px 1px 5px 0 #a2958a;
-    padding: 6px;
+    /*padding: 6px;*/
     float: left;
     text-align: center;
 }

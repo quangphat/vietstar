@@ -19,14 +19,19 @@ namespace VietStar.Business.Interfaces
         Task<CheckStatusResponseModel> CheckStatusAsync(StringModel model);
         Task<DataPaging<List<TempProfileIndexModel>>> SearchsTemsAsync(DateTime? fromDate
             , DateTime? toDate
-            , int dateType = 1,
+            , int dateType = 1
+            , int groupId = 0
+            , int memberId = 0,
             string freeText = null,
             string status = null,
             int page = 1,
             int limit = 20);
-        Task<string> ExportAsync(string contentRootPath, DateTime? fromDate
+        Task<string> ExportAsync(string contentRootPath,
+            DateTime? fromDate
             , DateTime? toDate
             , int dateType = 1
+             , int groupId = 0
+            , int memberId = 0
             , string status = null
             , string freeText = null
             , int page = 1

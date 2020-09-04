@@ -22,7 +22,9 @@ namespace VietStar.Repository.Interfaces
         Task<List<TempProfileIndexModel>> GetTempProfilesAsync(int userId, 
             DateTime? fromDate
             , DateTime? toDate
-            , int dateType = 1,
+            , int dateType = 1
+            , int groupId = 0
+            , int memberId = 0,
             int page =1, 
             int limit =10, 
             string freeText = null, 

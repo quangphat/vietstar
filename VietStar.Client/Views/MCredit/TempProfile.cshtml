@@ -1,18 +1,24 @@
 ﻿@model VietStar.Entities.Mcredit.MCredit_TempProfile
+@using VietStar.Entities.Infrastructures;
 @using  VietStar.Entities.Infrastructures;
 @{
     ViewData["Title"] = "Cập nhật hồ sơ tạm";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>();
-    if(string.IsNullOrWhiteSpace(Model.MCId))
+    buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
+    if (string.IsNullOrWhiteSpace(Model.MCId))
     {
-        buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
         buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnSubmit", Name = "Nộp hồ sơ qua MCredit" });
     }
-    //else
-    //{
-    //    buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnCreate", Name = "Tạo hồ sơ mới từ hồ sơ này" });
-    //}
+    else
+    {
+        buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdateFiles", Name = "Cập Nhật File và Chuyển Qua MC" });
+        if(CurrentProcess.CurrentUser.isAdmin)
+        {
+
+            buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnCreate", Name = "Tạo hồ sơ mới từ hồ sơ này" });
+        }
+    }
 }
 
 <div class="main-content-inner">
@@ -851,6 +857,47 @@
             },
         });
     });
-
+            $('#btnUpdateFiles').click(function (e) {
+            showBlock($('#panel_body'), 'Vui lòng chờ');
+            let mcId = '@ViewBag.model.MCId'
+            if (isNullOrWhiteSpace(mcId)) {
+                debugger
+                mcId =''
+                return
+            }
+                
+        $.ajax({
+            traditional: true,
+            url: '/MCredit/ReSendFileToEC?profileId=' + mcId,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                            text: "Thành công",
+                            type: "success",
+                            timer: 4000,
+                            showConfirmButton: true,
+                        });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.data.message,
+                        type: "error",
+                        timer: 10000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
 </script>
 

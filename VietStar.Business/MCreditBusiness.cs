@@ -48,7 +48,7 @@ namespace VietStar.Business
         public async Task<CheckSaleResponseModel> CheckSaleAsync(CheckSaleModel model)
         {
             if (model == null || string.IsNullOrWhiteSpace(model.SaleCode))
-                return ToResponse<CheckSaleResponseModel>(null,Errors.invalid_data);
+                return ToResponse<CheckSaleResponseModel>(null, Errors.invalid_data);
             var result = await _svMcredit.CheckSale(model.SaleCode);
             if (!result.success)
                 return ToResponse<CheckSaleResponseModel>(null, result.error);
@@ -117,16 +117,18 @@ namespace VietStar.Business
         public async Task<DataPaging<List<TempProfileIndexModel>>> SearchsTemsAsync(
             DateTime? fromDate
             , DateTime? toDate
-            , int dateType = 1,
-            string freeText = null, 
-            string status = null, 
-            int page = 1, 
+            , int dateType = 1
+            , int groupId = 0
+            , int memberId = 0,
+            string freeText = null,
+            string status = null,
+            int page = 1,
             int limit = 20)
         {
             page = page <= 0 ? 1 : page;
             fromDate = fromDate.HasValue ? fromDate.Value.ToStartDateTime() : DateTime.Now.ToStartDateTime();
             toDate = toDate.HasValue ? toDate.Value.ToEndDateTime() : DateTime.Now.ToEndDateTime();
-            var profiles = await _rpMCredit.GetTempProfilesAsync(_process.User.Id, fromDate, toDate, dateType,page, limit, freeText, status);
+            var profiles = await _rpMCredit.GetTempProfilesAsync(_process.User.Id, fromDate, toDate, dateType, groupId, memberId, page, limit, freeText, status);
             if (profiles == null || !profiles.Any())
             {
                 return DataPaging.Create(null as List<TempProfileIndexModel>, 0);
@@ -147,11 +149,11 @@ namespace VietStar.Business
             if (model == null)
                 return ToResponse(0, Errors.invalid_data);
             var profileExist = 0;
-            if(!string.IsNullOrWhiteSpace(model.IdNumber))
+            if (!string.IsNullOrWhiteSpace(model.IdNumber))
             {
                 profileExist = await _rpMCredit.GetProfileIdByIdNumberAsync(model.IdNumber.Trim());
             }
-            else if(!string.IsNullOrWhiteSpace(model.CCCDNumber))
+            else if (!string.IsNullOrWhiteSpace(model.CCCDNumber))
             {
                 profileExist = await _rpMCredit.GetProfileIdByIdNumberAsync(model.CCCDNumber.Trim());
             }
@@ -160,7 +162,7 @@ namespace VietStar.Business
                 return ToResponse(0, Errors.missing_cmnd);
             }
 
-            if(profileExist > 0)
+            if (profileExist > 0)
             {
                 return ToResponse(0, Errors.id_number_has_exist);
             }
@@ -247,6 +249,28 @@ namespace VietStar.Business
             if (temp.data.Status != status)
             {
                 var result = await _rpMCredit.UpdateTempProfileStatusAsync(temp.data.Id, status);
+                if (mcProfile.data.obj.Reason != null)
+                {
+                    var reasonName = JsonConvert.SerializeObject(mcProfile.data.obj.Reason);
+                    await _rpNote.AddNoteAsync(new NoteAddModel
+                    {
+                        ProfileId = profileId,
+                        CommentTime = DateTime.Now,
+                        Content = reasonName,
+                        ProfileTypeId = (int)NoteType.MCreditTemp,
+                        UserId = _process.User.Id
+                    });
+                    await _rpLog.InsertLog($"AddReasonToNote-MCreditTemp-{profileId}", reasonName);
+                }
+                await _rpNote.AddNoteAsync(new NoteAddModel
+                {
+                    ProfileTypeId = profileId,
+                    CommentTime = DateTime.Now,
+                    Content = mcProfile.data.obj.Refuse,
+                    ProfileId = (int)NoteType.MCreditGlobal,
+                    UserId = _process.User.Id
+                });
+                await _rpLog.InsertLog($"AddRefuseToNote-MCreditGlobal-{profileId}", mcProfile.data.obj.Refuse);
                 return ToResponse(result);
             }
             return true;
@@ -364,7 +388,7 @@ namespace VietStar.Business
             {
                 return ToResponse<MCResponseModelBase>(null, profile.error);
             }
-            if(profile.data == null)
+            if (profile.data == null)
             {
                 return ToResponse<MCResponseModelBase>(null, "Không tìm thấy hồ sơ portal");
             }
@@ -429,7 +453,7 @@ namespace VietStar.Business
                 if (!result.success)
                     return ToResponse<MCResponseModelBase>(null, result.error);
 
-                if(result.data == null || string.IsNullOrWhiteSpace(result.data.id))
+                if (result.data == null || string.IsNullOrWhiteSpace(result.data.id))
                 {
                     return ToResponse<MCResponseModelBase>(null, "Không thể gửi qua MC");
                 }
@@ -476,8 +500,8 @@ namespace VietStar.Business
             //{
             //    return ToResponse(false, "Không tìm thấy hồ sơ tương ứng trong portal");
             //}
-            result.data.obj.LocalProfileId = profile.success && profile.data!=null ? profile.data.Id : 0;
-            
+            result.data.obj.LocalProfileId = profile.success && profile.data != null ? profile.data.Id : 0;
+
             if (result.data.obj != null && result.data.obj.Reason != null)
             {
                 result.data.obj.ReasonName = JsonConvert.SerializeObject(result.data.obj.Reason);
@@ -485,9 +509,12 @@ namespace VietStar.Business
             return result.data.obj;
         }
 
-        public async Task<string> ExportAsync(string contentRootPath, DateTime? fromDate
+        public async Task<string> ExportAsync(string contentRootPath, 
+            DateTime? fromDate
             , DateTime? toDate
             , int dateType = 1
+             , int groupId = 0
+            , int memberId = 0
             , string status = null
             , string freeText = null
             , int page = 1
@@ -504,7 +531,9 @@ namespace VietStar.Business
                 toDate = toDate.Value,
                 dateType = dateType,
                 status = status,
-                freeText = freeText
+                freeText = freeText,
+                groupId = groupId,
+                memberId = memberId
             };
             var bizCommon = _svProvider.GetService<ICommonBusiness>();
             var result = await bizCommon.ExportData<ExportRequestModel, TempProfileIndexModel>(GetDatasAsync, request, contentRootPath, "mcredit", 2);
@@ -513,7 +542,16 @@ namespace VietStar.Business
 
         private async Task<List<TempProfileIndexModel>> GetDatasAsync(ExportRequestModel request)
         {
-            var result = await _rpMCredit.GetTempProfilesAsync(_process.User.Id, request.fromDate, request.toDate, request.dateType, request.page, request.limit, request.freeText, request.status);
+            var result = await _rpMCredit.GetTempProfilesAsync(_process.User.Id,
+                request.fromDate,
+                request.toDate, 
+                request.dateType,
+                request.groupId, 
+                request.memberId,
+                request.page, 
+                request.limit, 
+                request.freeText, 
+                request.status);
             return result;
         }
     }

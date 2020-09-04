@@ -16,11 +16,11 @@ namespace VietStar.Entities.Mcredit
         public string CreatedUser { get; set; }
         public string UpdatedUser { get; set; }
         public string LastNote { get; set; }
+        public string GlobalNote { get; set; }
         public string SaleName { get; set; }
         public string ProductName { get; set; }
         public string LoanPeriodName { get; set; }
         public string Phone { get; set; }
-        public int TotalRecord { get; set; }
         public string StatusName { get; set; }
         public DateTime CreatedTime { get; set; }
         public int CreatedBy { get; set; }

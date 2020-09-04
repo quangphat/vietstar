@@ -118,7 +118,8 @@
                                     <th class="w-94">CMND</th>
                                     <th class="w-94">Sale</th>
                                     <th style="width: 150px">Trạng thái</th>
-                                    <th class="m-w-300">Ghi chú</th>
+                                    <th class="m-w-300">Lỗi toàn cầu</th>
+                                    <th class="m-w-300">Lỗi MC</th>
                                     <th class="w-94">Sản phẩm</th>
                                     <th class="w-94">Kỳ hạn</th>
                                     <th class="w-84">Người tạo</th>
@@ -152,14 +153,6 @@
                 </div>
             </div>
             <!-- /.col -->
-        </div>
-        <div class="row">
-            <div class="space-6" style="background-color: #d5e3ef;"></div>
-            <div class="col-xs-12" style="margin-bottom:40px;">
-                <div class="pull-right">
-                    <a id="btnDownReport" onclick="DownloadReport(this)" class="btn btn-sm btn-primary "><i class="ace-icon fa fa-download"></i> Export</a>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -271,6 +264,7 @@
             + renderTextLeft(rowData.IdNumber)
             + renderTextLeft(rowData.SaleName)
             + renderStatusWithRefresh(rowData.StatusName, rowData.Id)
+            + renderTextLeft(rowData.GlobalNote, '', 'min-w-150 tb-row-breakword')
             + renderTextLeft(rowData.LastNote, '', 'min-w-150 tb-row-breakword')
             + renderTextLeft(rowData.ProductName)
             + renderTextLeft(rowData.LoanPeriodName)
