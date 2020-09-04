@@ -38,7 +38,8 @@ namespace VietStar.Entities.Commons
             Company = 3,
             MCreditTemp = 4,
             RevokeDebt = 5,
-            CheckDup = 6
+            CheckDup = 6,
+            MCreditGlobal=7
         }
         public enum CheckDupPartnerStatus
         {

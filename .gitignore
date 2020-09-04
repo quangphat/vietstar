@@ -13,3 +13,6 @@
 /VietStar.Utility/obj
 /VietStar.Utility/bin
 /VietStar.Client/.vs
+/VietStar.Client/Upload
+/.vs
+/VietStar.Client/wwwroot/Export

@@ -102,13 +102,15 @@ namespace VietStar.Client.Controllers
 
         public async Task<IActionResult> SearchTemps(DateTime? fromDate
             , DateTime? toDate
-            , int dateType = 1,
+            , int dateType = 1
+            , int groupId = 0
+            , int memberId = 0,
             string freeText = null,
             string status = null,
             int page = 1,
             int limit = 20)
         {
-            var result = await _bizMCredit.SearchsTemsAsync(fromDate,toDate, dateType ,freeText, status, page, limit);
+            var result = await _bizMCredit.SearchsTemsAsync(fromDate,toDate, dateType, groupId, memberId, freeText, status, page, limit);
             return ToResponse(result);
         }
 
@@ -210,7 +212,7 @@ namespace VietStar.Client.Controllers
             , string sort = "desc"
             , string sortField = "updatedTime")
         {
-            var result = await _bizMCredit.ExportAsync(_hosting.ContentRootPath, fromDate, toDate, dateType, status, freeText, page, limit);
+            var result = await _bizMCredit.ExportAsync(_hosting.ContentRootPath, fromDate, toDate, dateType, groupId,memberId, status, freeText, page, limit);
 
             return ToResponse(result);
         }

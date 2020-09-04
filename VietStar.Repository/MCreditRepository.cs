@@ -351,6 +351,7 @@ namespace VietStar.Repository
                 nameof(model.UpdatedTime),
                 nameof(model.CreatedBy),
                 nameof(model.isAddr),
+                nameof(model.MCId),
                 nameof(model.isInsur)
             });
 
@@ -371,7 +372,9 @@ namespace VietStar.Repository
         public async Task<List<TempProfileIndexModel>> GetTempProfilesAsync(int userId,
             DateTime? fromDate,
             DateTime? toDate,
-            int dateType = 1,
+            int dateType = 1
+             , int groupId = 0
+            , int memberId = 0,
             int page = 1,
             int limit = 10,
             string freeText = null,
@@ -384,6 +387,8 @@ namespace VietStar.Repository
                     fromDate,
                     toDate,
                     dateType,
+                    groupId,
+                    memberId,
                     freeText,
                     userId,
                     page,
