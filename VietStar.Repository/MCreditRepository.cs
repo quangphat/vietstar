@@ -382,7 +382,7 @@ namespace VietStar.Repository
         {
             using (var con = GetConnection())
             {
-                var result = await con.QueryAsync<TempProfileIndexModel>("sp_MCredit_TempProfile_Gets", new
+                var result = await con.QueryAsync<TempProfileIndexModel>("sp_MCredit_TempProfile_Gets_v2", new
                 {
                     fromDate,
                     toDate,

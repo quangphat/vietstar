@@ -106,7 +106,7 @@ namespace VietStar.Repository
 
             using (var con = GetConnection())
             {
-                var result = await con.QueryFirstOrDefaultAsync<UserSql>("sp_Employee_GetByUsername", new { userName, userId }, commandType: CommandType.StoredProcedure);
+                var result = await con.QueryFirstOrDefaultAsync<UserSql>("sp_Employee_GetByUsername_v2", new { userName, userId }, commandType: CommandType.StoredProcedure);
                 return result;
             }
 
@@ -219,7 +219,7 @@ namespace VietStar.Repository
         {
             using (var con = GetConnection())
             {
-                var result = await con.QueryFirstOrDefaultAsync<Account>("sp_Employee_Login", new
+                var result = await con.QueryFirstOrDefaultAsync<Account>("sp_Employee_Login_v2", new
                 {
                     userName,
                     password
@@ -297,7 +297,7 @@ namespace VietStar.Repository
         {
             using (var con = GetConnection())
             {
-                var rs = await con.QueryAsync<OptionSimple>("sp_Employee_GetPaging", new { orgId, page, freeText }, commandType: CommandType.StoredProcedure);
+                var rs = await con.QueryAsync<OptionSimple>("sp_Employee_GetPaging_v2", new { orgId, page, freeText }, commandType: CommandType.StoredProcedure);
                 return rs.ToList();
             }
         }

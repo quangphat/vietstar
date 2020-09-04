@@ -77,7 +77,7 @@ namespace VietStar.Repository
 
             using (var con = GetConnection())
             {
-                var results = await con.QueryAsync<CheckDupIndexModel>("sp_GetCustomer_v2", p, commandType: CommandType.StoredProcedure);
+                var results = await con.QueryAsync<CheckDupIndexModel>("sp_GetCustomer_v3", p, commandType: CommandType.StoredProcedure);
                 return results.ToList();
             }
 

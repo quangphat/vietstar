@@ -27,9 +27,6 @@ Status = 1 WHERE OldStatus =8
 UPDATE dbo.HosoCourrier SET
 Status = 2 WHERE OldStatus =9
 
---Additional
-UPDATE dbo.HosoCourrier SET
-Status = 10 WHERE OldStatus =4
 
 --ACompared--đã đối chiếu
 UPDATE dbo.HosoCourrier SET
