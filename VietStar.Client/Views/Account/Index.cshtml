@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body class="login-layout light-login">
+    <div class="main-container" id="panel_body">
+        <div class="main-content">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="login-container">
+                        <div class="center">
+                            <h2>
+                                <span id="Login_Span_Header" class="red" style="font-size:17px; text-transform: uppercase; font-weight:bold">HỆ THỐNG KIỂM DUYỆT HỒ SƠ</span>
+                            </h2>
+                        </div>
+
+                        <div class="space-6"></div>
+
+                        <div class="position-relative">
+                            <div id="login-box" class="login-box visible widget-box no-border">
+                                <div class="widget-body">
+                                    <div class="widget-main">
+                                        <h4 class="header green lighter bigger">
+                                            <i class="ace-icon fa fa-unlock"></i>
+                                            Đăng nhập hệ thống
+                                        </h4>
+
+                                        <div class="space-6"></div>
+
+                                        <form id="form_login" autocomplete="off">
+                                            <div id="login_alert"></div>
+                                            <div class="space-2"></div>
+                                            <label class="block clearfix">
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="text" id="userName" name="userName" class="form-control" placeholder="Tên đăng nhập" data-val="true" data-val-required="Vui lòng nhập tên đăng nhập" value="@ViewBag.UserName" />
+                                                    <i class="ace-icon fa fa-user"></i>
+                                                </span>
+                                                <span class="has-error" data-valmsg-for="userName" data-valmsg-replace="true"></span>
+                                            </label>
+                                            <label class="block clearfix">
+                                                <span class="block input-icon input-icon-right">
+                                                    <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" data-val="true" data-val-required="Vui lòng nhập mật khẩu" value="@ViewBag.Password" />
+                                                    <i class="ace-icon fa fa-lock"></i>
+                                                </span>
+                                                <span class="has-error" data-valmsg-for="password" data-valmsg-replace="true"></span>
+                                            </label>
+                                            <div class="space"></div>
+                                            <div class="clearfix">
+                                                <label class="inline">
+                                                    @if ((bool)ViewBag.SaveAccount == true)
+                                                    {
+                                                        <input type="checkbox" class="ace" id="rememberMe" name="rememberMe" checked="checked" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" class="ace" id="rememberMe" name="rememberMe" />
+                                                    }
+                                                    <span class="lbl">&nbsp;Lưu thông tin đăng nhập</span>
+                                                </label>
+
+                                                <button type="button" id="btn_login" class="width-auto pull-right btn btn-sm btn-primary">
+                                                    <i class="ace-icon fa fa-key"></i>
+                                                    <span class="bigger-110">Đăng nhập</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="space-4"></div>
+                                        </form>
+                                    </div>
+                                    <!-- /.widget-main -->
+
+                                    <div class="toolbar clearfix">
+                                    </div>
+                                </div>
+                                <!-- /.widget-body -->
+                            </div>
+                            <!-- /.login-box -->
+                        </div>
+                        <!-- /.position-relative -->
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.main-content -->
+    </div>
+
+    </body>

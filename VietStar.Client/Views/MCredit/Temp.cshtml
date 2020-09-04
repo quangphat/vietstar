@@ -1,0 +1,380 @@
+﻿
+@{
+    ViewData["Title"] = "Hồ sơ MCredit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <a href="#">Danh sách hồ sơ</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <form class="form-horizontal">
+            <div class="box-body">
+                <div class="form-group">
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right">Từ ngày</label>
+                    <div class="col-sm-4  col-xs-12 ">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" data-date-inline-picker="true" class="form-control pull-right" id="fromDate">
+                        </div>
+                    </div>
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right">Đến ngày</label>
+                    <div class="col-sm-4">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control pull-right" id="toDate">
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-10 no-padding-right">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="radio-ngay" id="optionsRadios1" value="1" checked="">
+                                Ngày tạo
+                            </label>
+                            <label style="margin-left:20px">
+                                <input type="radio" name="radio-ngay" id="optionsRadios1" value="2" checked="">
+                                Ngày cập nhật
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group" data-select2-id="25">
+                    <label class="col-sm-1 control-label no-padding-right">Trạng thái</label>
+                    <div class="col-sm-9">
+                        <select class="form-control select2 select2-hidden-accessible" id="ddlStatus" multiple=""
+                                style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right">Tìm kiếm</label>
+
+                    <div class="col-sm-9">
+                        <input type="search" class="form-control" id="freeText" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group text-right">
+                    <div class="col-xs-12 ">
+                        <a class="btn btn-primary" id="btnSearch">
+                            Tìm kiếm
+                        </a>
+                        <a class="btn btn-info" href="/MCredit/Create">
+                            Tạo mới
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.box-body -->
+            <!-- /.box-footer -->
+        </form>
+        <div class="row">
+            <div class="col-sm-12">
+                <partial name="../Shared/Partials/ExportPartial" />
+                <div class="clearfix">
+                    <div class="pull-right tableTools-container"></div>
+                </div>
+                <div class="box-header box-header-green">
+                    <h3 class="box-title">Danh sách hồ sơ</h3>
+                </div>
+                <div class="dataTables_wrapper form-inline no-footer mt-10">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <label>
+                                Hiển thị
+                                <select id="ddlLimit" class="form-control input-sm" onchange="onSelectLimit()">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> dòng mỗi trang
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- div.table-responsive -->
+                <!-- div.dataTables_borderWrap -->
+                <div class="col">
+                    <div class="report-table-custom--overflow">
+                        <table id="dtSource" class="report-table-custom table table-striped table-bordered table-hover">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="center w-45">STT</th>
+                                    <th class="w-20">ID</th>
+                                    <th class="m-w-150">Tên khách hàng</th>
+                                    <th class="w-94">Phone</th>
+                                    <th class="w-94">CMND</th>
+                                    <th class="w-94">Sale</th>
+                                    <th style="width: 150px">Trạng thái</th>
+                                    <th class="m-w-300">Ghi chú</th>
+                                    <th class="w-94">Sản phẩm</th>
+                                    <th class="w-94">Kỳ hạn</th>
+                                    <th class="w-84">Người tạo</th>
+                                    <th class="w-84">Ngày tạo</th>
+                                    <th class="w-84">Người Cập nhật</th>
+                                    <th class="w-84">Ngày Cập nhật</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="clearfix" />
+                <div class="one-row no-gutters justify-content-between paginate">
+                    <div class="col-auto">
+                        <div class="dataTables_info" id="dtSource_info" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="one-row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <span id="totalPage"></span>
+                            </div>
+                            <div class="col ml-20">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dtSource_paginate">
+                                    <ul class="pagination" id="pagination"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="row">
+            <div class="space-6" style="background-color: #d5e3ef;"></div>
+            <div class="col-xs-12" style="margin-bottom:40px;">
+                <div class="pull-right">
+                    <a id="btnDownReport" onclick="DownloadReport(this)" class="btn btn-sm btn-primary "><i class="ace-icon fa fa-download"></i> Export</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var queries = new URLSearchParams(window.location.search);
+    var page = 1;
+    var limit = 10;
+    var pageMargin = 2;
+    var totalPage = 1;
+    var totalRecord = 0;
+    var sort = 'desc'
+    var sortField = 'updatedtime'
+    var model = { status: '', freeText: '', fromDate: '', toDate: '', groupId: 0, memberId: 0 };
+    $(document).ready(function e() {
+        window.addEventListener('popstate', function (e) {
+
+            queries = new URLSearchParams(window.location.search)
+            bindQueries(getData, true)
+
+        });
+
+        bindQueries(getData);
+    });
+    function bindQueries(callBack = null, isPopState = false) {
+        let fromDate = queries.get("fromDate");
+        if (isNullOrWhiteSpace(fromDate)) {
+            fromDate = getDateSpecific(14);
+        }
+        $("#fromDate").val(fromDate)
+        var toDate = queries.get("toDate");
+        if (isNullOrWhiteSpace(toDate)) {
+            toDate = new Date();
+            toDate = FormatDateTimeDMY(toDate, 'YYYY-MM-DD')
+        }
+        $("#toDate").val(toDate)
+        var dateType = queries.get("dateType");
+        setCheckedValueOfRadioButtonGroup("radio-ngay", dateType)
+
+        $("#freeText").val(queries.get("freeText"));
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        $("#ddlLimit").val(limit)
+        
+        let status = queries.get("status");
+        if (!isNullOrWhiteSpace(status)) {
+            let arrStatus = status.split(',')
+            renderStatusList('mcredit', arrStatus);
+        }
+        else {
+            renderStatusList('mcredit');
+        }
+ 
+        sort = queries.get('sort');
+        sortField = queries.get('sortField');
+        if (callBack != null) {
+
+            callBack(page, limit, sort, sortField, status, isPopState);
+        }
+
+    }
+    $("#freeText,#fromDate, #toDate").on("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            getData(1, limit, null, null, getQueryStatus($("#ddlStatus")));
+        }
+    });
+    $('#btnSearch').click(function (e) {
+        getData(1, limit);
+    });
+
+
+    function onClickPage(page) {
+        page = page;
+        getData(page, limit);
+    }
+
+    function onSelectLimit() {
+        limit = $("#ddlLimit").val()
+        getData(page, limit)
+        //alert(limit)
+    }
+
+    function renderRow(index, rowData) {
+
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        var stt = (page - 1) * limit + index + 1;
+        return "<tr role='row' class = 'odd'>"
+            + renderTextCenter(stt)
+            + renderTextLeft(rowData.Id,'','w-20')
+            + renderTextLink(rowData.CustomerName, '/MCredit/TempProfile/' + rowData.Id)
+            + renderTextLeft(rowData.Phone)
+            + renderTextLeft(rowData.IdNumber)
+            + renderTextLeft(rowData.SaleName)
+            + renderStatusWithRefresh(rowData.StatusName, rowData.Id)
+            + renderTextLeft(rowData.LastNote, '', 'min-w-150 tb-row-breakword')
+            + renderTextLeft(rowData.ProductName)
+            + renderTextLeft(rowData.LoanPeriodName)
+            + renderTextLeft(rowData.CreatedUser)
+            + renderTextLeft(rowData.CreatedTime, 'datetime', 'w-150')
+            + renderTextLeft(rowData.UpdatedUser)
+            + renderTextLeft(rowData.UpdatedTime, 'datetime', 'w-150')
+            + "</tr>";
+    }
+
+    function renderStatusWithRefresh(status, profileId) {
+        let btnRefresh = "<a class='pull-right' onclick='updateStatus(" + profileId + ")' style='cursor: pointer;'><i class='fa fa-refresh bigger - 110'></i></a>"
+        return renderStatus(status, btnRefresh)
+    }
+
+    function updateStatus(profileId) {
+        showBlock($('#panel_body'), loadingMsg);
+
+        $.ajax({
+            traditional: true,
+            url: `/MCredit/UpdateTempProfileStatus?profileId=${profileId}`,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                        text: `Thành công`,
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    }
+    function renderTableBody(datas) {
+        var tableBody = $("#dtSource").find("tbody");
+        tableBody.empty();
+        if (isNullOrNoItem(datas))
+            return;
+
+        $.each(datas, function (index, item) {
+
+            tableBody.append(renderRow(index, item));
+        });
+
+    }
+    function processingModelSearch(page, limit, status) {
+
+        
+        if (isNullOrWhiteSpace(status)) {
+            status = getQueryStatus($("#ddlStatus"));
+        }
+        let model = {
+            'page': page,
+            'limit': limit,
+            'fromDate': $("#fromDate").val(),
+            'toDate': $("#toDate").val(),
+            'freeText': !isNullOrWhiteSpace($("#freeText").val()) ? $("#freeText").val() : '',
+            'status': removeDuplicate(status)
+        }
+        return model;
+    }
+    function onPopState(url) {
+        url = url.replace("SearchTemps", "Temp")
+        window.history.pushState(url, this.title, url)
+    }
+    function renderPageList(page, limit, totalRecord) {
+        renderPaging(page, limit, totalRecord)
+    }
+function getData(page, limit,status, isPopState = false)
+{
+    SearchDatas('/mcredit/SearchTemps', processingModelSearch(page, limit, status), isPopState, renderTableBody, renderPageList, onPopState);
+    return;
+    }
+    $("#btnExport").click(function () {
+        let status = getQueryStatus($("#ddlStatus"));
+        SearchDatas('/mcredit/Export', processingModelSearch(1, 20, status), true, null, null, null, processingExport);
+        return;
+
+
+    })
+    function processingExport(data) {
+        var link = document.createElement("a");
+        link.href = data;
+        link.click();
+    }
+</script>
+

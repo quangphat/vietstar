@@ -1,0 +1,425 @@
+﻿
+@{
+    ViewData["Title"] = "Danh sách thu hồi nợ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="page-content" id="panel_body">
+        <form class="form-horizontal">
+            <div class="box-body">
+                <div class="form-group">
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right">Từ ngày</label>
+                    <div class="col-sm-4  col-xs-12 ">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" data-date-inline-picker="true" onkeyup="" class="form-control pull-right" id="fromDate">
+                        </div>
+                    </div>
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right">Đến ngày</label>
+                    <div class="col-sm-4">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control pull-right" id="toDate">
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-10 no-padding-right">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="radio-ngay" id="optionsRadios1" value="1" checked="">
+                                Ngày tạo
+                            </label>
+                            <label style="margin-left:20px">
+                                <input type="radio" name="radio-ngay" id="optionsRadios1" value="2" checked="">
+                                Ngày cập nhật
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Nhóm</label>
+                    <div class="col-sm-4 col-xs-12 ">
+                        <select id="groupId" class="chosen-select form-control select2" data-placeholder="Chọn nhóm"></select>
+                    </div>
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Thành viên</label>
+                    <div class="col-sm-4 col-xs-12 ">
+                        <select id="assigneeId" class="form-control select2" data-placeholder="Chọn thành viên"></select>
+                    </div>
+                </div>
+                <div class="form-group" data-select2-id="25">
+                    <label class="col-sm-1 control-label no-padding-right">Trạng thái</label>
+                    <div class="col-sm-4 col-xs-12">
+                        <select class="form-control select2 select2-hidden-accessible" id="ddlStatus" multiple=""
+                                style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Thành viên</label>
+                    <div class="col-sm-4 col-xs-12 ">
+                        <select id="processStatus" class="chosen-select form-control" data-placeholder="Trạng thái xử lý">
+                            <option value="0" selected>Tất cả</option>
+                            <option value="1">Chưa xử lý</option>
+                            <option value="2">Đã xử lý</option>
+
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right">Tìm kiếm</label>
+
+                    <div class="col-sm-9">
+                        <input type="search" class="form-control" id="freeText" placeholder="">
+                    </div>
+                </div>
+                <button type="button" id="btnSearch" class="btn btn-primary pull-right">Tìm kiếm</button>
+                @await Html.PartialAsync("../Shared/Partials/DownloadTemplate",
+                    new VietStar.Entities.Commons.DownloadReportPartialViewModel
+                    {
+                        ButtonName ="Import",
+                        FileName = "revoke.xlsx"
+                    })
+
+            </div>
+        </form>
+
+        <hr>
+        <div class="row">
+            <div class="col-sm-12">
+                <partial name="../Shared/Partials/ExportPartial" />
+                <div class="clearfix">
+                    <div class="pull-right tableTools-container"></div>
+                </div>
+                <div class="box-header box-header-green">
+                    <h3 class="box-title">Danh sách hồ sơ</h3>
+                </div>
+                <div class="dataTables_wrapper form-inline no-footer mt-10">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <label>
+                                Hiển thị
+                                <select id="ddlLimit" class="form-control input-sm" onchange="onSelectLimit()">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> dòng mỗi trang
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- div.table-responsive -->
+                <!-- div.dataTables_borderWrap -->
+                <div class="col">
+                    <div class="report-table-custom--overflow">
+                        <table id="dtSource" class="report-table-custom table table-striped table-bordered table-hover">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="center w-45">STT</th>
+                                    <th class="m-w-120">Khách hàng</th>
+                                    <th class="m-w-120">Số hợp đồng</th>
+                                    <th class="w-84">Số CMND</th>
+                                    <th style="width: 150px">Trạng thái</th>
+                                    <th style="width: 150px">Tổng nợ còn lại</th>
+                                    <th class="m-w-120">Nhân viên xử lý</th>
+                                    <th class="m-w-120">Người tạo</th>
+                                    <th class="w-150">Ngày tạo</th>
+                                    <th class="m-w-120">Người cập nhật</th>
+                                    <th class="w-150">Ngày cập nhật</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix" />
+                <div class="one-row no-gutters justify-content-between paginate mb-50">
+                    <div class="col-auto">
+                        <div class="dataTables_info" id="dtSource_info" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="one-row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <span id="totalPage"></span>
+                            </div>
+                            <div class="col ml-20">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dtSource_paginate">
+                                    <ul class="pagination" id="pagination"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="clearfix"></div>
+    </div>
+</div>
+<script>
+
+     var queries = new URLSearchParams(window.location.search);
+    var page = 1;
+    var limit = 10;
+    var pageMargin = 2;
+    var totalPage = 1;
+    var totalRecord = 0;
+    var model = { status:'', freeText :'', fromDate:'',toDate:'', groupId:0, assigneeId:0};
+    $(document).ready(function e() {
+        $('#groupId').select2({
+            allowClear: true
+        });
+        $('#assigneeId').select2({
+            allowClear: true
+        });
+        window.addEventListener('popstate', function (e) {
+
+            queries = new URLSearchParams(window.location.search)
+            bindQueries(getData, true)
+
+        });
+
+        bindQueries(getData);
+
+    });
+    $("#groupId").on("change", function () {
+        GetMemberByGroup(this.value, $("#assigneeId"), queries.get("assigneeId"))
+    })
+
+
+
+
+function onClickPage(page) {
+    page = page;
+    getData(page, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#assigneeId").val(), $("#processStatus").val());
+}
+
+    function onSelectLimit() {
+    limit = $("#ddlLimit").val()
+        getData(page, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#assigneeId").val(), $("#processStatus").val())
+    //alert(limit)
+    }
+    function onSort(sortField) {
+
+        sortField = sortField;
+        if (sort == 'desc')
+            sort = 'asc'
+        else
+            sort = 'desc'
+        getData(page, limit, sort, sortField, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#assigneeId").val(), $("#processStatus").val())
+    }
+
+    function renderTableBody(datas) {
+    var tableBody = $("#dtSource").find("tbody");
+    tableBody.empty();
+    if (isNullOrNoItem(datas))
+        return;
+    $.each(datas, function (index, item) {
+        tableBody.append(renderRow(index, item));
+    });
+
+    }
+
+    $("#freeText ,#fromDate, #toDate").on("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            getData(1, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#assigneeId").val(), $("#processStatus").val());
+        }
+    });
+    $('#btnSearch').click(function (e) {
+        getData(1, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#assigneeId").val(), $("#processStatus").val());
+
+    });
+    function bindQueries(callBack = null, isPopState = false) {
+        let fromDate = queries.get("fromDate");
+        if (isNullOrWhiteSpace(fromDate)) {
+            fromDate = getDateSpecific(14);
+        }
+        $("#fromDate").val(fromDate)
+        var toDate = queries.get("toDate");
+        if (isNullOrWhiteSpace(toDate)) {
+            toDate = new Date();
+            toDate = FormatDateTimeDMY(toDate, 'YYYY-MM-DD')
+        }
+        $("#toDate").val(toDate)
+        var dateType = queries.get("dateType");
+        setCheckedValueOfRadioButtonGroup("radio-ngay", dateType)
+
+        $("#freeText").val(queries.get("freeText"));
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        $("#ddlLimit").val(limit)
+        var groupId = queries.get("groupId");
+        $('#groupId').val(groupId)
+        var assigneeId = queries.get("assigneeId");
+        $('#assigneeId').val(assigneeId);
+        let status = queries.get("status");
+        if (!isNullOrWhiteSpace(status)) {
+            let arrStatus = status.split(',')
+            renderStatusList('revoke', arrStatus);
+        }
+        else
+            renderStatusList('revoke');
+        let processStatus = queries.get("processStatus");
+        processStatus = !isNullOrWhiteSpace(processStatus) ? processStatus : 0;
+        $("#processStatus").val(processStatus)
+
+        GetParentGroups(null, groupId)
+        GetMemberByGroup(groupId, $("#assigneeId"), assigneeId)
+        sort = queries.get('sort');
+        sortField = queries.get('sortField');
+        if (callBack != null) {
+
+            callBack(page, limit, sort, sortField, status, groupId, assigneeId, processStatus, isPopState);
+        }
+
+    }
+    function processingExport(data) {
+        var link = document.createElement("a");
+        link.href = data;
+        link.click();
+    }
+    $("#btnExport").click(function () {
+        let status = getQueryStatus($("#ddlStatus"));
+
+        let groupId = $("#groupId").val();
+        let assigneeId = $("#assigneeId").val();
+        let processStatus = $("#processStatus").val();
+        SearchDatas('/Revoke/Export', processSearchModel(1, 20, status, groupId, assigneeId, processStatus), true, null, null, null, processingExport);
+        return;
+
+
+    })
+    function renderPageList(page, limit, totalRecord) {
+        renderPaging(page, limit, totalRecord)
+    }
+    function onPopState(url) {
+        url = url.replace("Search", "Index")
+        window.history.pushState(url, this.title, url)
+    }
+    function processSearchModel(page, limit, status, groupId, assigneeId, processStatus) {
+        if (isNullOrWhiteSpace(status)) {
+            status = getQueryStatus($("#ddlStatus"));
+        }
+        if (groupId == 0)
+            groupId = $("#groupId").val();
+        if (assigneeId == 0)
+            assigneeId = $("#assigneeId").val()
+        return {
+            'page': page,
+            'limit': limit,
+            'groupId': groupId,
+            'assigneeId': assigneeId,
+            'fromDate': $("#fromDate").val(),
+            'toDate': $("#toDate").val(),
+            'freeText': !isNullOrWhiteSpace($("#freeText").val()) ? $("#freeText").val() : '',
+            'dateType': $('input[name="radio-ngay"]:checked').val(),
+            'status': removeDuplicate(status),
+            'processStatus': processStatus
+        }
+    }
+    function getData(page, limit, status, groupId, assigneeId, processStatus, isPopState = false)
+    {
+        SearchDatas('/revoke/Search', processSearchModel(page, limit, status, groupId, assigneeId, processStatus), isPopState, renderTableBody, renderPageList, onPopState);
+        return;
+
+
+}
+
+    $('#btnImport').click(function (e) {
+        showBlock($('#panel_body'), loadingMsg);
+        var formData = new FormData();
+        let file = $('#file')[0].files[0];
+        if (file == null)
+            return;
+        formData.append('file', $('#file')[0].files[0]);
+
+        $.ajax({
+            url: '/Revoke/Import',
+            type: 'POST',
+            data: formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function (data) {
+
+                if (data != null && data.success) {
+                    swal({
+                        title: "",
+                        text: data.data,
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = window.location
+                    });
+                }
+
+                else {
+                    swal({
+                        title: "",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    })
+
+
+    function renderRow(index, rowData) {
+
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        var stt = (page - 1) * limit + index + 1;
+
+        let result = "<tr role='row' class = 'odd'>"
+            + renderTextCenter(stt, '','center w-45')
+            + renderTextLink(rowData.CustomerName, `/Revoke/Edit/${rowData.Id}`, '', "min-w-120")
+            + renderTextLink(rowData.AgreementNo, `/Revoke/Edit/${rowData.Id}`, '', 'min-w-120')
+            + renderTextLeft(rowData.IdCardNumber, '', 'w-84')
+            + renderStatus(rowData.StatusName)
+            + renderTextLeft(formatCurrencyVND(rowData.TotalCurros,''), '', 'w-150')
+            + renderTextLeft(rowData.AssigneeName, '', "min-w-120")
+            + renderTextLeft(rowData.CreatedUser, '', "min-w-120")
+            + renderTextLeft(rowData.CreatedTime, 'datetime', 'w-150')
+            + renderTextLeft(rowData.UpdatedUser, '', "min-w-120")
+            + renderTextLeft(rowData.UpdatedTime, 'datetime', 'w-150')
+            @*+ renderAction(rowData.Id,(@ViewBag.isAdmin == 0 && rowData.Status == 7))*@
+            + "</tr>";
+        return result
+    }
+</script>
+
+
+

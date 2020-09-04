@@ -1,0 +1,285 @@
+﻿@model VietStar.Entities.Courier.CourierIndexModel
+@{
+    ViewData["Title"] = "Hồ sơ courier";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+      new VietStar.Entities.ViewModels.BreadcrumbModel { FirstPath= "/Courier/Index", FirstName= "Courier", SecondName="Tạo mới" })
+        
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin khách hàng:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="CustomerName" placeholder="Nhập họ tên" value="@Model.CustomerName" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Điện thoại khách hàng<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Phone" value="@Model.Phone" placeholder="Nhập số điện thoại khách hàng" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CMND/CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Cmnd" value="@Model.Cmnd" placeholder="Nhập số CMND" class="form-control" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Tỉnh/TP<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="provinceId" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="districtId" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Mã TeleSale<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            @if (ViewBag.isAdmin)
+                            {
+                                <input type="text" id="SaleCode" value="@Model.SaleCode" placeholder="Nhập mã telesale" class="form-control" />
+                            }
+                            else
+                            {
+                                <input type="text" id="SaleCode" value="@Model.SaleCode" readonly placeholder="Nhập mã telesale" class="form-control" />
+                            }
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">2.Người xử lý:</h3>
+                <form class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Nhóm<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="groupId" class="chosen-select form-control" data-placeholder="Chọn nhóm">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Chỉ định<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="CourierId" class="chosen-select form-control" data-placeholder="Chọn người chỉ định">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <partial name="../Shared/Partials/UploadArea" />
+        <partial name="../Shared/Partials/ProfileStatus" />
+        <partial name="../Shared/Partials/CommentArea" model="true" />
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+    new VietStar.Entities.ViewModels.CommandBar
+    {
+        Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
+            new VietStar.Entities.ViewModels.CommandBarButton { Id="btn_Save", ClassName="btn btn-sm btn-primary", Name="Cập nhật" }
+    }
+    })
+
+    </div>
+</div>
+
+<script>
+
+    $("#Phone").ForceNumericOnlyv2();
+    $("#Cmnd").ForceNumericOnlyv2();
+    $('#provinceId').on('change', function () {
+        GetDistricts(null, this.value);
+    });
+    $('#groupId').on('change', function () {
+        debugger
+        GetMemberByGroup(this.value, $("#CourierId"), '@Model.AssignId');
+    });
+    $(document).ready(function () {
+        GetProvinces(null, '@Model.ProvinceId','@Model.DistrictId');
+        GetApproveGroupByUser(null, '@Model.GroupId', $("#CourierId"), '@Model.AssignId')
+        
+        renderStatusList('common', '@Model.Status');
+        getComments('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.Courier)', $('#comments'))
+        GetProfileFiles();
+    });
+    function GetProfileFiles() {
+        $.ajax({
+            type: "GET",
+            url: `/media/GetFileType/courier/${'@Model.Id'}`,
+            data: {},
+            success: function (data) {
+                if (data.data != null) {
+                    var i = 0;
+                    var htmlContent = "";
+                    let keys = [];
+                    let groupName = '';
+                    let _imgExts = ["jpg", "jpeg", "png", "pdf"];
+                    $.each(data.data, function (index, item) {
+                        $("#uploadArea").append(`<div class='form-group'><div class='col-sm-12' id='tailieu-${item.Id}'><h5>${groupName}</h5></div></div > `);
+                        if (!isNullOrNoItem(item.ProfileFiles)) {
+                            let _initialPreview = [];
+                            let _initialPreviewConfig = [];
+                            $.each(item.ProfileFiles, function (i, file) {
+                                _initialPreview = [];
+                                _initialPreviewConfig = [];
+                                var extn = file.FileUrl.split('.').pop();
+                                var isImg = isExtension(extn, _imgExts);
+                                if (isImg) {
+                                    
+                                    _initialPreview.push(file.FileUrl);
+                                    _initialPreviewConfig.push({
+                                        caption: file.FileName,
+                                        url: `/media/delete/${file.FileId}/0`,
+                                        type: extn.indexOf('pdf') > -1 ? "pdf" : "jpg",
+                                        width: "120px"
+                                    });
+                                }
+                                
+                                let titleName = keys.indexOf(file.Key) < 0 ? item.Name : ''
+                                
+                                renderOneItemFile({
+                                    key: item.FileKey,
+                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Courier)',
+                                    profileId: '@Model.Id',
+                                    fileId: file.FileId,
+                                    isRequire: item.IsRequire,
+                                    titleName: titleName,
+                                    itemId: i,
+                                    guidId: file.GuidId
+                                }, '', _initialPreview, _initialPreviewConfig, true, true);
+
+                                keys.push(item.FileKey);
+                            });
+                            
+                           renderOneItemFile({
+                                    key: item.FileKey,
+                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Courier)',
+                                    profileId: '@Model.Id',
+                               fileId: 0,
+                               isRequire: false,
+                                    titleName: '',
+                                    itemId: i,
+                                    guidId: ''
+                                }, '', [], [], true, true);
+                        }
+                        else {
+                            
+                            renderOneItemFile({
+                                    key: item.FileKey,
+                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Courier)',
+                                    profileId: '@Model.Id',
+                                    fileId:0,
+                                    isRequire: item.IsRequire,
+                                    titleName: item.Name,
+                                    itemId: i,
+                                    guidId: ''
+                                }, '', [], [], true, true);
+                        }
+                    })
+                }
+
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+    $("#btnAddNote").click(function () {
+        debugger
+        AddNote('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.Courier)', $('#comment').val(), $('#comment'), $('#comments'))
+    })
+    var successMsg = 'Thành công'
+    var errorMsg ='Không thành công'
+    $('#btn_Save').click(function (e) {
+        if ($('#CustomerName').val() == "" || $('#CustomerName').val() == undefined) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng nhập tên",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if ($('#CourierId').val() == "0" || $('#CourierId').val() == undefined) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn Courier",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        var objectSend = JSON.stringify({
+            'Id': '@Model.Id',
+            'CustomerName': $('#CustomerName').val(),
+            'phone': $('#Phone').val(),
+            'cmnd': $('#Cmnd').val(),
+            'Status': $('#ddlStatus').val(),
+            'AssignId': $('#CourierId').val(),
+            'SaleCode': $('#SaleCode').val(),
+            'LastNote': $('#comment').val(),
+            'GroupId': $('#groupId').val(),
+            'ProvinceId': $('#provinceId').val(),
+            'DistrictId': $('#districtId').val()
+        });
+        $.ajax({
+            traditional: true,
+            url: '@Url.Action("UpdateAsync", "Courier")',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                        text: "Thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = '/Courier/Index'
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+</script>
+

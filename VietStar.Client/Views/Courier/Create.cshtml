@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewData["Title"] = "Hồ sơ courier";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+      new VietStar.Entities.ViewModels.BreadcrumbModel { FirstPath= "/Courier/Index", FirstName= "Courier", SecondName="Cập nhật" })
+
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin khách hàng:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="CustomerName" placeholder="Nhập họ tên" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Điện thoại khách hàng<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Phone" placeholder="Nhập số điện thoại khách hàng" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CMND/CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Cmnd" placeholder="Nhập số CMND" class="form-control" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Tỉnh/TP<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="provinceId" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="districtId" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Mã Sale<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="SaleCode" placeholder="Nhập số mã sale" class="form-control" />
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">2.Người xử lý:</h3>
+                <form class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Nhóm<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="groupId" class="chosen-select form-control" data-placeholder="Chọn nhóm">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Chỉ định<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="CourierId" class="chosen-select form-control" data-placeholder="Chọn người chỉ định">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <partial name="../Shared/Partials/CommentArea" model="false" />
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+    new VietStar.Entities.ViewModels.CommandBar
+    {
+        Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
+            new VietStar.Entities.ViewModels.CommandBarButton { Id="btnNext", ClassName="btn btn-sm btn-primary", Name="Bước tiếp theo" }
+    }
+    })
+
+    </div>
+</div>
+
+<script>
+
+    $("#Phone").ForceNumericOnlyv2();
+    $("#Cmnd").ForceNumericOnlyv2();
+
+    $(document).ready(function () {
+        GetProvinces();
+        $('#provinceId').on('change', function () {
+            GetDistricts(this.value,null);
+        });
+        GetApproveGroupByUser()
+
+        $('#groupId').on('change', function () {
+            GetMemberByGroup(this.value, $("#CourierId"), 0);
+        });
+    });
+
+    $('#btnNext').click(function (e) {
+        if ($('#CustomerName').val() == "" || $('#CustomerName').val() == undefined) {
+            swal({
+                title: "Không thành công",
+                text: "Vui lòng nhập tên",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if ($('#CourierId').val() == "0" || $('#CourierId').val() == undefined) {
+            swal({
+                title: "Không thành công",
+                text: "Vui lòng chọn Courier",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        var objectSend = JSON.stringify({
+            'CustomerName': $('#CustomerName').val(),
+            'phone': $('#Phone').val(),
+            'cmnd': $('#Cmnd').val(),
+            'AssignId': $('#CourierId').val(),
+            'SaleCode': $('#SaleCode').val(),
+            'LastNote': $('#txtGhiChu').val(),
+            'GroupId': $('#groupId').val(),
+            'ProvinceId': $('#provinceId').val(),
+            'DistrictId': $('#districtId').val()
+        });
+        $.ajax({
+            traditional: true,
+            url: '@Url.Action("CreateAsync", "Courier")',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: "Thành công",
+                        text: "Thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = `/Courier/Edit/${data.data}`
+                    });
+                }
+                else {
+                    swal({
+                        title: "Không thành công",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+
+</script>
+

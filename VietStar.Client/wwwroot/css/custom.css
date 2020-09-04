@@ -1,0 +1,374 @@
+﻿html, body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+}
+label
+{
+    font-weight:400!important
+}
+select option, select.form-control option {
+    padding: 3px 4px 5px;
+}
+.horizontal-scroll {
+    overflow-x: auto;
+}
+.box-header-green {
+    background-color: #0D622F;
+    color: white;
+}
+.datepicker {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color: green;
+}
+.center{
+    text-align:center!important;
+}
+
+input:-moz-placeholder, textarea:-moz-placeholder {
+    color: green;
+}
+#ddlLimit_chosen{
+    width:100px!important;
+}
+.mb-10{
+    margin-bottom:10px!important;
+}
+.ml-20 {
+    margin-left: 20px !important;
+}
+.pt-0 {
+    padding-top: 0px;
+}
+.mt-50 {
+    margin-top: 50px !important;
+}
+.mt-10 {
+    margin-top:10px!important;
+}
+.mt-46 {
+    margin-top: 46px;
+}
+
+.header-hoso {
+    margin-bottom: 16px;
+}
+
+.dz-preview, .dz-image-preview {
+    margin: 10px !important;
+    border: 1px solid #36a3f7;
+}
+
+.dz-details {
+    /*display:none*/
+}
+
+.dz-error-mark, .dz-error-message, .dz-success-mark, .dz-progress, .dz-size {
+    display: none;
+}
+
+.ui-information {
+    padding: 16px;
+}
+
+.ui-product-photo-item {
+    margin-top: 15px;
+}
+
+.ui-product-photo {
+    position: relative;
+    padding: 16px 0;
+}
+
+    .ui-product-photo .ui-product-photo-grid {
+        list-style-type: none;
+        padding: 0;
+        margin: 0 0 -10px -10px;
+    }
+
+@media (min-width: 992px) .ui-product-photo .ui-product-photo-grid .ui-product-photo-item {
+    width: 16.66%;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.dz-image img {
+    max-width: 120px;
+    max-height: 120px;
+}
+
+.file-upload {
+    word-break: break-all;
+    border: 1px dashed #36a3f7;
+    position: relative;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 4px;
+    min-width: 370px;
+}
+
+.form-group label {
+    color: #060606
+}
+
+.form-group input, .form-group label, .form-group select, .form-group textarea {
+    color: #565050;
+}
+
+
+.pl-0 {
+    padding-left: 0px !important;
+}
+
+.pr-0 {
+    padding-right: 0px !important;
+}
+
+.report-table-custom tbody {
+    word-break: break-all;
+}
+
+.report-table-custom--overflow {
+    overflow-x: scroll;
+}
+
+.report-table-custom {
+    vertical-align: middle;
+    text-align: center;
+    width: 100%;
+    box-shadow: 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.col {
+    position: relative;
+    width: 100%;
+}
+
+.col {
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+.col-auto {
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+}
+
+.mb-50 {
+    margin-bottom: 50px;
+}
+
+.paginate {
+    padding: 15px 0;
+}
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+    .no-gutters > .col, .no-gutters > [class*=col-] {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+.justify-content-between {
+    -ms-flex-pack: justify !important;
+    justify-content: space-between !important;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+.one-row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.table-header {
+    overflow: hidden;
+    position: relative;
+    border: 0px;
+    width: 100%;
+}
+
+.tb-row-breakword {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    pointer-events: auto;
+    word-break: break-all;
+    word-break: break-word;
+}
+.min-w-120 {
+    min-width: 120px !important;
+}
+.min-w-300 {
+    min-width: 300px !important;
+}
+.max-w-300 {
+    max-width: 300px !important;
+}
+
+.min-w-150 {
+    min-width: 150px !important;
+}
+.min-100{
+    min-width:100px;
+}
+.min-150 {
+    min-width: 150px !important;
+}
+
+.w-150 {
+    width: 150px !important;
+}
+
+.w-130 {
+    width: 130px !important;
+}
+
+.w-45 {
+    width: 45px !important;
+}
+
+.w-60 {
+    width: 60px !important;
+}
+
+.w-98 {
+    width: 98px !important;
+}
+
+.w-84 {
+    width: 84px !important;
+}
+
+.w-105 {
+    width: 105px !important;
+}
+
+.w-94 {
+    width: 94px !important;
+}
+
+.w-90 {
+    width: 90px !important;
+}
+.w-20{
+    width:20px;
+}
+.ui-datepicker {
+    width: auto;
+}
+
+.width-106px {
+    width: 115px;
+}
+
+.my-widget-body {
+    overflow-x: auto;
+}
+
+.my-widget-main {
+    padding-left: 0px;
+    padding-right: 0px;
+    min-width: 1024px;
+}
+
+.my-date-range {
+    width: 135px;
+}
+
+    .my-date-range.from-date-range {
+        float: left !important;
+        margin-right: 3px;
+    }
+/*---end of ace.min.css-----------------------------*/
+.qltb-grid {
+    height: 450px;
+    width: 100%;
+    font-size: small !important;
+}
+
+.k-link, .k-header, .k-grid-content, .k-grid-content, .k-button, .k-grid-content {
+    font-size: small !important;
+}
+
+table {
+    font-size: small !important;
+}
+
+.k-dropdown, .k-numerictextbox, .k-datepicker, .k-textbox {
+    width: 90%;
+}
+
+.k-edit-label {
+    width: 35% !important;
+}
+
+span.required {
+    color: red;
+}
+
+
+.datepicker {
+    z-index: 1151 !important;
+}
+
+.fix-with-have-scroll {
+    /*min-width: 1024px!important;*/
+    overflow: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling-x: touch;
+}
+
+.my-data-table {
+    font-size: 12px !important;
+}
+
+    .my-data-table table {
+        font-size: 12px !important;
+    }
+
+    .my-data-table .dataTables_wrapper .row:first-child {
+        display: none !important;
+    }
+
+@media screen and (max-width:640px) {
+    .my-data-table .dataTables_wrapper .row:last-child div:first-child {
+        /*display: none!important;*/
+    }
+
+    .my-data-table .dataTables_wrapper .row:last-child div:last-child {
+        width: 100%;
+    }
+}
+
+.steps li.reject:before, .steps li.active:before, .steps li.complete:before {
+    border-color: #CED1D6;
+}
+
+.steps li.reject .step {
+    border-color: #d15b47;
+}

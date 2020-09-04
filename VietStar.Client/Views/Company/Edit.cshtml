@@ -1,0 +1,158 @@
+﻿@model VietStar.Entities.Company.CompanySql
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb", 
+       new VietStar.Entities.ViewModels.BreadcrumbModel { FirstPath="/Company/Index", FirstName="Công ty", SecondName="Cập nhật" })
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin công ty:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tên Công ty <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="FullName" value="@Model.FullName" placeholder="Nhập họ tên" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày Check<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker" type="date" id="CheckDate" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Mã số thuế<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtTaxNumber" value="@Model.TaxNumber" placeholder="Nhập mã số thuế" class="form-control" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Cat<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="ddlCat" class="chosen-select form-control" data-placeholder="">
+                                <option value="1">CatA</option>
+                                <option value="2">CatB</option>
+                                <option value="3">CatC</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Tên ngân hàng<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="partnerId" class="chosen-select form-control" data-placeholder="Chọn đối tác">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <partial name="../Shared/Partials/CommentArea" model="true" />
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+        new VietStar.Entities.ViewModels.CommandBar
+        {
+            Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>
+                 {
+                 new VietStar.Entities.ViewModels.CommandBarButton { Id="btnSave", ClassName="btn btn-sm btn-primary", Name="Cập nhật" }
+                 }
+        })
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        GetCheckDupPartners(null,'@Model.PartnerId')
+        getComments(@Model.Id, @((int)VietStar.Entities.Commons.Enums.NoteType.Company), $('#comments'))
+        $("#CheckDate").val(FormatDateTimeDMY('@Model.CheckDate.ToString("yyyy/MM/dd")', 'YYYY-MM-DD'))
+        $("#ddlCat").val('@Model.CatType')
+    })
+    $("#btnAddNote").click(function () {
+        AddNote('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.Company)', $('#comment').val(), $('#comment'), $('#comments'))
+    })
+    $('#btnSave').click(function (e) {
+
+        if (isNullOrWhiteSpace($('#CheckDate').val())) {
+            swal({
+                title: "Không thành công",
+                text: "Ngày check không hợp lệ",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+
+        if (isNullOrWhiteSpace($('#txtTaxNumber').val())) {
+            swal({
+                title: "Không thành công",
+                text: "Vui lòng nhập mã số thuế",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        let company = {
+            'Id': '@Model.Id',
+            'FullName': $('#FullName').val(),
+            'CheckDate': $('#CheckDate').val(),
+            'LastNote':$('#txtGhiChu').val(),
+            'TaxNumber': $('#txtTaxNumber').val(),
+            'CatType' : $("#ddlCat").val()
+        }
+
+
+            var objectSend = JSON.stringify(company);
+            $.ajax({
+                traditional: true,
+                url: '@Url.Action("UpdateAsync", "Company")',
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: objectSend,
+                success: function (data) {
+                    if (data.success == true) {
+                        swal({
+                            title: "Thành công",
+                            text: "Cập nhật thành công",
+                            type: "success",
+                            timer: 4000,
+                            showConfirmButton: true,
+                        }, function () {
+                            window.location = "/company/Index";
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "Lỗi",
+                            text: data.error.code,
+                            type: "error",
+                            timer: 4000,
+                            showConfirmButton: true,
+                        });
+                    }
+                },
+                error: function (jqXHR, exception) {
+                    showError(jqXHR, exception);
+                },
+                complete: function () {
+                    $('#panel_body').unblock();
+                },
+            })
+        });
+
+</script>

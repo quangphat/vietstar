@@ -1,0 +1,14 @@
+﻿@model VietStar.Entities.ViewModels.CommandBar
+<div class="row">
+    <div class="col-xs-12">
+        <div class="command-bar">
+            @foreach (var button in Model.Buttons)
+            {
+                <a class="@button.ClassName" href="@button.Href" id="@button.Id">
+                    @button.Name
+                </a>
+            }
+        </div>
+    </div>
+</div>
+

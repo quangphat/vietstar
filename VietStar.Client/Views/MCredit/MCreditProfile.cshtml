@@ -1,0 +1,575 @@
+﻿@model VietStar.Entities.Mcredit.ProfileGetByIdResponseObj
+@{
+    ViewData["Title"] = "Hồ sơ MCredit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i>
+                <a href="#">Hồ sơ MCredit</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">Thông tin hồ sơ:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Case number <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCustomerName" value="@Model..CaseNumber" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày giải ngân <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCustomerName" value="@Model.MoneyReceiveDate" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Giải ngân<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtHometown" value="@Model.MoneyReceive" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Lý do<span class="required">(*)</span></label>
+                        <div class="col-sm-10">
+                            <textarea type="text" value="" readonly class="form-control">
+                                @Model.ReasonName
+                            </textarea>
+                        </div>
+                        <a class="btn btn-sm btn-primary pull-right" id="btnAddNoteFromReason">
+                            Thêm ghi chú
+                        </a>
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Lỗi bên Toàn Cầu<span class="required">(*)</span></label>
+                        <div class="col-sm-10">
+                            <textarea type="text" value="" readonly class="form-control">
+                                @Model.Refuse
+                            </textarea>
+                        </div>
+                        <a class="btn btn-sm btn-primary pull-right" id="btnAddNoteFromRefuse">
+                            Thêm ghi chú
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin khách hàng:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCustomerName" placeholder="Nhập họ tên" value="@Model.Name" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Quê quán(trên CMND) <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtHometown" value="@Model.HomeTown" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker" readonly id="txtBirthDay" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số điện thoại<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtPhone" value="@Model.Phone" readonly placeholder="Nhập số điện thoại khách hàng" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CMND<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtIdNumber" value="@Model.IdNumber" readonly placeholder="Nhập số CMND" class="form-control" />
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCCCDNumber" value="@Model.CccdNumber" readonly placeholder="Nhập số CCCD" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Ngày cấp CMND/CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker"  readonly id="txtIdDay" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                            @*<div style="margin-top:10px">
+                                <a class="btn btn-primary" id="btn_CheckCIC">
+                                    Check CIC
+                                </a>
+                                <a class="btn btn-primary" id="btn_CheckDup">
+                                    Check Duplicate
+                                </a>
+                            </div>*@
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <p id="checkdupResult" style="color:green"></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Địa chỉ sinh sống trùng hộ khẩu *</label>
+                        <div class="col-sm-4">
+                            <label class="control-label no-padding-right">
+                                <input name="radio-isAddr" type="radio" readonly checked="checked" value="1" class="ace">
+                                <span class="lbl"> Có</span>
+                            </label>
+                            <label class="control-label no-padding-right" style="margin-left:20px">
+                                <input name="radio-isAddr" type="radio" readonly value="0" class="ace">
+                                <span class="lbl"> Không</span>
+                            </label>
+                        </div>
+                        @*<label class="col-sm-2 control-label no-padding-right">Giới tính</label>
+                        <div class="col-sm-4">
+                            <select id="ddlGender" class="chosen-select form-control">
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                            </select>
+                        </div>*@
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Tỉnh/TP<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCityName" value="@Model.CityName" readonly class="form-control" />
+                            @*<select id="ddlProvince" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
+                                <option value="0"></option>
+                            </select>*@
+                        </div>
+                        @*<label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="ddlHuyen" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
+                                <option value="0"></option>
+                            </select>
+                        </div>*@
+                    </div>
+                    @*<div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" id="txtAddress" placeholder="Nhập địa chỉ" class="form-control">@Model.Address</textarea>
+                        </div>
+                    </div>*@
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Sale (Số CMND | CCCD | Mã sale) </label>
+                        <div class="col-sm-4">
+
+                            <input type="text" id="txtSaleCode" value="@Model.SaleIdNumber" readonly class="form-control">
+
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Mã sale</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtSaleName" value="@(Model.SaleCode)" readonly class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Tên sale</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtSaleName" value="@(Model.SaleName)" readonly class="form-control">
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">2.Thông tin khoản vay và sản phẩm:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Sản phẩm vay<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtProductName" value="@Model.ProductName" readonly class="form-control" />
+                            @*<select id="ddlProduct" class="chosen-select form-control" data-placeholder="Chọn sản phẩm vay">
+                                <option value="0"></option>
+                            </select>*@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4  col-md-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input name="form-field-checkbox" id="cbbIsInsurrance" readonly type="checkbox" class="ace">
+                                    <span class="lbl">Tham gia bảo hiểm dư nợ tín dụng</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền đề nghị vay<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtLoanMoney" value="@VietStar.Utility.Utils.FormatCurrentCy(Convert.ToDecimal(Model.LoanMoney))" readonly class="form-control">
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Thời hạn vay</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtLoanMoney" value="@Model.LoanPeriod" readonly class="form-control">
+                            @*<select id="ddlLoanPeriod" class="chosen-select form-control" data-placeholder="Kỳ hạn vay">
+                                <option value="0">Chọn kỳ hạn vay</option>
+                            </select>*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa điểm ký văn kiện tín dụng<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtLoanMoney" value="@Model.LocSignName" readonly class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Địa chỉ<span class="required">(*)</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" id="txtLoanMoney" value="@Model.LocSignAddr" readonly class="form-control">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <partial name="../Shared/Partials/UploadArea" />
+        <partial name="../Shared/Partials/CommentArea" model="true" />
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+            new VietStar.Entities.ViewModels.CommandBar
+            {
+                Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
+                    new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="", Name="Quay lại", Href="/MCredit/Index" },
+                    new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="", Name="Tạo mới hồ sơ", Href="/MCredit/Create" },
+                    new VietStar.Entities.ViewModels.CommandBarButton { Id="btnUpdateFiles", ClassName="btn btn-sm btn-primary", Name="Cập Nhật và Chuyển Qua MC" }
+                    
+                    
+            }
+            })
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        setTextForPTag('checkSaleResult');
+        setTextForPTag('checkdupResult');
+        setCheckedValueOfRadioButtonGroup('radio-isAddr', '@Model.IsAddrSame');
+        setCheckboxValue('cbbIsInsurrance', '@Model.IsInsurrance' =='0' ? false : true)
+        getFilesUpload();
+        getNoteList();
+
+    });
+
+
+    $("#txtBirthDay").val(convertStringToDMY('@Model.Bod'))
+    $("#txtIdDay").val(convertStringToDMY('@Model.IdDate'))
+
+    $("#txtPhone").ForceNumericOnlyv2();
+    $("#txtPhone2").ForceNumericOnlyv2();
+    $("#txtLoanMoney").ForceNumericOnlyv2();
+    $("#txtIdNumber").ForceNumericOnlyv2();
+
+
+    $('#btn_CheckSale').click(function (e) {
+        let value = $("#txtSaleCode").val()
+        checkSale('checkSaleResult', value,"#txtSaleId", @Model.Id);
+    });
+    $('#btn_CheckCIC').click(function (e) {
+        let value = !isNullOrWhiteSpace($("#txtIdNumber").val()) ? $("#txtIdNumber").val() : $("#txtCCCDNumber").val();
+        checkCIC('', value);
+    });
+    $('#btn_CheckDup').click(function (e) {
+        let value = !isNullOrWhiteSpace($("#txtIdNumber").val()) ? $("#txtIdNumber").val() : $("#txtCCCDNumber").val();
+        checkDup('checkdupResult', value);
+    });
+
+    $("#btnAddNoteFromReason").click(function () {
+        AddNoteFromRefuseOrReason("reason")
+    })
+    $("#btnAddNoteFromRefuse").click(function () {
+        AddNoteFromRefuseOrReason("refuse")
+    })
+    function AddNoteFromRefuseOrReason(type) {
+        let profileId = '@Model.Id'
+        showBlock($('#panel_body'), loadingMsg);
+        $.ajax({
+            traditional: true,
+            url: `/MCredit/AddRefuseReasonToNote?profileId=${profileId}&type=${type}`,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: errorMsg,
+                        text: `Thành công`,
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    }
+    function getFilesUpload() {
+            let url = `/media/GetFileType/mcredit/${@Model.LocalProfileId}`
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: {},
+            success: function (data) {
+                if (data.data != null) {
+                    var i = 0;
+                    var htmlContent = "";
+                    let keys = [];
+                    let groupIds = [];
+                    let groupName = '';
+                    let _imgExts = ["jpg", "jpeg", "png", "pdf"];
+                    let groupRequire =''
+                    $.each(data.data, function (index, item) {
+                        if (groupIds.indexOf(item.GroupId) >= 0) {
+                            groupName = ''
+                            groupRequire =''
+                        }
+                        else {
+                            groupName = item.GroupName;
+                            groupRequire = item.IsRequireGroup ? '<span class="required">(*)</span>' : ''
+                        }
+                        $("#uploadArea").append(`<div class='form-group'><div class='col-sm-12' id='tailieu-${item.Id}'><h5>${groupName} ${groupRequire}</h5></div></div > `);
+                        groupIds.push(item.GroupId)
+                        if (!isNullOrNoItem(item.ProfileFiles)) {
+                            let _initialPreview = [];
+                            let _initialPreviewConfig = [];
+                            $.each(item.ProfileFiles, function (i, file) {
+                                _initialPreview = [];
+                                _initialPreviewConfig = [];
+                                var extn = file.FileUrl.split('.').pop();
+                                var isImg = isExtension(extn, _imgExts);
+                                if (isImg) {
+
+                                    _initialPreview.push(file.FileUrl);
+                                    _initialPreviewConfig.push({
+                                        caption: file.FileName,
+                                        url: `/media/delete/${file.FileId}/0`,
+                                        type: extn.indexOf('pdf') > -1 ? "pdf" : "jpg",
+                                        width: "120px"
+                                    });
+                                }
+
+                                let titleName = keys.indexOf(file.Key) < 0 ? item.Name : ''
+                                renderOneItemFile({
+                                    key: item.FileKey,
+                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
+                                    profileId: '@Model.LocalProfileId',
+                                    fileId: file.FileId,
+                                    isRequire: false,
+                                    titleName: titleName,
+                                    itemId: i,
+                                    guidId: file.GuidId,
+                                    documentName: item.DocumentName,
+                                    documentCode: item.DocumentCode,
+                                    documentId: item.DocumentId,
+                                    groupId: item.GroupId,
+                                    isMCredit: true,
+                                    mcId: '@Model.Id'
+                                }, '', _initialPreview, _initialPreviewConfig, true, true);
+
+                                keys.push(item.FileKey);
+                            });
+
+                           renderOneItemFile({
+                                    key: item.FileKey,
+                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
+                                    profileId: '@Model.LocalProfileId',
+                                    fileId: 0,
+                                    isRequire: false,
+                                    titleName: '',
+                                    itemId: i,
+                                    guidId: '',
+                                    documentName: item.DocumentName,
+                                    documentCode: item.DocumentCode,
+                                    documentId: item.DocumentId,
+                               groupId: item.GroupId,
+                               isMCredit: true,
+                                    mcId: '@Model.Id'
+                                }, '', [], [], true, true);
+                        }
+                        else {
+
+                            renderOneItemFile({
+                                    key: item.FileKey,
+                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
+                                    profileId: '@Model.LocalProfileId',
+                                    fileId:0,
+                                    isRequire: false,
+                                    titleName: item.Name,
+                                    itemId: i,
+                                    guidId: '',
+                                    documentName: item.DocumentName,
+                                    documentCode: item.DocumentCode,
+                                    documentId: item.DocumentId,
+                                groupId: item.GroupId,
+                                isMCredit:true,
+                                    mcId: '@Model.Id'
+                                }, '', [], [], true, true);
+                        }
+                    })
+                }
+
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+
+
+    $('#btnUpdateFiles').click(function (e) {
+
+        $.ajax({
+            traditional: true,
+            url: '/MCredit/ReSendFileToEC?mcProfileId=' + @Model.Id,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                            text: "Thành công",
+                            type: "success",
+                            timer: 4000,
+                            showConfirmButton: true,
+                        }, function () {
+                            //window.location = window.location;
+
+                            //uploadFiles(data.data, false);
+                        });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 10000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+    function getNoteList() {
+        //$('#ddlTrangThai').empty();
+        $.ajax({
+            type: "POST",
+            url: '/MCredit/GetNotes?mcProfileId=' +  @Model.Id,
+            data: {},
+            success: function (data) {
+                if (data.data != null && data.success == true) {
+                    $.each(data.data, function (index, item) {
+                        $('#comments').append(
+                            '<div class="timeline-event-content  active">' +
+                            '<div class="timeline-item">' +
+                            '<div class="timeline-body">' +
+                            '<div class="timeline__message-container">' +
+                            '<strong>' + item.CreateUserName + ' (' + item.CreateDated + '): </strong><span>' + item.Name + '</span>' +
+                            '</div></div></div></div>'
+
+                        )
+                    });
+                }
+
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+    $('#btnAddNote').click(function (e) {
+
+
+        var objectSend = JSON.stringify({
+            "Value": $("#comment").val()
+        });
+        $.ajax({
+            traditional: true,
+            url: `/MCredit/AddNoteNotes?mcId=${'@Model.Id'}`,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                        text: "Thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+</script>
+

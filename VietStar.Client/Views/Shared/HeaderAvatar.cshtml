@@ -1,0 +1,29 @@
+﻿@model VietStar.Entities.ViewModels.Account;
+@using VietStar.Utility;
+
+@{
+    var type = ViewData["Type"].ToString();
+    var shortName = string.Empty;
+    var color = "#2e7d32";
+    if (Model != null)
+    {
+        var arr = Model.FullName.Split(' ');
+        color = arr[0][0].GetAvatarColor();
+        shortName = arr[0][0].ToString();
+    }
+
+}
+@if (type == "small")
+{
+    <span class="avatar-number none-img" style="background-color:@color">@shortName</span>
+    <span class="hidden-xs">@Model.FullName</span>
+}
+else if (type == "large")
+{
+    <li class="user-header">
+        <div class="user-image-large none-img" style="background-color:@color"><span class="color-white">@shortName</span></div>
+        <p>
+            @Model.FullName
+        </p>
+    </li>
+}

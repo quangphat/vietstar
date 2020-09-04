@@ -1,0 +1,10 @@
+﻿@model VietStar.Entities.Commons.DownloadReportPartialViewModel
+<div class="form-group">
+    <div class=" col-sm-8 mt-50">
+        <input multiple="" class="col-sm-4" type="file" id="file" />
+        <a class="btn btn-sm btn-info" id="btnImport">@Model.ButtonName</a>
+    </div>
+    <div class=" col-sm-8">
+        <a style="font-style: italic;" href="/media/download-template?fileName=@Model.FileName">Nhấp vào để download mẫu import</a>
+    </div>
+</div>

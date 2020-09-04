@@ -1,0 +1,304 @@
+﻿
+@{
+    ViewData["Title"] = "Danh sách checkdup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <a href="#" class="active">Danh sách checkdup</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal" role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right">Tìm kiếm</label>
+
+                            <div class="col-sm-9">
+                                <input type="search" class="form-control" id="freeText" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <div class="col-xs-12 ">
+                                <a class="btn btn-primary" id="btnSearch">
+                                    Tìm kiếm
+                                </a>
+                                <a class="btn btn-primary" href="/CheckDup/Create">
+                                    Thêm mới
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="clearfix">
+                    <div class="pull-right tableTools-container"></div>
+                </div>
+                <div class="box-header box-header-green">
+                    <h3 class="box-title">Danh sách check dup</h3>
+                </div>
+                <div class="dataTables_wrapper form-inline no-footer">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <label>
+                                Hiển thị
+                                <select id="ddlLimit" class="form-control input-sm" onchange="onSelectLimit()">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> dòng mỗi trang
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- div.table-responsive -->
+                <!-- div.dataTables_borderWrap -->
+                <div class="col">
+                    <div class="report-table-custom--overflow">
+                        <table id="dtSource" class="report-table-custom table table-striped table-bordered table-hover">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="center w-45">STT</th>
+                                    <th class="m-w-150">Tên khách hàng</th>
+                                    <th class="w-105">CMND</th>
+                                    <th class="w-105">Ngày check</th>
+                                    <th style="width: 150px">CIC</th>
+                                    <th class="m-w-150">Đối tác</th>
+                                    <th class="m-w-150">Trạng thái</th>
+                                    <th class="m-w-150">Tỉnh</th>
+                                    <th class="m-w-300">Ghi chú</th>
+                                    @*<th class="w-90">Mã nhân viên</th>
+                                        <th class="m-w-150">Nhân viên xử lý</th>*@
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix" />
+                <div class="one-row no-gutters justify-content-between paginate">
+                    <div class="col-auto">
+                        <div class="dataTables_info" id="dtSource_info" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="one-row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <span id="totalPage"></span>
+                            </div>
+                            <div class="col ml-20">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dtSource_paginate">
+                                    <ul class="pagination" id="pagination"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<script>
+
+    var queries = new URLSearchParams(window.location.search);
+    var page = 1;
+    var limit = 10;
+    var pageMargin = 2;
+    var totalPage = 1;
+    var totalRecord = 0;
+    $(document).ready(function e() {
+        window.addEventListener('popstate', function (e) {
+
+            queries = new URLSearchParams(window.location.search)
+            bindQueries()
+
+            page = queries.get("page");
+            if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+                page = 1;
+            else
+                page = parseInt(page)
+            limit = queries.get("limit")
+            if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+                limit = 10;
+            else
+                limit = parseInt(limit)
+            getData(page, limit, memberId, true)
+        });
+
+        function bindQueries() {
+
+            $('#freeText').val(queries.get("freetext"))
+
+            page = queries.get("page");
+            if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+                page = 1;
+            else
+                page = parseInt(page)
+            limit = queries.get("limit")
+            if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+                limit = 10;
+            else
+                limit = parseInt(limit)
+            $("#ddlLimit").val(limit)
+        }
+        bindQueries()
+    });
+    var strLoading = 'Vui lòng chờ trong giây lát';
+    $('#btnSearch').click(function (e) {
+        showBlock($('#panel_body'), strLoading);
+        getData(1, limit);
+    });
+    function onClickPage(page) {
+        page = page;
+        getData(page, limit);
+    }
+
+    function onSelectLimit() {
+        limit = $("#ddlLimit").val()
+        getData(page,limit)
+    }
+    function renderRow(index, item) {
+        console.log(item);
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        var stt = (page - 1) * limit + index + 1;
+        return "<tr role='row' class = 'odd'>"
+            + renderTextCenter(stt)
+            + renderTextLink(item.FullName,`/CheckDup/Edit/${item.Id}`, '', "m-w-150")
+            + renderTextLeft(item.Cmnd, '', "w-105")
+            + renderTextLeft(item.CheckDate, 'datetime')
+            + renderStatus(item.CICStatusName)
+            + renderTextLeft(item.PartnerName, '', "m-w-150")
+            + renderStatus(item.PartnerStatusName)
+            + renderTextLeft(item.ProvinceName, '', "m-w-150")
+            + renderTextLeft(item.LastNote, '', 'tb-row-breakword')
+            //+ renderTextLeft(item.MaVBF, '', "w-90")
+            //+ renderTextLeft(item.NameVBF, '', "m-w-150 tb-row-breakword")
+            + "</tr>";
+    }
+    function renderTableBody(datas) {
+        var tableBody = $("#dtSource").find("tbody");
+            tableBody.empty();
+        if (isNullOrNoItem(datas))
+            return;
+        $.each(datas, function (index, item) {
+            tableBody.append(renderRow(index, item));
+        });
+
+    }
+    $(document).ready(function () {
+        var input = document.getElementById("freeText");
+        input.addEventListener("keydown", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+
+            }
+        });
+        input.addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                $("#btnSearch").click();
+            }
+        });
+
+            page = queries.get("page");
+            if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+                page = 1;
+            else
+                page = parseInt(page)
+            limit = queries.get("limit")
+            if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+                limit = 10;
+            else
+                limit = parseInt(limit)
+            getData(page, limit)
+
+    });
+    function getData(page, limit,memberId=0, isPopState = false)
+    {
+        showBlock($('#panel_body'), strLoading);
+
+        $.ajax( {
+                url: '@Url.Action("Search", "CheckDup")',
+                type: "GET",
+                contentType: "application/json",
+            data: {
+                'page': page,
+                'limit': limit,
+                'freetext': $("#freeText").val(),
+
+            },
+            success: function (response) {
+
+                if (response.success == true) {
+                    totalRecord = response.data.TotalRecord;
+                    var search = this.url.replace("/CheckDup/Search", "");
+                    queries = new URLSearchParams(search)
+                    page = queries.get("page");
+                    if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+                        page = 1;
+                    else
+                        page = parseInt(page)
+                    limit = queries.get("limit")
+                    if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+                        limit = 10;
+                    else
+                        limit = parseInt(limit)
+                    renderTableBody(response.data.Datas)
+                    //renderGoPreviousPage(page);
+                    renderPaging(page, limit, totalRecord)
+
+                }
+                else {
+                    swal({
+                        title: "",
+                        text: response.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+                error: function (jqXHR, exception) {
+                    showError(jqXHR, exception);
+                },
+                complete: function () {
+                    $('#panel_body').unblock();
+                    if (!isPopState) {
+                        var requestUrl = this.url.replace("Search", "Index")
+                        window.history.pushState(requestUrl, this.title, requestUrl)
+                    }
+
+            }
+        })
+
+    }
+</script>
+
+
+

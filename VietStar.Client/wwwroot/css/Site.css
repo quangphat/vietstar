@@ -1,0 +1,204 @@
+﻿.logo_kpmg {
+    width: 72px;
+    vertical-align: text-top;
+}
+
+.kpmg_login {
+    width: 72px;
+    vertical-align: bottom;
+}
+
+.breadcrumbs .nav-chinhanh {
+    top: 9px;
+}
+
+.nav-chinhanh {
+    position: absolute;
+    right: 22px;
+    line-height: 24px;
+}
+
+.nav-search .form-chinhanh {
+    margin-bottom: 0;
+}
+
+.nav-chinhanh-select {
+    border: 1px solid #6fb3e0;
+    width: 200px;
+    height: 28px !important;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 4px !important;
+    font-size: 13px;
+    line-height: 1.3;
+    color: #666 !important;
+    z-index: 11;
+    -webkit-transition: width ease .15s;
+    -o-transition: width ease .15s;
+    transition: width ease .15s;
+}
+
+@media only screen and (max-width:991px), only screen and (max-width:767px), only screen and (max-width:540px), only screen and (max-width:480px), only screen and (max-width:479px), only screen and (max-width:360px), only screen and (max-width:319px) {
+    .nav-chinhanh {
+        right: 10px;
+    }
+}
+
+@media only screen and (max-width:767px), only screen and (max-width:540px), only screen and (max-width:480px), only screen and (max-width:479px), only screen and (max-width:360px), only screen and (max-width:319px) {
+    .nav-chinhanh-select {
+        width: 140px;
+    }
+}
+
+.map_container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+}
+
+    .map_container .map_canvas {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+
+.menu-icon.home {
+    display: inline-block;
+    /*width: auto; /* Generic width */
+    height: 22px;
+    width: 28px;
+    background: url('/Content/images/iconmenu/House-icon.png') no-repeat;
+    background-size: auto 100%;
+}
+
+.menu-icon.hs {
+    display: inline-block;
+    /*width: auto; /* Generic width */
+    height: 24px;
+    width: 24px;
+    background: url('/Content/images/iconmenu/Internet-Explorer-icon.png') no-repeat;
+    background-size: auto 100%;
+}
+
+.menu-icon.qlhs {
+    display: inline-block;
+    /*width: auto; /* Generic width */
+    height: 22px;
+    width: 28px;
+    background: url('/Content/images/iconmenu/info.png') no-repeat;
+    background-size: auto 100%;
+}
+
+.menu-icon.group {
+    display: inline-block;
+    /*width: auto; /* Generic width */
+    height: 24px;
+    width: 24px;
+    background: url('/Content/images/iconmenu/Group.png') no-repeat;
+    background-size: auto 100%;
+}
+
+.menu-icon.sanpham {
+    display: inline-block;
+    /*width: auto; /* Generic width */
+    height: 24px;
+    width: 24px;
+    background: url('/Content/images/iconmenu/sanpham.png') no-repeat;
+    background-size: auto 100%;
+}
+
+.menu-icon.employee {
+    display: inline-block;
+    /*width: auto; /* Generic width */
+    height: 24px;
+    width: 24px;
+    background: url('/Content/images/iconmenu/employee.png') no-repeat;
+    background-size: auto 100%;
+}
+
+.menu-icon.duplicate {
+    display: inline-block;
+    /*width: auto; /* Generic width */
+    height: 24px;
+    width: 24px;
+    background: url('/Content/images/iconmenu/duplicate.png') no-repeat;
+    background-size: auto 100%;
+}
+.menu-icon.company {
+    display: inline-block;
+    /*width: auto; /* Generic width */
+    height: 24px;
+    width: 24px;
+    background: url('/Content/images/iconmenu/company.png') no-repeat;
+    background-size: auto 100%;
+}
+
+.menu-icon.courier {
+    display: inline-block;
+    /*width: auto; /* Generic width */
+    height: 24px;
+    width: 24px;
+    background: url('/Content/images/iconmenu/courier.png') no-repeat;
+    background-size: auto 100%;
+}
+
+.trippurpose {
+    position: relative;
+    /*top: auto;
+        bottom: 0;
+        left: 5px;*/
+    margin: auto;
+    /*height: 80%;
+        width: auto;*/
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+    .trippurpose.meeting {
+        display: block;
+        /*width: auto; /* Generic width */
+        height: 24px;
+        width: 24px;
+        background: url('/Content/images/trippurpose/meeting.png') no-repeat;
+        background-size: auto 100%;
+    }
+
+    .trippurpose.training {
+        display: block;
+        /*width: auto; /* Generic width */
+        height: 24px;
+        width: 24px;
+        background: url('/Content/images/trippurpose/training.png') no-repeat;
+        background-size: auto 100%;
+    }
+
+    .trippurpose.other {
+        display: block;
+        /*width: auto; /* Generic width */
+        height: 24px;
+        width: 24px;
+        background: url('/Content/images/trippurpose/meeting.png') no-repeat;
+        background-size: auto 100%;
+    }
+
+    .trippurpose.performclientengagement {
+        display: block;
+        /*width: auto; /* Generic width */
+        height: 24px;
+        width: 24px;
+        background: url('/Content/images/trippurpose/performclientengagement.png') no-repeat;
+        background-size: auto 100%;
+    }
+/*.trippurpose.meeting:before {
+            content: '';
+            display: block;
+          
+            height: 24px;
+            background: url('/Content/images/trippurpose/meeting.png') no-repeat;
+            background-size: auto 100%;
+        }*/

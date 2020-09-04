@@ -1,0 +1,856 @@
+﻿@model VietStar.Entities.Mcredit.MCredit_TempProfile
+@using  VietStar.Entities.Infrastructures;
+@{
+    ViewData["Title"] = "Cập nhật hồ sơ tạm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>();
+    if(string.IsNullOrWhiteSpace(Model.MCId))
+    {
+        buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
+        buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnSubmit", Name = "Nộp hồ sơ qua MCredit" });
+    }
+    //else
+    //{
+    //    buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnCreate", Name = "Tạo hồ sơ mới từ hồ sơ này" });
+    //}
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i>
+                <a href="#">Cập nhật hồ sơ tạm</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin khách hàng:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCustomerName" placeholder="Nhập họ tên" value="@Model.CustomerName" class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Quê quán(trên CMND) <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtHometown" value="@Model.Hometown" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker" value="@Model.BirthDay.ToShortDateString()" id="txtBirthDay" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số điện thoại<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtPhone" value="@Model.Phone" placeholder="Nhập số điện thoại khách hàng" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CMND<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtIdNumber" value="@Model.IdNumber" placeholder="Nhập số CMND" class="form-control" />
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCCCDNumber" value="@Model.CCCDNumber" placeholder="Nhập số CCCD" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Ngày cấp CMND/CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker" value="@Model.IssueDate.ToShortDateString()" id="txtIdDay" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                            <div style="margin-top:10px">
+                                <a class="btn btn-sm btn-info" id="btn_CheckCIC">
+                                    Check CIC
+                                </a>
+                                <a class="btn btn-sm btn-info" id="btn_CheckDup">
+                                    Check Duplicate
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <p id="checkdupResult" style="color:green"></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Địa chỉ sinh sống trùng hộ khẩu</label>
+                        <div class="col-sm-4">
+                            <label class="control-label no-padding-right">
+                                <input name="radio-isAddr" type="radio" checked="checked" value="1" class="ace">
+                                <span class="lbl"> Có</span>
+                            </label>
+                            <label class="control-label no-padding-right" style="margin-left:20px">
+                                <input name="radio-isAddr" type="radio" value="0" class="ace">
+                                <span class="lbl"> Không</span>
+                            </label>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Giới tính</label>
+                        <div class="col-sm-4">
+                            <select id="ddlGender" class="chosen-select form-control">
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Tỉnh/TP<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="ddlProvince" class="chosen-select form-control select2" data-placeholder="Chọn tỉnh thành phố">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        @*<label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="ddlHuyen" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
+                                <option value="0"></option>
+                            </select>
+                        </div>*@
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" id="txtAddress" placeholder="Nhập địa chỉ" class="form-control">@Model.Address</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Sale (Số CMND | CCCD | Mã sale) </label>
+                        <div class="col-sm-4">
+
+                            <input type="text" id="txtSaleCode" value="@Model.SaleNumber" class="form-control">
+                            <input type="text" id="txtSaleId" display="none" value="@Model.SaleId" style="display:none" class="form-control">
+                            <div style="margin-top:10px">
+                                <a class="btn btn-sm btn-info" id="btn_CheckSale">
+                                    Check Sale
+                                </a>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <p id="checkSaleResult" style="color:green"></p>
+                                <p id="nameSale" style="color:green"></p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">2.Thông tin khoản vay và sản phẩm:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Sản phẩm vay<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="ddlProduct" class="chosen-select form-control select2" data-placeholder="Chọn sản phẩm vay">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <div id="checkcat-area" hidden>
+                            <label class="col-sm-2 control-label no-padding-right">Mã số thuế<span class="required">(*)</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" id="txtCatNumber" placeholder="Nhập Mã số thuế" value="@Model.CatNumber" class="form-control">
+                                <label style="color:green" id="checkcat-result"></label>
+                                <input type="button" class="btn btn-info" id="btnCheckCat" style="margin-top:20px;float:right" value="Check CAT" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4  col-md-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input name="form-field-checkbox" id="cbbIsInsurrance" type="checkbox" class="ace">
+                                    <span class="lbl">Tham gia bảo hiểm dư nợ tín dụng</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền đề nghị vay<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtLoanMoney" value="@Model.LoanMoney.ToString("#,##0")" placeholder="Nhập số tiền đề nghị vay" class="form-control">
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Thời hạn vay</label>
+                        <div class="col-sm-4">
+                            <select id="ddlLoanPeriod" class="chosen-select form-control" data-placeholder="Kỳ hạn vay">
+                                <option value="0">Chọn kỳ hạn vay</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Địa điểm ký văn kiện tín dụng *<span class="required">(*)</span></label>
+                        <div class="col-sm-10">
+                            <select id="ddlLocSign" class="chosen-select form-control select2">
+                                <option value="0">Chọn một địa điểm</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <partial name="../Shared/Partials/UploadArea" />
+        @if (CurrentProcess.CurrentUser.RoleCode != "sale")
+        {
+            <partial name="../Shared/Partials/ProfileStatus" />
+        }
+        <partial name="../Shared/Partials/CommentArea" model="true" />
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+        new VietStar.Entities.ViewModels.CommandBar
+        {
+            Buttons = buttons
+        })
+
+    </div>
+</div>
+
+<script>
+    let modelCat = { CatName: $("#checkcat-catname").text(), ComName: $("#checkcat-comname").text(), CatNumber: $("#txtCatNumber").val() }
+    $(document).ready(function () {
+        setTextForPTag('checkSaleResult');
+        setTextForPTag('checkdupResult');
+        renderStatusList('mcredit', '@Model.Status') 
+        GetLocSigns("#ddlLocSign",'@Model.LocSignCode');
+        GetLoanPeriods("#ddlLoanPeriod", '@Model.LoanPeriodCode');
+        GetLoanCities("#ddlProvince",'@Model.ProvinceId');
+        GetLoanProducts("#ddlProduct",'@Model.ProductCode');
+        GetProfileFiles();
+        $("#ddlGender").val(('@Model' != null && '@Model.Gender' == 'True') ? "1" : "0")
+        getComments('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.MCreditTemp)',$("#comments"))
+        setCheckboxValue('cbbIsInsurrance', '@Model' != null ? @Model.isInsur: false)
+        setCheckedValueOfRadioButtonGroup('radio-isAddr', ('@Model' != null && '@Model.isAddr' == 'true') ? "1" : "0");
+        displayCat();
+        $("#ddlProduct").on("change", function () {
+            CallForGetIsCheckCat(this.value, "#checkcat-area");
+        })
+
+    });
+    function btnRemoveFile(id, guidId) {
+        
+        onDeleteFile(id, guidId)
+    }
+    $("#btnAddNote").click(function () {
+        AddNote('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.Common)', $('#comment').val(), $('#comment'), $('#comments'))
+    })
+    function GetProfileFiles() {
+        let url = '';
+        
+        let mcId = '@Model.MCId'
+        if (isNullOrWhiteSpace(mcId)) {
+            url = `/media/GetFileType/mcredit/${'@Model.Id'}`
+        }
+        else {
+            url = `/media/GetFileType/mcredit/${'@Model.Id'}`
+        }
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: {},
+            success: function (data) {
+                if (data.data != null) {
+                    var i = 0;
+                    var htmlContent = "";
+                    let keys = [];
+                    let groupIds = [];
+                    let groupName = '';
+                    let _imgExts = ["jpg", "jpeg", "png", "pdf"];
+                    let groupRequire =''
+                    $.each(data.data, function (index, item) {
+                        if (groupIds.indexOf(item.GroupId) >= 0) {
+                            groupName = ''
+                            groupRequire =''
+                        }
+                        else {
+                            groupName = item.GroupName;
+                            groupRequire = item.IsRequireGroup ? '<span class="required">(*)</span>' : ''
+                        }
+                        $("#uploadArea").append(`<div class='form-group'><div class='col-sm-12' id='tailieu-${item.Id}'><h5>${groupName} ${groupRequire}</h5></div></div > `);
+                        groupIds.push(item.GroupId)
+                        if (!isNullOrNoItem(item.ProfileFiles)) {
+                            let _initialPreview = [];
+                            let _initialPreviewConfig = [];
+                            $.each(item.ProfileFiles, function (i, file) {
+                                _initialPreview = [];
+                                _initialPreviewConfig = [];
+                                var extn = file.FileUrl.split('.').pop();
+                                var isImg = isExtension(extn, _imgExts);
+                                if (isImg) {
+                                    
+                                    _initialPreview.push(file.FileUrl);
+                                    _initialPreviewConfig.push({
+                                        caption: file.FileName,
+                                        url: `/media/delete/${file.FileId}/0`,
+                                        type: extn.indexOf('pdf') > -1 ? "pdf" : "jpg",
+                                        width: "120px"
+                                    });
+                                }
+                                
+                                let titleName = keys.indexOf(file.Key) < 0 ? item.Name : ''
+                                renderOneItemFile({
+                                    key: item.FileKey,
+                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
+                                    profileId: '@Model.Id',
+                                    fileId: file.FileId,
+                                    isRequire: false,
+                                    titleName: titleName,
+                                    itemId: i,
+                                    guidId: file.GuidId,
+                                    documentName: item.DocumentName,
+                                    documentCode: item.DocumentCode,
+                                    documentId: item.DocumentId,
+                                    groupId: item.GroupId,
+                                    isMCredit: true,
+                                    mcId: '@Model.MCId'
+                                }, '', _initialPreview, _initialPreviewConfig, true, true);
+
+                                keys.push(item.FileKey);
+                            });
+                            
+                           renderOneItemFile({
+                                    key: item.FileKey,
+                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
+                                    profileId: '@Model.Id',
+                                    fileId: 0,
+                                    isRequire: false,
+                                    titleName: '',
+                                    itemId: i,
+                                    guidId: '',
+                                    documentName: item.DocumentName,
+                                    documentCode: item.DocumentCode,
+                                    documentId: item.DocumentId,
+                               groupId: item.GroupId,
+                               isMCredit: true,
+                                    mcId: '@Model.MCId'
+                                }, '', [], [], true, true);
+                        }
+                        else {
+                            
+                            renderOneItemFile({
+                                    key: item.FileKey,
+                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
+                                    profileId: '@Model.Id',
+                                    fileId:0,
+                                    isRequire: false,
+                                    titleName: item.Name,
+                                    itemId: i,
+                                    guidId: '',
+                                    documentName: item.DocumentName,
+                                    documentCode: item.DocumentCode,
+                                    documentId: item.DocumentId,
+                                groupId: item.GroupId,
+                                isMCredit:true,
+                                    mcId: '@Model.MCId'
+                                }, '', [], [], true, true);
+                        }
+                    })
+                }
+
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+    function displayCat() {
+        if (!isNullOrWhiteSpace(@Model.CatNumber)) {
+            $("#checkcat-area").show();
+            let comname = '@Html.Raw(Model.ComName)'
+            let catname = '@Html.Raw(Model.CatName)'
+            let catNumber = '@Html.Raw(Model.CatNumber)'
+            $("#checkcat-result").text(`${comname} - ${catname}`);
+            modelCat = { CatName: catname, ComName: comname, CatNumber: catNumber }
+        }
+    }
+    function CallForGetIsCheckCat(catNumber, checkatAreaId = null) {
+        let model = JSON.stringify({
+            "Value": catNumber
+        })
+
+        $.ajax({
+            type: "POST",
+            url: '/MCredit/IsCheckCat',
+            data: model,
+            traditional: true,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                if (data != null && data.success == true) {
+                    if (data.data == true)
+                        $(checkatAreaId).show();
+                    else {
+                        $(checkatAreaId).hide();
+                        modelCat = { CatName: '', ComName: '', CatNumber: '' }
+
+                    }
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+    $('#btnCheckCat').click(function (e) {
+        let value = $("#txtCatNumber").val();
+        var objectSend = JSON.stringify({
+            'Value': value
+        });
+        $.ajax({
+            traditional: true,
+            url: '/MCredit/CheckCatApi',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+
+                if (data.success == true) {
+                    swal({
+                        title: "Thành công",
+                        text: data.error.code,
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                    debugger
+                    $("#checkcat-result").text(`${data.data.name} - ${data.data.cat}`);
+                    modelCat = { CatName: data.data.cat, CatNumber: value, ComName: data.data.name }
+                }
+                else {
+                    swal({
+                        title: !isNullOrWhiteSpace(data.data.msg) ? data.data.msg : "Đã có lỗi xảy ra",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                    $("#checkcat-result").text(!isNullOrWhiteSpace(data.data.msg) ? data.data.msg : "");
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+
+    $("#txtPhone").ForceNumericOnlyv2();
+    $("#txtPhone2").ForceNumericOnlyv2();
+    $("#txtLoanMoney").ForceNumericOnlyv2();
+    $("#txtIdNumber").ForceNumericOnlyv2();
+    $("#txtLoanMoney").change(function () {
+        $("#txtLoanMoney").val(formatCurrency($("#txtLoanMoney").val().replace(/\,/g, '')));
+    });
+
+    $('#btn_CheckSale').click(function (e) {
+        let value = $("#txtSaleCode").val()
+        checkSale('checkSaleResult', value,"#txtSaleId", @Model.Id);
+    });
+    $('#btn_CheckCIC').click(function (e) {
+        let value = !isNullOrWhiteSpace($("#txtIdNumber").val()) ? $("#txtIdNumber").val() : $("#txtCCCDNumber").val();
+        checkCIC('', value, $("#txtCustomerName").val());
+    });
+    $('#btn_CheckDup').click(function (e) {
+        let value = !isNullOrWhiteSpace($("#txtIdNumber").val()) ? $("#txtIdNumber").val() : $("#txtCCCDNumber").val();
+        checkDup('checkdupResult', value);
+    });
+
+
+
+
+
+    $('#btnUpdate').click(function (e) {
+        if ($('#txtCustomerName').val() == "" || $('#txtCustomerName').val() == undefined) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng nhập họ tên",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#txtBirthDay').val())) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn ngày sinh",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#txtIdDay').val())) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn ngày cấp cmnd/cccd",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if ((isNullOrWhiteSpace($('#txtIdNumber').val()) && isNullOrWhiteSpace($('#txtCCCDNumber').val()))) {
+
+            swal({
+                title: errorMsg,
+                text: "Vui lòng nhập số cmnd hoặc cccd",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+
+
+        var objectSend = JSON.stringify({
+            "Id": @Model.Id,
+            "CustomerName": $("#txtCustomerName").val(),
+            "Hometown": $("#txtHometown").val(),
+            "BirthDay": $('#txtBirthDay').val(),
+            "Phone": $('#txtPhone').val(),
+            "IdNumber": $('#txtIdNumber').val(),
+            "CCCDNumber": $('#txtCCCDNumber').val(),
+            "IssueDate": $('#txtIdDay').val(),
+            "IsAddr": getRadioButtonValue('radio-isAddr'),
+            "Gender": $("#ddlGender").val() == "1" ? true : false,
+            "ProvinceId": $("#ddlProvince").val(),
+            "DistrictId": 0,
+            "Address": $("#txtAddress").val(),
+            "SaleNumber": $("#txtSaleCode").val(),
+            "ProductCode": $("#ddlProduct").val(),
+            "LoanPeriodCode": $("#ddlLoanPeriod").val(),
+            "LocSignCode": $("#ddlLocSign").val(),
+            "LastNote": $("#comment").val(),
+            "LoanMoney": $('#txtLoanMoney').val().replace(/\./g, ''),
+            "IsInsurrance": getCheckboxValue('cbbIsInsurrance'),
+            "Status": (isNullOrUndefined($("#ddlStatus").val()) || isNullOrWhiteSpace($("#ddlStatus").val())) ? @Model.Status : parseInt($("#ddlStatus").val()),
+            "SaleId": $("#txtSaleId").val(),
+            "CatNumber": modelCat.CatNumber,
+            "ComName": modelCat.ComName,
+            "CatName": modelCat.CatName
+        });
+        showBlock($('#panel_body'), loadingMsg);
+        $.ajax({
+            traditional: true,
+            url: '/MCredit/UpdateDraft',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                            text: "Thành công",
+                            type: "success",
+                            timer: 4000,
+                            showConfirmButton: true,
+                        }, function () {
+                            //window.location = window.location;
+
+                            //uploadFiles(data.data, false);
+                        });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+
+    $('#btnSubmit').click(function (e) {
+
+         if ($('#txtCustomerName').val() == "" || $('#txtCustomerName').val() == undefined) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng nhập họ tên",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#txtBirthDay').val())) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn ngày sinh",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#ddlProvince').val()) || $('#ddlProvince').val() =="0") {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn tỉnh/thành",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#txtIdDay').val())) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn ngày cấp cmnd/cccd",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+
+        if ($('#ddlProduct').val() == "0" || $('#ddlProduct').val() == undefined) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn sản phẩm vay",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#ddlLocSign').val()) || $('#ddlLocSign').val() =="0") {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn địa điểm ký văn kiện",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#ddlLoanPeriod').val()) || $('#ddlLoanPeriod').val() =="0") {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn kỳ hạn vay",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        showBlock($('#panel_body'), loadingMsg);
+        var objectSend = JSON.stringify({
+            "Id": @Model.Id,
+            "CustomerName": $("#txtCustomerName").val(),
+            "Hometown": $("#txtHometown").val(),
+            "BirthDay": $('#txtBirthDay').val(),
+            "Phone": $('#txtPhone').val(),
+            "IdNumber": $('#txtIdNumber').val(),
+            "CCCDNumber": $('#txtCCCDNumber').val(),
+            "IssueDate": $('#txtIdDay').val(),
+            "IsAddr": getRadioButtonValue('radio-isAddr'),
+            "Gender": $("#ddlGender").val() == "1" ? true : false,
+            "ProvinceId": $("#ddlProvince").val(),
+            "DistrictId": 0,
+            "Address": $("#txtAddress").val(),
+            "SaleNumber": $("#txtSaleCode").val(),
+            "ProductCode": $("#ddlProduct").val(),
+            "LoanPeriodCode": $("#ddlLoanPeriod").val(),
+            "LocSignCode": $("#ddlLocSign").val(),
+            "LoanMoney": $('#txtLoanMoney').val().replace(/\./g, ''),
+            "IsInsurrance": getCheckboxValue('cbbIsInsurrance'),
+            "Status": 0,
+            "SaleId": $("#txtSaleId").val(),
+            "CatNumber": modelCat.CatNumber,
+            "ComName": modelCat.ComName,
+            "CatName": modelCat.CatName
+        });
+        $.ajax({
+            traditional: true,
+            url: '/MCredit/SubmitToMCredit',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                        text: "Thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location.reload()
+                        //uploadFiles(data.data, true);
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: getMessage(data),
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+    function getMessage(data) {
+        if (isNullOrUndefined(data))
+            return ''
+        if (isNullOrUndefined(data.data) || isNullOrUndefined(data.data.message))
+            return data.error.code
+        return data.data.message
+
+    }
+    $('#btnCreate').click(function (e) {
+
+        if ($('#txtCustomerName').val() == "" || $('#txtCustomerName').val() == undefined) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng nhập họ tên",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#txtBirthDay').val())) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn ngày sinh",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#ddlProvince').val()) || $('#ddlProvince').val() =="0") {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn tỉnh/thành",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#txtIdDay').val())) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn ngày cấp cmnd/cccd",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+
+        if ($('#ddlProduct').val() == "0" || $('#ddlProduct').val() == undefined) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn sản phẩm vay",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#ddlLocSign').val()) || $('#ddlLocSign').val() =="0") {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn địa điểm ký văn kiện",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#ddlLoanPeriod').val()) || $('#ddlLoanPeriod').val() =="0") {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn kỳ hạn vay",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        $.ajax({
+            traditional: true,
+            url: '/MCredit/Copy?profileId=' + @Model.Id,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                        text: "Thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                            window.location = "/Mcredit/TempProfile/" + data.data;
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.data.message,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+
+</script>
+

@@ -1,0 +1,116 @@
+﻿.my8-avatar {
+    vertical-align: middle;
+    text-align: center;
+}
+
+    .my8-avatar img:hover {
+        cursor: pointer;
+    }
+
+    .my8-avatar img[alt] {
+        margin: 0px !important;
+    }
+
+    .my8-avatar .none-img {
+        font-size: 14px;
+        color: #212121;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: -ms-flexbox;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        background: #f4f6f8;
+        color: #fff;
+        white-space: nowrap;
+        position: relative;
+        overflow: hidden;
+        line-height: 32px;
+        border-radius: 50%;
+        font-weight: 700;
+    }
+
+    .my8-avatar span {
+        word-break: break-word;
+    }
+
+    .my8-avatar .display-name {
+        color: #3c8dbc;
+        font-weight: 600;
+    }
+
+        .my8-avatar .display-name:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+.my8-avatar-25 {
+    width: 25px;
+    height: 25px;
+}
+
+.my8-avatar-32 {
+    width: 32px;
+    height: 32px;
+}
+
+.my8-avatar-50 {
+    width: 50px;
+    height: 50px;
+}
+
+.my8-avatar-100 {
+    width: 100px;
+    height: 100px;
+}
+
+.img-circle img-sm {
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.img-sm {
+    float: left;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+.user-image {
+    text-align: center;
+    font-size: 13px;
+    line-height: 25px;
+}
+.user-image-large {
+    z-index: 5;
+    height: 90px;
+    width: 90px;
+    border: 3px solid;
+    border-color: transparent;
+    border-color: rgba(255,255,255,0.2);
+    margin: auto;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 45px;
+    line-height: 75px;
+}
+.color-white{
+    color:white!important;
+}
+.avatar-number {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    line-height: 20px;
+    text-align: center;
+    background: #000;
+    display: inline-block;
+    text-align: center;
+    font-size: 13px;
+}

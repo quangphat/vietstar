@@ -1,0 +1,390 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách hồ sơ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <a href="#" class="active">Danh sách checkdup</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <form class="form-horizontal">
+            <div class="box-body">
+
+                <div class="form-group">
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right">Từ ngày</label>
+                    <div class="col-sm-4  col-xs-12 ">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" data-date-inline-picker="true" class="form-control pull-right" id="fromDate">
+                        </div>
+                    </div>
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right">Đến ngày</label>
+                    <div class="col-sm-4">
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control pull-right" id="toDate">
+                        </div>
+                    </div>
+                    <div class="col-sm-offset-1 col-sm-10 no-padding-right">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="radio-ngay" id="optionsRadios1" value="1" checked="">
+                                Ngày tạo
+                            </label>
+                            <label style="margin-left:20px">
+                                <input type="radio" name="radio-ngay" id="optionsRadios1" value="2" checked="">
+                                Ngày cập nhật
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Nhóm</label>
+                    <div class="col-sm-4 col-xs-12 ">
+                        <select id="groupId" class="chosen-select form-control select2" data-placeholder="Chọn nhóm"></select>
+                    </div>
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Thành viên</label>
+                    <div class="col-sm-4 col-xs-12 ">
+                        <select id="memberId" class="form-control select2" data-placeholder="Chọn thành viên"></select>
+                    </div>
+                </div>
+                <div class="form-group" data-select2-id="25">
+                    <label class="col-sm-1 control-label no-padding-right">Trạng thái</label>
+                    <div class="col-sm-9">
+                        <select class="form-control select2 select2-hidden-accessible" id="ddlStatus" multiple=""
+                                style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-1 control-label no-padding-right">Tìm kiếm</label>
+
+                    <div class="col-sm-9">
+                        <input type="search" class="form-control" id="freeText" placeholder="">
+                    </div>
+                </div>
+                <button type="button" id="btnSearch" class="btn btn-info pull-right">Tìm kiếm</button>
+            </div>
+            <!-- /.box-body -->
+            <!-- /.box-footer -->
+        </form>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                <partial name="../Shared/Partials/ExportPartial" />
+
+
+                <div class="clearfix">
+                    <div class="pull-right tableTools-container"></div>
+                </div>
+                <div class="box-header box-header-green">
+                    <h3 class="box-title">Danh sách hồ sơ</h3>
+                </div>
+                <!-- /.box-header -->
+
+                <div class="dataTables_wrapper form-inline no-footer mg-10">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>
+                                Hiển thị
+                                <select name="dtSource_length" id="ddlLimit" aria-controls="dtSource" class="form-control input-sm" onchange="onSelectLimit()">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> dòng
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="report-table-custom--overflow">
+                        <table id="dtSource" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="dtSource_info">
+                            <thead class="table-header">
+                                <tr role="row">
+                                    <th class="w-45">STT</th>
+                                    <th class="w-98">Mã</th>
+                                    <th class="min-150">Tên khách hàng</th>
+                                    <th class="w-105">CMND</th>
+                                    <th class="w-105">Phone</th>
+                                    <th style="width:150px">Trạng thái</th>
+                                    <th class="w-84">Đối tác</th>
+                                    <th class="w-150">Sản phẩm</th>
+                                    <th class="w-60">Bảo hiểm</th>
+                                    <th class="m-w-300">Ghi chú</th>
+                                    <th class="w-130">Khu vực</th>
+                                    <th class="w-130">Đội ngũ bán hàng</th>
+                                    <th class="min-w-150">Nhân viên bán hàng</th>
+                                    <th class="w-84">Người tạo</th>
+                                    <th class="w-94 sorting_asc" onclick="onSort('createtime')">Ngày tạo</th>
+                                    <th class="w-94">Người cập nhật</th>
+                                    <th class="w-94 sorting_asc" onclick="onSort('updatedtime')">Ngày cập nhật</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix" />
+                <div class="one-row no-gutters justify-content-between paginate">
+                    <div class="col-auto">
+                        <div class="dataTables_info" id="dtSource_info" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="one-row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <span id="totalPage"></span>
+                            </div>
+                            <div class="col ml-20">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dtSource_paginate">
+                                    <ul class="pagination" id="pagination"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var queries = new URLSearchParams(window.location.search);
+    var page = 1;
+    var limit = 10;
+    var pageMargin = 2;
+    var totalPage = 1;
+    var totalRecord = 0;
+    var sort = 'desc'
+    var sortField ='updatedtime'
+    var model = { status:'', freeText :'', fromDate:'',toDate:'', groupId:0, memberId:0};
+    $(document).ready(function e() {
+        $('#groupId').select2({
+            allowClear: true
+        });
+        $('#memberId').select2({
+            allowClear: true
+        });
+        window.addEventListener('popstate', function (e) {
+
+            queries = new URLSearchParams(window.location.search)
+            bindQueries(getData, true)
+
+        });
+
+        bindQueries(getData);
+
+    });
+    $("#groupId").on("change", function () {
+        GetMemberByGroup(this.value, null, queries.get("memberId"))
+    })
+
+
+
+
+function onClickPage(page) {
+    page = page;
+    getData(page, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#memberId").val());
+}
+
+
+    function onSelectLimit() {
+        limit = $("#ddlLimit").val()
+        getData(page, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#memberId").val())
+    //alert(limit)
+    }
+    function onSort(sortField) {
+
+        sortField = sortField;
+        if (sort == 'desc')
+            sort = 'asc'
+        else
+            sort = 'desc'
+        getData(page, limit, sort, sortField, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#memberId").val())
+    }
+function renderRow(index, item) {
+
+    page = queries.get("page");
+    if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+        page = 1;
+    else
+        page = parseInt(page)
+    limit = queries.get("limit")
+    if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+        limit = 10;
+    else
+        limit = parseInt(limit)
+    var stt = (page - 1) * limit + index + 1;
+    return "<tr role='row' class = 'odd'>"
+        + renderTextLeft(stt)
+        + renderTextLink(item.ProfileCode, `/Profile/edit/${item.Id}`)
+        + renderTextLink(item.CustomerName,`/Profile/edit/${item.Id}`, '', 'min-150')
+        + renderTextLeft(item.CMND)
+        + renderTextLeft(item.Phone)
+        + renderStatus(item.StatusName)
+        + renderTextLeft(item.PartnerName, '', 'min-150')
+        + renderTextLeft(item.ProductName,'','min-150')
+        + renderCoBaoHiem(item.IsInsurrance)
+        + renderTextLeft(item.LastNote, '', 'tb-row-breakword min-w-300')
+        + renderTextLeft(item.ProvinceName, '','min-150')
+        + renderTextLeft(item.SellTeam,'','min-150')
+        + renderTextLeft(item.CourierCode,'','min-150')
+        + renderTextLeft(item.CreatedBy, '', 'min-150')
+        + renderTextLeft(item.CreatedTime, 'datetime', 'min-100')
+        + renderTextLeft(item.UpdatedBy, '', 'min-150')
+        + renderTextLeft(item.UpdatedTime, 'datetime', 'min-150')
+        + "</tr>";
+}
+    function renderTableBody(datas) {
+        var tableBody = $("#dtSource").find("tbody");
+        tableBody.empty();
+        if (isNullOrNoItem(datas))
+            return;
+        $.each(datas, function (index, item) {
+            tableBody.append(renderRow(index, item));
+        });
+
+    }
+    $("#freeText ,#fromDate, #toDate").on("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            getData(1, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#memberId").val());
+        }
+    });
+    $('#btnSearch').click(function (e) {
+        getData(1, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#memberId").val());
+
+    });
+    function bindQueries(callBack = null, isPopState = false) {
+        let fromDate = queries.get("fromDate");
+        if (isNullOrWhiteSpace(fromDate)) {
+            fromDate = getDateSpecific(14);
+        }
+        $("#fromDate").val(fromDate)
+        var toDate = queries.get("toDate");
+        if (isNullOrWhiteSpace(toDate)) {
+            toDate = new Date();
+            toDate = FormatDateTimeDMY(toDate, 'YYYY-MM-DD')
+        }
+        $("#toDate").val(toDate)
+        var dateType = queries.get("dateType");
+        setCheckedValueOfRadioButtonGroup("radio-ngay", dateType)
+
+        $("#freeText").val(queries.get("freeText"));
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        $("#ddlLimit").val(limit)
+        var groupId = queries.get("groupId");
+        $('#groupId').val(groupId)
+        var memberId = queries.get("memberId");
+        $('#memberId').val(memberId);
+        let status = queries.get("status");
+        if (!isNullOrWhiteSpace(status)) {
+            let arrStatus = status.split(',')
+            renderStatusList('common', arrStatus);
+        }
+        else
+            renderStatusList('common');
+        GetGroupByUser(null, groupId)
+        GetMemberByGroup(groupId, null, memberId)
+        sort = queries.get('sort');
+        sortField = queries.get('sortField');
+        if (callBack != null) {
+
+            callBack(page, limit, sort, sortField, status, groupId, memberId, isPopState);
+        }
+
+    }
+    function processingExport(data) {
+        var link = document.createElement("a");
+                link.href = data;
+                link.click();
+    }
+    $("#btnExport").click(function () {
+        let status = getQueryStatus($("#ddlStatus"))
+        let groupId = $("#groupId").val();
+        let memberId = $("#memberId").val()
+        SearchDatas('/Profile/Export', {
+            'page': 1,
+            'limit': 20,
+            'groupId': groupId,
+            'memberId': memberId,
+            'fromDate': $("#fromDate").val(),
+            'toDate': $("#toDate").val(),
+            'freeText': !isNullOrWhiteSpace($("#freeText").val()) ? $("#freeText").val() : '',
+            'dateType': $('input[name="radio-ngay"]:checked').val(),
+            'status': removeDuplicate(status),
+            'sort': 'desc',
+            'sortField': 'updatedtime'
+        }, true, null, null, null, processingExport);
+        return;
+
+    
+    })
+    function renderPageList(page, limit, totalRecord) {
+        renderPaging(page, limit, totalRecord)
+    }
+    function onPopState(url) {
+        url = url.replace("Search", "Index")
+        window.history.pushState(url, this.title, url)
+    }
+function getData(page, limit, sort = "desc", sortField = "updatedtime",status, groupId, memberId, isPopState = false)
+{
+    if (groupId == 0)
+        groupId = $("#groupId").val();
+    if (memberId == 0)
+        memberId = $("#memberId").val()
+    if (isNullOrWhiteSpace(status)) {
+        status = getQueryStatus($("#ddlStatus"));
+    }
+    
+    SearchDatas('/Profile/Search',{
+        'page': page,
+        'limit': limit,
+        'groupId': groupId,
+        'memberId': memberId,
+        'fromDate': $("#fromDate").val(),
+        'toDate': $("#toDate").val(),
+        'freeText': !isNullOrWhiteSpace($("#freeText").val()) ? $("#freeText").val() : '',
+        'dateType': $('input[name="radio-ngay"]:checked').val(),
+        'status': removeDuplicate(status),
+        'sort': sort,
+        'sortField': sortField
+    }, isPopState, renderTableBody, renderPageList, onPopState);
+    return;
+
+}
+
+
+function XemHS(id) {
+    window.location = "/Profile/XemHSByID?id=" + id;
+}
+function SuaHS(id) {
+    window.location = "/Profile/SuaHSByID?id=" + id;
+}
+
+</script>

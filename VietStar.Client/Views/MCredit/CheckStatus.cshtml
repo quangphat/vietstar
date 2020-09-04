@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "Check Status";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i>
+                <a href="#">Check Status</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-4">
+                    <form role="form">
+                        <div class="form-group">
+                            <label for="form-field-1">Số CMND/CCCD<span class="required">(*)</span> </label>
+                            <input type="text" id="txtValue" placeholder="" class="form-control">
+                        </div>
+                        <button type="button" id="btnSave" class="btn btn-info pull-right">Kiểm tra</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#txtValue").ForceNumericOnlyv2();
+    $('#btnSave').click(function (e) {
+
+        var objectSend = JSON.stringify({
+            'Value': $('#txtValue').val()
+        });
+        $.ajax({
+            traditional: true,
+            url: '/MCredit/CheckStatusApi',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                        text: data.data,
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+
+</script>
+

@@ -1,0 +1,270 @@
+﻿@model VietStar.Entities.GroupModels.GroupModel
+@{
+    ViewData["Title"] = "Chi tiết tổ nhóm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i>
+                <a href="#">Sửa tổ nhóm</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tổ nhóm:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="GroupName" placeholder="Nhập tên nhóm" class="form-control" value="@Model.Name" />
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tên ngắn <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="ShortName" placeholder="Nhập tên ngắn" class="form-control" value="@Model.ShortName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Người quản lý<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="LeaderId" class="chosen-select form-control select2" data-placeholder="Chọn người quản lý">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Nhóm cha</label>
+                        <div class="col-sm-4">
+                            <select id="ParentId" class="chosen-select form-control" data-placeholder="Chọn nhóm cha">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">2.Thành viên nhóm:</h3>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <select multiple="multiple" size="10" name="duallistbox_demo1[]" id="dualEmployees"></select>
+
+                        <div class="col-sm-6">
+                            <div style="float:right; margin-top:10px;">
+                                <input type="button" value="<<Previous" id="btnPrevious" />
+                                <input type="button" value="Next>>" id="btnNext" />
+                                <input type="button" value="Tìm kiếm" id="btnSearch" />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+            new VietStar.Entities.ViewModels.CommandBar
+            {
+                Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
+                    new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="", Name="Quay lại", Href="/Groups/Index" },
+                     new VietStar.Entities.ViewModels.CommandBarButton { Id="btnSave", ClassName="btn btn-sm btn-primary", Name="Cập nhật" }
+                    
+            }
+            })
+
+    </div>
+</div>
+<script src="~/ace-master/assets/js/jquery.bootstrap-duallistbox.min.js"></script>
+<script>
+ let page = 1;
+    $(document).ready(function () {
+        GetMembers();
+        GetAllEmployees($('#LeaderId'), '@Model.LeaderId');
+        GetNotMembers(page)
+        GetParentGroups($('#ParentId'), @Model.ParentCode);
+        //filter id = "#duallist_filter_id"
+        demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox();
+        var filterBox = document.getElementById('duallist_filter_id');
+        if (filterBox != null) {
+            filterBox.addEventListener("keyup", function (event) {
+
+                if (event.key === "Enter") {
+                    GetNotMembers(1);
+                }
+            });
+        }
+
+    });
+    $("#btnNext").click(function () {
+        page += 1;
+        GetNotMembers(page)
+    })
+    $("#btnPrevious").click(function () {
+        page -= 1;
+        page = page <= 0 ? 1 : page
+        GetNotMembers(page)
+    })
+    $("#btnSearch").click(function () {
+        page = 1;
+        GetNotMembers(page)
+    })
+
+    let firstLoad = true;
+    function GetNotMembers(page) {
+        $('#dualEmployees').empty();
+
+        
+        let freeText = isNullOrUndefined($("#duallist_filter_id").val()) ? '' : $("#duallist_filter_id").val();
+        $.ajax({
+            type: "GET",
+            url: `/employees/paging?page=${page}&freeText=${freeText}`,
+            data: {},
+            success: function (data) {
+                if (data.data != null && data.success == true) {
+                    if (data.data != null && data.data.length > 0) {
+                        $.each(data.data, function (index, item) {
+
+                            $('#dualEmployees').append("<option value='" + item.Id + "'>" + item.Name + "</option>");
+                        });
+
+                    }
+                }
+
+                if (!firstLoad) {
+                    var lstRightSelect = $('select[name="duallistbox_demo1[]_helper2"]')[0];
+                    for (var i = 0; i < lstRightSelect.length; i++) {
+                    $('#dualEmployees').append("<option value='" + lstRightSelect[i].attributes[0].value + "' selected='selected'>" + lstRightSelect[i].innerText + "</option>");
+
+                    }
+                }
+                else {
+
+                    firstLoad = false;
+                }
+                  $('#dualEmployees').bootstrapDualListbox('refresh', true);
+
+
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+                page = page
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+    function GetMembers() {
+         $('#dualEmployees').empty();
+        $.ajax({
+            type: "GET",
+            url: `/groups/members/${@Model.Id}`,
+            success: function (data) {
+                if (data != null) {
+
+                    if (data.data != null && data.data.length > 0) {
+                        $.each(data.data, function (index, item) {
+
+                            $('#dualEmployees').append("<option value='" + item.Id + "' selected='selected'>" + item.Name + "</option>");
+                        });
+
+                    }
+
+                }
+                    $('#dualEmployees').bootstrapDualListbox('refresh', true);
+                    },
+                    complete: function () {
+                    },
+                    error: function (jqXHR, exception) {
+                    showError(jqXHR, exception);
+                    }
+                    });
+            }
+
+
+    $('#btnSave').click(function (e) {
+        if ($('#GroupName').val() == '') {
+            swal({
+                title: "",
+                text: "Vui lòng nhập tên nhóm!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if ($('#ShortName').val() == '') {
+            swal({
+                title: "",
+                text: "Vui lòng nhập tên ngắn!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        var lstRightSelect = $('select[name="duallistbox_demo1[]_helper2"]')[0];
+        var lstSelectedId = [];
+        for (var i = 0; i < lstRightSelect.length; i++) {
+            lstSelectedId.push(lstRightSelect[i].attributes[0].value);
+        }
+        if (lstSelectedId.length == 0)
+        {
+            swal({
+                title: "",
+                text: "Vui lòng chọn thành viên nhóm!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        var objectSend = JSON.stringify({
+            'Id': @Model.Id,
+            'Name': $('#GroupName').val(),
+            'ShortName': $('#ShortName').val(),
+            'LeaderId': $('#LeaderId').val(),
+            'ParentId': $('#ParentId').val(),
+            'MemberIds': lstSelectedId
+        });
+        $.ajax({
+            traditional: true,
+            url: `/Groups/Update/${@Model.Id}`,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                        text: "Cập nhật thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                            removeAllGroup_Cache();
+                        window.location = window.location;
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+</script>
+

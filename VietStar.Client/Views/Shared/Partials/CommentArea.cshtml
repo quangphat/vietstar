@@ -1,0 +1,26 @@
+﻿@model bool
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal">
+            <h4 class="header lighter orange"><i class="ace-icon fa fa-bell"></i>Ghi chú</h4>
+            <div class="">
+                <textarea class="form-control" id="comment" style="margin: 0px -4.5px 0px 0px; height: 50px;" placeholder="Nhập ghi chú"></textarea>
+                @if (Model == true)
+                {
+                    <div class="pull-right mt-10">
+                        <a class="btn btn-sm btn-info" id="btnAddNote">
+                            Thêm ghi chú
+                        </a>
+                    </div>
+                }
+
+            </div>
+            <div class="activity-log">
+                <div class="timeline-readonly">
+                    <div class="timeline-date-event timline-date-event--margin mt-0" id="comments">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewData["Title"] = "Thêm mới nhân viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="/employee">Nhân sự</a><span><a href="#"> Thêm mới nhân viên</a></span>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-sm-12">
+                <!--/. Page header-->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputEmail3">Họ tên</label>
+                        <input type="text" id="txtFullName" placeholder="Họ tên" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3">Email</label>
+                        <input type="text" id="txtEmail" placeholder="Email" autocomplete="off" value=" " class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3">Số điện thoại</label>
+                        <input type="text" id="txtPhone" placeholder="Phone" autocomplete="off" value=" " class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3">Mã nhân viên</label>
+                        <input type="text" id="txtCode" value="" autocomplete="off" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3">Tên đăng nhập</label>
+                        <input type="text" id="txtUserName" autocomplete="off" value="" placeholder="Mật khẩu" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3">Mật khẩu</label>
+                        <input type="password" id="txtPass" autocomplete="off" value="" placeholder="Mật khẩu" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3">Xác nhận mật khẩu</label>
+                        <input type="password" id="txtConfirmPass" autocomplete="off" value="" placeholder="Xác nhận mật khẩu" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3">Vai trò trên trang</label>
+                        <select id="ddlRole" class="chosen-select form-control" data-placeholder="Chọn loại"></select>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" id="btnSave" class="btn btn-primary pull-right">Lưu</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#txtPhone").ForceNumericOnlyv2();
+    $(document).ready(function e() {
+        $('#btnSave').click(function (e) {
+            createUser();
+        })
+
+        getRoles($("#ddlRole"));
+    })
+
+    function createUser() {
+
+        let model = JSON.stringify({
+            'FullName': $("#txtFullName").val(),
+            'Email': $("#txtEmail").val(),
+            'Phone': $("#txtPhone").val(),
+            'UserName': $("#txtUserName").val(),
+            'RoleId': $("#ddlRole").val(),
+            'Phone': $("#txtPhone").val(),
+            'Password': $("#txtPass").val(),
+            'PasswordConfirm': $("#txtConfirmPass").val(),
+            'Code': $("#txtCode").val()
+        });
+
+
+        $.ajax({
+            traditional: true,
+            url: '/employees/Create',
+            type: "POST",
+            contentType: "application/json;",
+            dataType: 'json',
+            data: model,
+            success: function (data) {
+                if (data.success == true && data.data > 0) {
+                    swal({
+                        title: successMsg,
+                        text: 'Thành công',
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = window.location
+                    });
+
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    }
+
+
+</script>
+
+

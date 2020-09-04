@@ -1,0 +1,299 @@
+﻿@model VietStar.Entities.CheckDup.CheckDupAddSql
+@{
+    ViewData["Title"] = "Cập nhật khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i>
+                <a href="/CheckDup/Index">Danh sách checkdup</a>
+            </li>
+            <li>
+                <a href="#">Chi tiết checkdup</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin chi tiết:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="FullName" placeholder="Nhập họ tên" value="@Model.FullName" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày Check<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker" type="date"  id="CheckDate" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CMND<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Cmnd" placeholder="Nhập số CMND" value="@Model.Cmnd" class="form-control" />
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Điện thoại</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Phone" placeholder="Điện thoại khách hàng " value="@Model.Phone" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tính thành<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="ProvinceId" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <textarea type="text" id="Address" placeholder="Nhập địa chỉ" class="form-control">@Model.Address</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Thu nhập hàng tháng</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Salary" value="@VietStar.Utility.Utils.FormatCurrentCy(Model.Salary)" placeholder="Thu nhập hàng tháng" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">CIC<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="CICStatus" class="chosen-select form-control" data-placeholder="">
+                                <option value="0">Không nợ xấu</option>
+                                <option value="1">Nợ chú ý</option>
+                                <option value="2">Nợ xấu</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Tên ngân hàng<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="partnerId" class="chosen-select form-control" data-placeholder="Chọn đối tác">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4">
+                            <label class="control-label no-padding-right">
+                                <input name="radio-check" id="rdChecked" type="radio" checked="checked" value="1" class="ace">
+                                <span class="lbl">Đủ điều kiện</span>
+                            </label>
+                            <label class="control-label no-padding-right">
+                                <input name="radio-check" id="rdUnChecked" type="radio" value="0" class="ace">
+                                <span class="lbl">Không đủ điều kiện</span>
+                            </label>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <hr />
+                <form class="form-horizontal">
+                    <h4 class="header lighter orange"><i class="ace-icon fa fa-bell"></i>Ghi chú</h4>
+                    <div class="form-group">
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Ghi chú</label>
+                        <div class="col-md-11 col-sm-12 col-xs-12">
+                            <textarea class="form-control" id="txtGhiChu" style="margin: 0px -4.5px 0px 0px; height: 50px;" placeholder="Nhập ghi chú"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="col-md-8 activity-log">
+                                <div class="timline-addNote only-new-note">
+                                    <div class="timeline-date-event timline-date-event--margin mt-0" id="dsGhichu">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pull-right">
+
+                                <a class="btn btn-sm btn-primary" id="btnSave">
+                                    Lưu
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+    $("#loanAmount").ForceNumericOnlyv2();
+    $("#Salary").change(function () {
+        $("#Salary").val(formatCurrency($("#Salary").val().replace(/\./g, '')));
+    });
+    $(document).ready(function () {
+        
+        //$("#Salary").val(formatCurrency('@Model.Salary'.replace(/\./g, '')));
+        $("#CheckDate").val(FormatDateTimeDMY('@Model.CheckDate.ToString("yyyy/MM/dd")', 'YYYY-MM-DD'))
+        
+        if ('@Model.PartnerStatus' == '0') {
+            $("#rdChecked").prop("checked", true);
+            $("#rdUnChecked").prop("checked", false);
+        }
+        else if('@Model.PartnerStatus' == '1'){
+           $("#rdChecked").prop("checked", true);
+            $("#rdUnChecked").prop("checked", false);
+        }
+        else if ('@Model.PartnerStatus' == '2') {
+            $("#rdChecked").prop("checked", false);
+            $("#rdUnChecked").prop("checked", true);
+        }
+        $("#CICStatus").val('@Model.CICStatus')
+        GetCheckDupPartners(null, parseInt('@Model.PartnerId'))
+        GetNotes('@Model.Id')
+        GetProvinces($("#ProvinceId"), '@Model.ProvinceId');
+    })
+
+
+    $("#Cmnd").ForceNumericOnlyv2();
+    $("#Phone").ForceNumericOnlyv2();
+    $("#Salary").ForceNumericOnlyv2();
+    $('#btnSave').click(function (e) {
+        if (isNullOrWhiteSpace($('#FullName').val())) {
+            swal({
+                title: "Không thành công",
+                text: "Vui lòng nhập họ tên",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#CheckDate').val())) {
+            swal({
+                title: "Không thành công",
+                text: "Ngày check không hợp lệ",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+
+        if ($('#Cmnd').val().length != 9 && $('#Cmnd').val().length != 12) {
+            swal({
+                title: "Không thành cồng",
+                text: "Số CMND chỉ 9 hoặc 12 số!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        let data = {
+            'Id':'@Model.Id',
+            'FullName': $('#FullName').val(),
+            'CheckDate': $('#CheckDate').val(),
+            'Note': $('#txtGhiChu').val(),
+            'Cmnd': $('#Cmnd').val(),
+            'CICStatus':$("#CICStatus").val(),
+            'ProvinceId': $("#ProvinceId").val(),
+            'PartnerId': $("#partnerId").val(),
+            'PartnerStatus':$('input[name="radio-check"]:checked').val() == "1"  ? 1 : 2,
+            'Address': $('#Address').val(),
+            'Phone': $('#Phone').val(),
+            'Salary': getDecimalValueFromMoneyInput($("#Salary").val())
+
+        }
+       
+        var objectSend = JSON.stringify(data);
+        $.ajax({
+            traditional: true,
+            url: '@Url.Action("UpdateAsync", "CheckDup")',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: "Thành công",
+                        text: "Cập nhật thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                            window.location = "/CheckDup/Index";
+                    });
+                }
+                else {
+                    swal({
+                        title: "Lỗi",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+        });
+    function GetNotes(id) {
+        //$('#ddlTrangThai').empty();
+        if (isNullOrUndefined(id))
+            return;
+        $.ajax({
+            type: "GET",
+            url: '/CheckDup/GetNotes?id=' + id,
+            data: {},
+            success: function (data) {
+
+                if (data.data != null) {
+                    $.each(data.data, function (index, item) {
+                        $('#dsGhichu').append(
+                            '<div class="timeline-event-content  active">' +
+                            '<div class="timeline-item">'+
+                            '<div class="timeline-body">' +
+                            '<div class="timeline__message-container">' +
+                            '<strong>' + item.Commentator + ' (' + SetFormatDateTimeDMY(item.CreatedTime) + '): </strong><span>' + item.Note + '</span>' +
+                            '</div></div></div></div>'
+
+                        )
+                    });
+                }
+
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+</script>
+

@@ -1,0 +1,47 @@
+﻿@model VietStar.Entities.Mcredit.CheckCICModel
+@{
+    ViewData["Title"] = "Check CIC";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i>
+                <a href="#">Check CIC</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-4">
+                    <form>
+                        <div class="form-group">
+                            <label for="inputEmail3">Số Cmnd/CCCD</label>
+                            <input type="text" class="form-control" id="IdNumber" asp-for="IdNumber" />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3">Tên</label>
+                            <input type="text" class="form-control" name="" asp-for="Name" />
+                        </div>
+                        <button type="button" id="btnSave" class="btn btn-info pull-right">Kiểm tra</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $("#txtValue").ForceNumericOnlyv2();
+    $('#btnSave').click(function (e) {
+        checkCIC('', $("#IdNumber").val(), $("#Name").val())
+    });
+
+</script>
+

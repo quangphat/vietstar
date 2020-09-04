@@ -1,0 +1,570 @@
+﻿@model VietStar.Entities.Collection.RevokeDebtSearch
+@{
+    ViewData["Title"] = "Cập nhật hồ sơ thu nợ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i>
+                <a href="#">Hồ sơ thu nợ</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin hồ sơ:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số hợp đồng <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCustomerName" value="@Model.AgreementNo" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày ký <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtAgreementDate" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tiền thanh lý <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtLiquidationFee" value="@Model.LiquidationFee" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Phí trễ hạn <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtLateFee" value="@Model.LateFee" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tổng nợ(gồm phí phạt) <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="TotalPayableAmount" value="@Model.TotalPayableAmount" readonly class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Phí trả chậm ban đầu <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtInterestrateScheme" value="@Model.InterestrateScheme" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Kỳ hạn thanh toán <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtInstallmentPeriod" value="@Model.InstallmentPeriod" readonly class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">2.Thông tin khách hàng:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCustomerName" placeholder="Nhập họ tên" value="@Model.CustomerName" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CMND <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" value="@Model.IdCardNumber" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" value="@Model.Bod" readonly class="form-control">
+                        </div>
+
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số điện thoại<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" value="@Model.MobilePhone" readonly class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Giới tính<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" value="@Model.Gender" readonly class="form-control">
+                        </div>
+
+
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tên công ty<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" value="@Model.CompanyName" readonly class="form-control" />
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Chức vụ<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" value="@Model.Department" readonly class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số điện thoại nhà<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="HomePhone" value="@Model.HomePhone" readonly class="form-control" />
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số điện thoại công ty<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="CompanyPhone" value="@Model.CompanyPhone" readonly class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ hộ khẩu</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" id="PermanentAddress" readonly class="form-control">@Model.PermanentAddress</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ làm việc</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" id="WorkAddress" readonly class="form-control">@Model.WorkAddress</textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ghi chú</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" id="PermanentLastNote" readonly class="form-control">@Model.LastNote</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">3.Thông tin thanh toán:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Kênh thanh toán <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="PaymentStore" value="@Model.PaymentStore" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày thanh toán gần nhất <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="LastestPaymentDate" value="@Model.LastestPaymentDate" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền thanh toán gần nhất<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="LastPaymentAmount" value="@Model.LastPaymentAmount" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Dư nợ gốc <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="OSPri" value="@Model.OSPri" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tổng nợ còn lại <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="TotalCurros" value="@Model.TotalCurros" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày trễ hạn <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="LateDate" value="@Model.LateDate" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Kỳ hiện tại <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="InstallmentNo" value="@Model.InstallmentNo" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền góp hàng tháng <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="BillAmountOfCurrentMonth" value="@Model.BillAmountOfCurrentMonth" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền trả trước <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="DepositAmount" value="@Model.DepositAmount" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền vay <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="FinancePrice" value="@Model.FinancePrice" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tổng tiền đã thanh toán <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="TotalPaidAmount" value="@Model.TotalPaidAmount" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Kỳ thanh toán đầu tiền<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="FirstDueDate" value="@Model.FirstDueDate" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền thanh toán kỳ đầu <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="FirstPaymentAmount" value="@Model.FirstPaymentAmount" readonly class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày thanh toán kỳ cuối<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="FinalDueDate" value="@Model.FinalDueDate" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền thanh toán cuối <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="FinalPaymentAmount" value="@Model.FinalPaymentAmount" readonly class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">4.Thông tin sản phẩm:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Đối tac<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="PartnerName" value="@Model.PartnerName" readonly class="form-control" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Sản phẩm vay<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="ProductName" value="@Model.ProductName" readonly class="form-control" />
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Nhãn hiệu<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="ProductBrand" value="@Model.ProductBrand" readonly class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Giá bán<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="CashPrice" readonly class="form-control" />
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Đại lý<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="AgentCode" value="@Model.AgentCode" readonly class="form-control" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">5.Thông tin người thân:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="ReferenceName" value="@Model.ReferenceName" readonly class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số điện thoại <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="RefPhone" value="@Model.RefPhone" readonly class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Mối quan hệ<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Relative" value="@Model.Relative" readonly class="form-control">
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">6.Phân công:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Tỉnh/TP<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="provinceId" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="districtId" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Nhóm<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="groupId" class="chosen-select form-control" data-placeholder="Chọn nhóm">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Courrier<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="AssigneeId" class="chosen-select form-control" data-placeholder="Chọn Courrier">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <partial name="../Shared/Partials/UploadArea" />
+        <div class="row">
+            <div class="form-group mt-50">
+                <div class="col-sm-5 col-xs-12 ">
+                    <label class="control-label no-padding-right" for="form-field-1">Trạng thái hiện tại</label>
+                    <input type="text" id="StatusName" value="@Model.StatusName" readonly class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <partial name="../Shared/Partials/ProfileStatus" />
+        </div>
+        
+        <partial name="../Shared/Partials/CommentArea" model="true" />
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+       new VietStar.Entities.ViewModels.CommandBar
+       {
+           Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>
+                {
+                new VietStar.Entities.ViewModels.CommandBarButton
+                {
+                    Id ="btnDelete",
+                    ClassName ="",
+                    Name = "Xóa"
+                },
+                new VietStar.Entities.ViewModels.CommandBarButton
+                {
+                    Id ="",
+                    Href="/Revoke/Index",
+                    ClassName ="btn btn-sm btn-info",
+                    Name = "Quay lại"
+                },
+                new VietStar.Entities.ViewModels.CommandBarButton
+                {
+                    Id ="btnUpdate",
+                    ClassName ="btn btn-sm btn-primary",
+                    Name = "Cập nhật"
+                },
+           }
+       })
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        renderStatusList('revoke','@Model.Status');
+        getComments('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.RevokeDebt)', $('#comments'))
+        GetProfileFiles();
+        GetProvinces(null, '@Model.ProvinceId','@Model.DistrictId');
+
+        GetParentGroups(null, '@Model.GroupId', $("#AssigneeId"),'@Model.AssigneeId')
+       
+    });
+    $('#provinceId').on('change', function () {
+        GetDistricts(this.value,null, '@Model.DistrictId');
+    });
+    $('#groupId').on('change', function () {
+        GetMemberByGroup(this.value, $("#AssigneeId"), '@Model.AssigneeId');
+    });
+    function GetProfileFiles() {
+        $.ajax({
+            type: "GET",
+            url: `/media/GetFileType/revoke/${'@Model.Id'}`,
+            data: {},
+            success: function (data) {
+                if (data.data != null) {
+                    var i = 0;
+                    var htmlContent = "";
+                    let keys = [];
+                    let groupName = '';
+                    let _imgExts = ["jpg", "jpeg", "png", "pdf"];
+                    $.each(data.data, function (index, item) {
+                        $("#uploadArea").append(`<div class='form-group'><div class='col-sm-12' id='tailieu-${item.Id}'><h5>${groupName}</h5></div></div > `);
+                        if (!isNullOrNoItem(item.ProfileFiles)) {
+                            let _initialPreview = [];
+                            let _initialPreviewConfig = [];
+                            $.each(item.ProfileFiles, function (i, file) {
+                                _initialPreview = [];
+                                _initialPreviewConfig = [];
+                                var extn = file.FileUrl.split('.').pop();
+                                var isImg = isExtension(extn, _imgExts);
+                                if (isImg) {
+                                    
+                                    _initialPreview.push(file.FileUrl);
+                                    _initialPreviewConfig.push({
+                                        caption: file.FileName,
+                                        url: `/media/delete/${file.FileId}/0`,
+                                        type: extn.indexOf('pdf') > -1 ? "pdf" : "jpg",
+                                        width: "120px"
+                                    });
+                                }
+                                
+                                let titleName = keys.indexOf(file.Key) < 0 ? item.Name : ''
+                                
+                                renderOneItemFile({
+                                    key: item.FileKey,
+                                    profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.RevokeDebt)',
+                                    profileId: '@Model.Id',
+                                    fileId: file.FileId,
+                                    isRequire: item.IsRequire,
+                                    titleName: titleName,
+                                    itemId: i,
+                                    guidId: file.GuidId
+                                }, '', _initialPreview, _initialPreviewConfig, true, true);
+
+                                keys.push(item.FileKey);
+                            });
+                            
+                           renderOneItemFile({
+                                    key: item.FileKey,
+                               profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.RevokeDebt)',
+                                    profileId: '@Model.Id',
+                               fileId: 0,
+                               isRequire: false,
+                                    titleName: '',
+                                    itemId: i,
+                                    guidId: ''
+                                }, '', [], [], true, true);
+                        }
+                        else {
+                            
+                            renderOneItemFile({
+                                    key: item.FileKey,
+                                profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.RevokeDebt)',
+                                    profileId: '@Model.Id',
+                                    fileId:0,
+                                    isRequire: item.IsRequire,
+                                    titleName: item.Name,
+                                    itemId: i,
+                                    guidId: ''
+                                }, '', [], [], true, true);
+                        }
+                    })
+                }
+
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+    $('#btnUpdate').click(function (e) {
+
+        let model = JSON.stringify({
+            'Status': $("#ddlStatus").val(),
+            'DistrictId': isNullOrUndefined($("#districtId").val()) ? 0 : $("#districtId").val(),
+            'ProvinceId': isNullOrUndefined($("#provinceId").val()) ? 0 : $("#provinceId").val(),
+            'AssigneeId': $("#AssigneeId").val(),
+            'GroupId': $("#groupId").val()
+        })
+
+
+        $.ajax({
+            traditional: false,
+            url: `/Revoke/Update/${@Model.Id}`,
+            type: "PUT",
+            contentType: "application/json; charset=utf-8",
+            data: model,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                            text: "Thành công",
+                            type: "success",
+                            timer: 4000,
+                            showConfirmButton: true,
+                        }, function () {
+                            window.location = window.location;
+
+
+                        });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+    $("#btnAddNote").click(function () {
+        AddNote('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.RevokeDebt)', $('#comment').val(), $('#comment'), $('#comments'))
+    })
+    $('#btnDelete').click(function (e) {
+               swal({
+            title: "Bạn có chắc muốn xóa hồ sơ này?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            cancelButtonText: "Hủy",
+            confirmButtonText: "Có",
+            closeOnConfirm: false
+
+        }, function () {
+
+
+            $.ajax({
+                url: `/Revoke/${@Model.Id}`,
+                type: "Delete",
+                contentType: "application/json; charset=utf-8",
+
+                success: function (data) {
+
+                    if (data.success == true) {
+                        swal({
+                            title: "Thành công",
+                            text: "Thành công",
+                            type: "success",
+                            timer: 4000,
+                            showConfirmButton: true,
+                        }, function () {
+                            window.location = "Revoke/Index"
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "",
+                            text: data.error.code,
+                            type: "error",
+                            timer: 4000,
+                            showConfirmButton: true,
+                        });
+                    }
+                },
+                error: function (jqXHR, exception) {
+                    showError(jqXHR, exception);
+                },
+                complete: function () {
+                    $('#panel_body').unblock();
+                },
+            });
+        }
+        );
+
+    });
+
+</script>
+

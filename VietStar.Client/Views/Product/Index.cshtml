@@ -1,0 +1,291 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <a href="#" class="active">Danh sách sản phẩm</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <form class="form-horizontal">
+            <div class="box-body">
+
+                <div class="form-group">
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Đối tác</label>
+                    <div class="col-sm-4 col-xs-12 ">
+                        <select id="partnerId" class="chosen-select form-control select2" data-placeholder="Chọn đối tác"></select>
+                    </div>
+
+                </div>
+                <div class="form-group text-right">
+                    <div class="col-xs-12 ">
+                        <a class="btn btn-info" href="/Product/Create">
+                            Thêm mới
+                        </a>
+                    </div>
+                </div>
+                @await Html.PartialAsync("../Shared/Partials/DownloadTemplate",
+                    new VietStar.Entities.Commons.DownloadReportPartialViewModel
+                    {
+                        ButtonName ="Import",
+                        FileName = "product.xlsx"
+                    })
+            </div>
+            <!-- /.box-body -->
+            <!-- /.box-footer -->
+        </form>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-sm-12">
+                
+                <div class="clearfix">
+                    <div class="pull-right tableTools-container"></div>
+                </div>
+                <div class="box-header box-header-green">
+                    <h3 class="box-title">Danh sách sản phẩm</h3>
+                </div>
+                <!-- /.box-header -->
+
+                <div class="dataTables_wrapper form-inline no-footer mg-10">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>
+                                Hiển thị
+                                <select name="dtSource_length" id="ddlLimit" aria-controls="dtSource" class="form-control input-sm" onchange="onSelectLimit()">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> dòng
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="report-table-custom--overflow">
+                        <table id="dtSource" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="dtSource_info">
+                            <thead class="table-header">
+                                <tr role="row">
+                                    <th class="w-45">STT</th>
+                                    <th class="w-98">Id</th>
+                                    <th class="min-150">Sản phẩm</th>
+                                    <th class="w-105">Mã</th>
+                                    <th class="w-150">Đối tác</th>
+                                    <th class="w-98">Id đối tác</th>
+                                    <th class="w-94 sorting_asc" onclick="onSort('createtime')">Ngày tạo</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix" />
+                <div class="one-row no-gutters justify-content-between paginate">
+                    <div class="col-auto">
+                        <div class="dataTables_info" id="dtSource_info" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="one-row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <span id="totalPage"></span>
+                            </div>
+                            <div class="col ml-20">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dtSource_paginate">
+                                    <ul class="pagination" id="pagination"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var queries = new URLSearchParams(window.location.search);
+    var page = 1;
+    var limit = 10;
+    var pageMargin = 2;
+    var totalPage = 1;
+    var totalRecord = 0;
+    var sort = 'desc'
+    var sortField ='updatedtime'
+    var model = { status:'', freeText :'', fromDate:'',toDate:'', partnerId:0, memberId:0};
+    $(document).ready(function e() {
+        $('#partnerId').select2({
+            allowClear: true
+        });
+        window.addEventListener('popstate', function (e) {
+
+            queries = new URLSearchParams(window.location.search)
+            bindQueries(getData, true)
+
+        });
+
+        bindQueries(getData);
+
+    });
+    $("#partnerId").on("change", function () {
+        getData(1, limit, this.value)
+    })
+
+
+
+
+function onClickPage(page) {
+    page = page;
+    getData(page, limit, $("#partnerId").val());
+}
+
+
+    function onSelectLimit() {
+        limit = $("#ddlLimit").val()
+        getData(page, limit, $("#partnerId").val())
+    //alert(limit)
+    }
+function renderRow(index, item) {
+
+    page = queries.get("page");
+    if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+        page = 1;
+    else
+        page = parseInt(page)
+    limit = queries.get("limit")
+    if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+        limit = 10;
+    else
+        limit = parseInt(limit)
+    var stt = (page - 1) * limit + index + 1;
+    return "<tr role='row' class = 'odd'>"
+        + renderTextLeft(stt)
+        + renderTextLeft(item.Id)
+        + renderTextLink(item.ProductName,`/Product/edit/${item.Id}`, '')
+        + renderTextLeft(item.Code)
+        + renderTextLeft(item.PartnerName,'','w-200')
+        + renderTextLeft(item.PartnerId)
+        + renderTextLeft(item.CreatedTime, 'datetime', 'min-100')
+        + "</tr>";
+}
+    function renderTableBody(datas) {
+        var tableBody = $("#dtSource").find("tbody");
+        tableBody.empty();
+        if (isNullOrNoItem(datas))
+            return;
+        $.each(datas, function (index, item) {
+            tableBody.append(renderRow(index, item));
+        });
+
+    }
+    $("#freeText ,#fromDate, #toDate").on("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            getData(1, limit,  $("#partnerId").val());
+        }
+    });
+    $('#btnSearch').click(function (e) {
+        getData(1, limit, $("#partnerId").val());
+
+    });
+    function bindQueries(callBack = null, isPopState = false) {
+       
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        $("#ddlLimit").val(limit)
+        var partnerId = queries.get("partnerId");
+        $('#partnerId').val(partnerId)
+        GetPartners(null, partnerId)
+        
+        if (callBack != null) {
+
+            callBack(page, limit,  partnerId, isPopState);
+        }
+
+    }
+   
+    function renderPageList(page, limit, totalRecord) {
+        renderPaging(page, limit, totalRecord)
+    }
+    function onPopState(url) {
+        url = url.replace("Search", "Index")
+        window.history.pushState(url, this.title, url)
+    }
+function getData(page, limit, partnerId, isPopState = false)
+{
+    if (partnerId == 0)
+        partnerId = $("#partnerId").val();
+    
+    SearchDatas('/Product/Search',{
+        'page': page,
+        'limit': limit,
+        'partnerId': partnerId,
+    }, isPopState, renderTableBody, renderPageList, onPopState);
+    return;
+
+}
+
+    $('#btnImport').click(function (e) {
+        showBlock($('#panel_body'), loadingMsg);
+        var formData = new FormData();
+        let file = $('#file')[0].files[0];
+        if (file == null)
+            return;
+        formData.append('file', $('#file')[0].files[0]);
+
+        $.ajax({
+            url: '/product/Import',
+            type: 'POST',
+            data: formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function (data) {
+
+                if (data != null && data.success) {
+                    swal({
+                        title: "",
+                        text: data.data,
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = window.location
+                    });
+                }
+
+                else {
+                    swal({
+                        title: "",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    })
+
+</script>

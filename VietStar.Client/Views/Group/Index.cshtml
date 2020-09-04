@@ -1,0 +1,242 @@
+﻿
+@{
+    ViewData["Title"] = "Quản lý tổ nhóm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            @*<li>
+                    <a href="/HoSo/Index">Hồ sơ của tôi</a>
+                </li>*@
+            <li>
+                <a href="#" class="active">Quản lý tổ nhóm</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal" role="form">
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Nhóm</label>
+                        <div class="col-sm-5 col-xs-12 ">
+                            <select id="groupId" class="chosen-select form-control" data-placeholder="Chọn nhóm">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="space-4"></div>
+                </form>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="clearfix">
+                    <div class="pull-right tableTools-container"></div>
+                </div>
+                <div class="box-header box-header-green">
+                    <h3 class="box-title">Danh sách hồ sơ</h3>
+                </div>
+                <!-- /.box-header -->
+
+                <div class="dataTables_wrapper form-inline no-footer mg-10">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>
+                                Hiển thị
+                                <select name="dtSource_length" id="ddlLimit" aria-controls="dtSource" class="form-control input-sm" onchange="onSelectLimit()">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> dòng
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="report-table-custom--overflow">
+                        <table id="dtSource" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="dtSource_info">
+                            <thead class="table-header">
+                                <tr role="row">
+                                    <th class="w-45">STT</th>
+                                    <th class="w-98">Tên</th>
+                                    <th class="min-150">Tên khác</th>
+                                    <th class="min-w-150">Người quản lý</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix" />
+                <div class="one-row no-gutters justify-content-between paginate">
+                    <div class="col-auto">
+                        <div class="dataTables_info" id="dtSource_info" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="one-row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <span id="totalPage"></span>
+                            </div>
+                            <div class="col ml-20">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dtSource_paginate">
+                                    <ul class="pagination" id="pagination"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var queries = new URLSearchParams(window.location.search);
+    var page = 1;
+    var limit = 10;
+    var pageMargin = 2;
+    var totalPage = 1;
+    var totalRecord = 0;
+    $(document).ready(function () {
+        window.addEventListener('popstate', function (e) {
+
+            queries = new URLSearchParams(window.location.search)
+            bindQueries(getData, true)
+
+        });
+        bindQueries(getData);
+    });
+    $("#groupId").on("change", function () {
+        getData(1, limit, this.value)
+    })
+    function bindQueries(callBack = null, isPopState = false) {
+
+        let parentId = queries.get("parentId");
+        parentId = isNullOrUndefined(parentId) ? 0 : parentId
+        $('#parentId').val(parentId)
+        GetParentGroups(null, parentId)
+        
+        if (callBack != null) {
+
+            callBack(page, limit, parentId, isPopState);
+        }
+
+    }
+    function onClickPage(page) {
+        page = page;
+        getData(page, limit, $("#groupId").val());
+    }
+
+
+    function onSelectLimit() {
+        limit = $("#ddlLimit").val()
+        getData(page, limit, $("#groupId").val())
+    }
+    function renderRow(index, item) {
+
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        var stt = (page - 1) * limit + index + 1;
+        return "<tr role='row' class = 'odd'>"
+            + renderTextLeft(stt)
+            + renderTextLink(item.Name, `/Groups/edit/${item.Id}`)
+            + renderTextLink(item.ShortName, `/Groups/edit/${item.Id}`, '', 'min-150')
+            + renderTextLeft(item.LeaderName, '', 'min-150')
+            + "</tr>";
+    }
+    function renderTableBody(datas) {
+        var tableBody = $("#dtSource").find("tbody");
+        tableBody.empty();
+        if (isNullOrNoItem(datas))
+            return;
+        $.each(datas, function (index, item) {
+            tableBody.append(renderRow(index, item));
+        });
+
+    }
+    function getData(page, limit, groupId, isPopState = false) {
+
+        if (groupId == 0)
+            groupId = $("#groupId").val();
+        showBlock($('#panel_body'));
+
+        $.ajax({
+            url: `/Groups/Childrens`,
+            type: "GET",
+            contentType: "application/json",
+            data: {
+                'page': page,
+                'limit': limit,
+                'parentId': groupId
+            },
+            success: function (response) {
+                if (response.success == true) {
+                    
+                    totalRecord = response.data.TotalRecord;
+                    var search = this.url.replace("/Groups/Index", "");
+                    search = search.replace("/Groups/Childrens", "")
+                    queries = new URLSearchParams(search)
+
+                    page = queries.get("page");
+                    if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+                        page = 1;
+                    else
+                        page = parseInt(page)
+                    limit = queries.get("limit")
+
+
+                    if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+                        limit = 10;
+                    else
+                        limit = parseInt(limit)
+                    renderTableBody(response.data.Datas)
+                    //renderGoPreviousPage(page);
+                    renderPaging(page, limit, totalRecord)
+
+                }
+                else {
+                    swal({
+                        title: "",
+                        text: response.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+                if (!isPopState) {
+                    var requestUrl = this.url.replace("Childrens", "Index")
+                    window.history.pushState(requestUrl, this.title, requestUrl)
+                }
+
+            }
+        })
+
+    }
+
+</script>
+

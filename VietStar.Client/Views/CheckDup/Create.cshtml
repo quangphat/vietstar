@@ -1,0 +1,230 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i><a href="/CheckDup/Index" class="active">Danh sách CheckDup</a>
+            </li>
+            <li>
+                
+                <a href="#">Tạo Checkdup</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin khách hàng:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="fullName" placeholder="Nhập họ tên" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày Check<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker" type="date" id="checkDate" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CMND<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="cmnd" placeholder="Nhập số CMND" class="form-control" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Điện thoại</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Phone" placeholder="Điện thoại khách hàng " class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tính thành<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="provinceId" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <textarea type="text" id="address" placeholder="Nhập địa chỉ" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Thu nhập hàng tháng</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="Salary" placeholder="Thu nhập hàng tháng" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Tên ngân hàng<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="partnerId" class="chosen-select form-control" data-placeholder="Chọn đối tác">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+
+                    </div>
+                  
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <hr />
+                <form class="form-horizontal">
+                    <h4 class="header lighter orange"><i class="ace-icon fa fa-bell"></i>Ghi chú</h4>
+                    <div class="form-group">
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Ghi chú</label>
+                        <div class="col-md-11 col-sm-12 col-xs-12">
+                            <textarea class="form-control" id="Note" style="margin: 0px -4.5px 0px 0px; height: 50px;" placeholder="Nhập ghi chú"></textarea>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+
+                        <a class="btn btn-sm btn-primary" id="btnSave">
+                            Lưu
+                        </a>
+
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+       
+        GetCheckDupPartners();
+        GetProvinces();
+    });
+    jQuery.fn.ForceNumericOnly = function () {
+        return this.each(function () {
+            $(this).keydown(function (e) {
+                var key = e.charCode || e.keyCode || 0;
+                // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
+                // home, end, period, and numpad decimal
+                return (
+                    key == 8 ||
+                    key == 9 ||
+                    key == 13 ||
+                    key == 46 ||
+                    key == 110 ||
+                    key == 190 ||
+                    (key >= 35 && key <= 40) ||
+                    (key >= 48 && key <= 57) ||
+                    (key >= 96 && key <= 105));
+            });
+        });
+    };
+
+    $("#cmnd").ForceNumericOnly();
+    $("#Phone").ForceNumericOnly();
+    $("#Salary").ForceNumericOnly();
+    $('#btnSave').click(function (e) {
+        if (isNullOrWhiteSpace($('#fullName').val())) {
+            swal({
+                title: "Không thành công",
+                text: "Vui lòng nhập họ tên",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#checkDate').val())) {
+            swal({
+                title: "Không thành công",
+                text: "Ngày check không hợp lệ",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+
+        if (isNullOrWhiteSpace($('#Phone').val())) {
+            swal({
+                title: "Không thành công",
+                text: "Vui lòng nhập số điện thoại",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if ($('#cmnd').val().length != 9 && $('#cmnd').val().length != 12) {
+            swal({
+                title: "Không thành công",
+                text: "Số CMND chỉ 9 hoặc 12 số!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        var objectSend = JSON.stringify({
+            'FullName': $('#fullName').val(),
+            'CheckDate': $('#checkDate').val(),
+            'Note': $('#Note').val(),
+            'Cmnd': $('#cmnd').val(),
+            'Gender': 0,
+            'PartnerId': $("#partnerId").val(),
+            'ProvinceId': $("#provinceId").val(),
+            'Address': $('#address').val(),
+            'Phone': $('#Phone').val(),
+            'Salary': $('#Salary').val()
+
+        });
+        $.ajax({
+            traditional: true,
+            url: '/checkdup/createasync',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: "Thành công",
+                        text: "Tạo khách hàng thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = window.location;
+                    });
+                }
+                else {
+                    swal({
+                        title: "Lỗi",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+</script>

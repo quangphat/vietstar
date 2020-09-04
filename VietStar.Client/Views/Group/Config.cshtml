@@ -1,0 +1,205 @@
+﻿
+@{
+    ViewData["Title"] = "Cấu hình duyệt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i>
+                <a href="#">Cấu hình duyệt</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">Thông tin cấu hình</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Nhân viên <span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="EmployeeId" class="chosen-select form-control select2" data-placeholder="Chọn nhân viên">
+                                <option value="0"></option>
+
+                            </select>
+                            
+                        </div>
+                        @*<div class="col-sm-6">
+                            <div style="float:right; margin-top:10px;">
+                                <input type="button" value="<<Previous" id="btnPrevious" />
+                                <input type="button" value="Next>>" id="btnNext" />
+                                <input type="button" value="Tìm kiếm" id="btnSearch" />
+                            </div>
+
+                        </div>*@
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Nhóm <span class="required">(*)</span></label>
+                        <div class="col-sm-10">
+                            <select id="GroupIds" class="chosen-select form-control select2" multiple data-placeholder="Chọn nhóm">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+           new VietStar.Entities.ViewModels.CommandBar
+           {
+               Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
+                   new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="", Name="Danh sách nhóm", Href="/Groups/Index" },
+                    new VietStar.Entities.ViewModels.CommandBarButton { Id="btnSave", ClassName="btn btn-sm btn-primary", Name="Lưu cấu hình" }
+
+           }
+           })
+    </div>
+</div>
+<script>
+    let page = 1;
+    $(document).ready(function () {
+        GetAllEmployees($('#EmployeeId'));
+        GetParentGroups($('#GroupIds'));
+    });
+    $('#EmployeeId').on('select2:closing', function (e,a) {
+        
+       
+    });
+    $('#EmployeeId').select2({
+        closeOnSelect: false
+    });
+    $('#EmployeeId').on('select2:select', function (e) {
+        //e.preventDefault()
+    });
+    $("#btnNext").click(function () {
+        page += 1;
+        GetEmployee(page)
+    })
+    $("#btnPrevious").click(function () {
+        page -= 1;
+        page = page <= 0 ? 1 : page
+        GetEmployee(page)
+    })
+    $("#btnSearch").click(function () {
+        page = 1;
+        GetEmployee(page)
+    })
+    function GetEmployee(page) {
+
+        $('#EmployeeId').empty();
+        $('#EmployeeId').append("<option value='0'>Vui lòng chọn nhân viên</option>");
+        let freeText = '';
+        $.ajax({
+            type: "GET",
+            url: `/employees/paging?page=${page}&freeText=${freeText}`,
+            data: {},
+            success: function (data) {
+                if (data.data != null && data.success == true) {
+                    if (data.data != null && data.data.length > 0) {
+                        $.each(data.data, function (index, item) {
+
+                            $('#EmployeeId').append("<option value='" + item.Id + "'>" + item.Name + "</option>");
+                        });
+                        let pagination = '<div style="float:right; margin-top:10px;">'
+                            + '<input type="button" value="<<Previous" id="btnPrevious" />'
+                            + '<input type="button" value="Next>>" id="btnNext" />'
+                            + '<input type="button" value="Tìm kiếm" id="btnSearch" />'
+                            + '</div>'
+                        $('#EmployeeId').append("<option value='0'>Next Page</option > ");
+                        $('#EmployeeId').val(0);
+                    }
+                }
+            },
+            complete: function () {
+                
+                page = page
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+    function employeeClick() {
+        
+        debugger
+        $("#select2-EmployeeId-results").append(pagination)
+    }
+    $('#EmployeeId').click( function () {
+        
+    })
+    $('#btnSave').click(function (e) {
+        if ($('#EmployeeId').val() == '0') {
+            swal({
+                title: "",
+                text: "Vui lòng chọn nhân viên!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        var lstIDNhom = [];
+        lstIDNhom = $('#GroupIds').val();
+        if (lstIDNhom == null) {
+            swal({
+                title: "",
+                text: "Vui lòng chọn nhóm!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (lstIDNhom.length == 0)
+        {
+            swal({
+                title: "",
+                text: "Vui lòng chọn nhóm!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        var objectSend = JSON.stringify({ 'userId': $('#EmployeeId').val(), 'groupIds': lstIDNhom });
+        $.ajax({
+            traditional: true,
+            url: '/Groups/CreateConfig',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                        text: "Thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = window.location;
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+</script>
+

@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewData["Title"] = "Tạo sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+      new VietStar.Entities.ViewModels.BreadcrumbModel { FirstPath= "/Product/Index", FirstName="Sản phẩm", SecondName="Tạo mới" })
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin sản phẩm:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tên sản phẩm <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="productName" placeholder="Tên sản phẩm" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Mã sản phẩm <span class="required"></span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="productCode" placeholder="Mã sản phẩm" class="form-control">
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Đối tác<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="partnerId" class="chosen-select form-control" data-placeholder="Chọn đối tác">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+    new VietStar.Entities.ViewModels.CommandBar
+    {
+        Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
+            new VietStar.Entities.ViewModels.CommandBarButton { Id="btnSave", ClassName="btn btn-sm btn-primary", Name="Lưu" }
+    }
+    })
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        GetPartners();
+    });
+        $('#btnSave').click(function (e) {
+         
+        var objectSend = JSON.stringify({
+            'ProductName': $('#productName').val(),
+            'Code': $('#productCode').val(),
+            'PartnerId': $("#partnerId").val()
+
+        });
+        $.ajax({
+            traditional: true,
+            url: '@Url.Action("CreateAsync", "Product")',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: "Thành công",
+                        text: "Tạo sản phẩm thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = window.location;
+                    });
+                }
+                else {
+                    swal({
+                        title: "Lỗi",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+        });
+</script>
+
+
+

@@ -1,0 +1,272 @@
+﻿@model VietStar.Entities.Employee.UserSql
+@{
+    ViewData["Title"] = "Cập nhật nhân viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="/employee">Nhân sự</a><span><a href="#">Cập nhật nhân viên</a></span>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="page_content_panel">
+        <div class="page-header">
+            <h1>Thông tin cá nhân</h1>
+        </div>
+        <!--/. Page header-->
+        <div class="user-profile row">
+            <div class="col-sm-9" id="panel_body">
+                <form class="form-horizontal" role="form" autocomplete="off" id="frm_doimatkhau">
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs padding-16">
+                            <li class="active" id="tab_info" onclick="setThisActive('tab_info')">
+                                <a data-toggle="tab" href="#info" aria-expanded="true">
+                                    <i class="green ace-icon fa fa-info-circle bigger-125"></i>
+                                    Thông tin cơ bản
+                                </a>
+                            </li>
+                            <li id="tab_changePass" class="" onclick="setThisActive('tab_changePass')" style="display:block">
+                                <a data-toggle="tab" href="#edit-password" aria-expanded="true">
+                                    <i class="blue ace-icon fa fa-key bigger-125"></i>
+                                    <span>Đổi mật khẩu</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content profile-edit-tab-content mt-50">
+                            <div id="info" class="tab-pane  in active">
+                                <div class="space-10"></div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="inputEmail3">Họ tên</label>
+                                        <input type="text" id="txtFullName" value="@Model.FullName" placeholder="Họ tên" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3">Email</label>
+                                        <input type="email" id="txtEmail" placeholder="Email" autocomplete="off" value="@Model.Email" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3">Số điện thoại</label>
+                                        <input type="text" id="txtPhone" placeholder="Phone" autocomplete="off" value="@Model.Phone" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3">Mã nhân viên</label>
+                                        <input type="text" id="txtCode" value="@Model.Code" autocomplete="off" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3">Tên đăng nhập</label>
+                                        <input type="text" id="txtUserName" autocomplete="off" value="@Model.UserName" placeholder="Mật khẩu" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputEmail3">Vai trò trên trang</label>
+                                        <select id="ddlRole" class="chosen-select form-control" data-placeholder="Chọn loại"></select>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <button type="button" id="btnSave" class="btn btn-primary pull-right ml-20">Cập nhật</button>
+                                        <button type="button" id="btnDelete" class="btn btn-danger pull-right">Xóa</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="edit-password" class="tab-pane mt-50">
+                                <div class="space-10"></div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="inputEmail3">Mật khẩu mới</label>
+                                        <input type="password" id="newPass" placeholder="Mật khẩu mới" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3">Xác nhận mật khẩu</label>
+                                        <input type="password" id="confirmPass" placeholder="Xác nhận mật khẩu" autocomplete="off" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" id="btnChangePassword" class="btn btn-primary pull-right">Đổi mật khẩu</button>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $("#txtPhone").ForceNumericOnlyv2();
+    $(document).ready(function e() {
+
+        $('#btn_reset_matkhau').click(function (evt) {
+            $('#newPassword').val('');
+            $('#oldPassword').val('');
+            $('#confirmPassword').val('');
+        });
+
+        getRoles($("#ddlRole"), '@Model.RoleId');
+    })
+    function setThisActive(id) {
+        if (isNullOrWhiteSpace(id))
+            return
+        $("#" + id).closest("li").removeClass("active")
+        //$("#" + id).addClass("active")
+    }
+
+    $("#btnSave").click(function () {
+        updateUser();
+    })
+    $("#btnChangePassword").click(function () {
+        ChangePass();
+    })
+    $("#btnDelete").click(function () {
+        deleteUser();
+    })
+
+
+ function deleteUser() {
+
+        $.ajax({
+            traditional: true,
+            url: `/employees/delete/${@Model.Id}`,
+            type: "delete",
+            success: function (data) {
+                if (data.success == true ) {
+                    swal({
+                        title: successMsg,
+                        text: 'Đã xóa thành công',
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = '/employees/index'
+                    });
+
+                }
+                else {
+                    swal({
+                        title: "Lỗi",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    }
+    function updateUser() {
+        let model = JSON.stringify({
+            'Id':'@Model.Id',
+            'FullName': $("#txtFullName").val(),
+            'Email': $("#txtEmail").val(),
+            'Phone': $("#txtPhone").val(),
+            'UserName': $("#txtUserName").val(),
+            'RoleId': $("#ddlRole").val(),
+            'Password': $("#txtPass").val(),
+            'PasswordConfirm': $("#txtConfirmPass").val(),
+            'Code': $("#txtCode").val()
+        });
+        $.ajax({
+            traditional: true,
+            url: '/employees/update',
+            type: "POST",
+            contentType: "application/json;",
+            dataType: 'json',
+            data: model,
+            success: function (data) {
+                if (data.success == true ) {
+                    swal({
+                        title: successMsg,
+                        text: 'Thành công',
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = window.location
+                    });
+
+                }
+                else {
+                    swal({
+                        title: "Lỗi",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    }
+
+    function ChangePass() {
+
+        let model = {
+            Id: '@Model.Id',
+            Password : $("#newPass").val(),
+            ConfirmPassword: $("#confirmPass").val(),
+        }
+
+
+
+        $.ajax({
+            traditional: true,
+            url: '/Employees/setpassword',
+            type: "POST",
+            contentType: "application/json;",
+            dataType: 'json',
+            data: JSON.stringify(model),
+            success: function (data) {
+                if (data.success == true ) {
+                    swal({
+                        title: successMsg,
+                        text: 'Thành công',
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = window.location
+                    });
+
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    }
+</script>
+
+

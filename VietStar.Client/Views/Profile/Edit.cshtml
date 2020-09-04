@@ -1,0 +1,424 @@
+﻿@model VietStar.Entities.Profile.ProfileEditView
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2> <a href="#">Cập nhật hợp đồng</a></h2>
+<div class="main-content-inner">
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin khách hàng:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="customerName" value="@Model.CustomerName" placeholder="Nhập họ tên" class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày nhận đơn đề nghị<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="date" value="@(Model.ReceiveDate.HasValue ? Model.ReceiveDate.Value.ToString("dd/MM/yyyy") :DateTime.Now.ToString("dd/MM/yyyy")) Date" id="receiveDate" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày tháng năm sinh<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input class="form-control " type="date" id="birthDay" />
+                        </div>
+
+                        <div class="col-sm-4">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Điện thoại khách hàng<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="phone" value="@Model.Phone" inputmode="numeric" placeholder="Nhập số điện thoại khách hàng" class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Điện thoại nhân viên</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="salePhone" value="@Model.SalePhone" placeholder="Nhập số điện thoại nhân viên" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CMND/CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="cmnd" inputmode="numeric" value="@Model.Cmnd" placeholder="Nhập số CMND" class="form-control" />
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Ngày cấp CMND/CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input class="form-control " type="date" id="cmndDay" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Giới tính</label>
+                        <div class="col-sm-4">
+                            <select id="gender" class="chosen-select form-control">
+                                <option value="1">Nam</option>
+                                <option value="2">Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Tỉnh/TP<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="provinceId" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="districtId" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ<span class="required">(*)</span></label>
+                        <div class="col-sm-10">
+                            <textarea type="text" id="address" placeholder="Nhập địa chỉ" class="form-control">@Model.Address</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Sale Code</label>
+                        <div class="col-sm-4">
+                            <select id="saleId" class="chosen-select form-control select2" data-placeholder="Chọn Sale Code">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        @*<label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tên nhân viên</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="staffName" readonly data-toggle-tt="tooltip" placeholder="Tên nhân viên" class="form-control" />
+                        </div>*@
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Data Entry Code</label>
+                        <div class="col-sm-4">
+                            <select id="courierId" class="chosen-select form-control" data-placeholder="Chọn Data Entry code">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">2.Thông tin khoản vay và sản phẩm:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Tên ngân hàng<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="partnerId" class="chosen-select form-control" data-placeholder="Chọn đối tác">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Sản phẩm vay<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="productId" class="chosen-select form-control" data-placeholder="Chọn sản phẩm vay">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4  col-md-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input name="form-field-checkbox" value="@Model.IsInsurrance" id="isInsurrance" type="checkbox" class="ace">
+                                    <span class="lbl">Không đề nghị mua bảo hiểm dư TD cá nhân</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền đề nghị vay<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="loanAmount" inputmode="numeric" value="@Model.LoanAmount.ToString()" placeholder="Nhập số tiền đề nghị vay" class="form-control">
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Thời hạn vay</label>
+                        <div class="col-sm-2">
+                            <input type="number" class="form-control" id="period" step="3" value="@Model.Period" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <partial name="../Shared/Partials/UploadArea" />
+        <partial name="../Shared/Partials/ProfileStatus" />
+        <partial name="../Shared/Partials/CommentArea" model="true" />
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+        new VietStar.Entities.ViewModels.CommandBar
+        {
+            Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>
+                 {
+                 new VietStar.Entities.ViewModels.CommandBarButton
+                 {
+                     Id ="btnSubmit",
+                     ClassName ="btn btn-sm btn-primary",
+                     Name = Model.Status == (int)VietStar.Entities.Commons.Enums.ProfileStatus.Draft ?"Nộp hồ sơ" : "Cập nhật" }
+                 }
+        })
+    </div>
+</div>
+
+<script>
+
+
+    $("#phone").ForceNumericOnlyv2();
+    $("#salePhone").ForceNumericOnlyv2();
+    $("#cmnd").ForceNumericOnlyv2();
+    $("#loanAmount").ForceNumericOnlyv2();
+    $("#loanAmount").change(function () {
+        $("#loanAmount").val(formatCurrency($("#loanAmount").val().replace(/\./g, '')));
+    });
+
+    $(document).ready(function () {
+        GetProfileFiles();
+        GetPartners(null, '@Model.PartnerId', '@Model.ProductId');
+        if ('@Model.Status' != '@((int)VietStar.Entities.Commons.Enums.ProfileStatus.Draft)') {
+            renderStatusList('common', ['@Model.Status']);
+        }
+        
+        GetSales(null,'@Model.SaleId');
+        GetCouriers();
+        GetProvinces(null, '@Model.ProvinceId','@Model.DistrictId');
+        getComments('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.Common)', $('#comments'))
+        $("#receiveDate").val(FormatDateTimeDMY('@Model.ReceiveDate.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
+        //$("#receiveDate").val('2020-08-06')
+        $("#birthDay").val(FormatDateTimeDMY('@Model.BirthDay.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
+        $("#cmndDay").val(FormatDateTimeDMY('@Model.CmndDay.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
+        $('#partnerId').on('change', function () {
+            GetProducts(this.value);
+        });
+        $('#provinceId').on('change', function () {
+            GetDistricts(this.value);
+        });
+        $('#saleId').on('change', function () {
+            $('#staffName').val($('option:selected', this).attr('ten'));
+        });
+        $('#saleId').val('@Model.SaleId').trigger('change')
+        $('#courierId').val('@Model.CourierId').trigger('change')
+    });    //$("#btn-remove-file-1").on('click', function (event, key, jqXHR, data) {
+    //    debugger
+    //    console.log('Key = ' + key);
+    //});
+    function btnRemoveFile(id, guidId) {
+        
+        onDeleteFile(id, guidId)
+    }
+    $("#btnAddNote").click(function () {
+        AddNote('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.Common)', $('#comment').val(), $('#comment'), $('#comments'))
+    })
+    function GetProfileFiles() {
+        $.ajax({
+            type: "GET",
+            url: `/media/GetFileType/common/${'@Model.Id'}`,
+            data: {},
+            success: function (data) {
+                if (data.data != null) {
+                    var i = 0;
+                    var htmlContent = "";
+                    let keys = [];
+                    let groupName = '';
+                    let _imgExts = ["jpg", "jpeg", "png", "pdf"];
+                    $.each(data.data, function (index, item) {
+                        $("#uploadArea").append(`<div class='form-group'><div class='col-sm-12' id='tailieu-${item.Id}'><h5>${groupName}</h5></div></div > `);
+                        if (!isNullOrNoItem(item.ProfileFiles)) {
+                            let _initialPreview = [];
+                            let _initialPreviewConfig = [];
+                            $.each(item.ProfileFiles, function (i, file) {
+                                _initialPreview = [];
+                                _initialPreviewConfig = [];
+                                var extn = file.FileUrl.split('.').pop();
+                                var isImg = isExtension(extn, _imgExts);
+                                if (isImg) {
+                                    
+                                    _initialPreview.push(file.FileUrl);
+                                    _initialPreviewConfig.push({
+                                        caption: file.FileName,
+                                        url: `/media/delete/${file.FileId}/0`,
+                                        type: extn.indexOf('pdf') > -1 ? "pdf" : "jpg",
+                                        width: "120px"
+                                    });
+                                }
+                                
+                                let titleName = keys.indexOf(file.Key) < 0 ? item.Name : ''
+                                
+                                renderOneItemFile({
+                                    key: item.FileKey,
+                                    profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Common)',
+                                    profileId: '@Model.Id',
+                                    fileId: file.FileId,
+                                    isRequire: item.IsRequire,
+                                    titleName: titleName,
+                                    itemId: i,
+                                    guidId: file.GuidId
+                                }, '', _initialPreview, _initialPreviewConfig, true, true);
+
+                                keys.push(item.FileKey);
+                            });
+                            
+                           renderOneItemFile({
+                                    key: item.FileKey,
+                               profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Common)',
+                                    profileId: '@Model.Id',
+                               fileId: 0,
+                               isRequire: false,
+                                    titleName: '',
+                                    itemId: i,
+                                    guidId: ''
+                                }, '', [], [], true, true);
+                        }
+                        else {
+                            
+                            renderOneItemFile({
+                                    key: item.FileKey,
+                                profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Common)',
+                                    profileId: '@Model.Id',
+                                    fileId:0,
+                                    isRequire: item.IsRequire,
+                                    titleName: item.Name,
+                                    itemId: i,
+                                    guidId: ''
+                                }, '', [], [], true, true);
+                        }
+                    })
+                }
+
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+
+    $('#btnSubmit').click(function (e) {
+
+        if (isNullOrWhiteSpace($('#customerName').val())) {
+            swal({
+                title: "",
+                text: "Vui lòng nhập tên khách hàng",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if ($('#partnerId').val() == "0" || $('#partnerId').val() == undefined ) {
+            swal({
+                title: "",
+                text: "Vui lòng chọn đối tác",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if ($('#productId').val() == "0" || $('#productId').val() == undefined) {
+            swal({
+                title: "",
+                text: "Vui lòng chọn sản phẩm vay",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+
+        if ($('#phone').val().length != 10) {
+            swal({
+                title: "",
+                text: "Số điện thoại di động phải đúng 10 số!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if ($('#salePhone').val().length > 0 && $('#salePhone').val().length != 10) {
+            swal({
+                title: "",
+                text: "Số điện thoại di động 2 phải đúng 10 số!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if ($('#cmnd').val().length != 9 && $('#cmnd').val().length != 12) {
+            swal({
+                title: "",
+                text: "Số CMND chỉ 9 hoặc 12 số!",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        var objectSend = JSON.stringify({
+            "Id": '@Model.Id',
+            "Code": '',
+            "CustomerName": $("#customerName").val(),
+            "Phone": $("#phone").val(),
+            "SalePhone": $("#salePhone").val(),
+            "ReceiveDate": $("#receiveDate").val(),
+            "Cmnd": $("#cmnd").val(),
+            "Gender": $('#gender').val(),
+            "DistrictId": parseInt($("#districtId").val()),
+            "Address": $("#address").val(),
+            "CourierId": parseInt($("#courierId").val()),
+            "IsInsurrance": $('#isInsurrance').is(":checked"), 'thoiHanVay': $('#spnThoiHanVay').val(),
+            "Period": parseInt($("#period").val()),
+            "LoanAmount": getDecimalValueFromMoneyInput($("#loanAmount").val()),
+            "Status": $("#ddlStatus").val().toString(),
+            "Comment": $("#comment").val(),
+            "BirthDay": $("#birthDay").val(),
+            "CmndDay": $("#cmndDay").val(),
+            "PartnerId": parseInt($("#partnerId").val()),
+            "ProductId": parseInt($("#productId").val()),
+             "SaleId": parseInt($("#saleId").val())
+        });
+        $.ajax({
+            traditional: true,
+            url: '/profile/update',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: "",
+                        text: "Thành công",
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        //window.location = window.location
+                    });
+                }
+                else {
+                    swal({
+                        title: "",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+
+</script>

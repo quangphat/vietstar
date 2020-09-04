@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="MsgPack.Cli" Version="1.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\McreditServiceCore\McreditServiceCore.csproj" />
+    <ProjectReference Include="..\VietStar.Business\VietStar.Business.csproj" />
+    <ProjectReference Include="..\VietStar.Entities\VietStar.Entities.csproj" />
+    <ProjectReference Include="..\VietStar.Repository\VietStar.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

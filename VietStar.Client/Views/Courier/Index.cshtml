@@ -1,0 +1,461 @@
+﻿
+@{
+    ViewData["Title"] = "Quản lý hồ sơ courier";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+      new VietStar.Entities.ViewModels.BreadcrumbModel { FirstPath= "/Courier/Index", FirstName= "Hồ sơ Courier"})
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal" role="form">
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right">Từ ngày</label>
+                        <div class="col-sm-4  col-xs-12 ">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="date" data-date-inline-picker="true" class="form-control pull-right" id="fromDate">
+                            </div>
+                        </div>
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right">Đến ngày</label>
+                        <div class="col-sm-4">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="date" class="form-control pull-right" id="toDate">
+                            </div>
+                        </div>
+                        <div class="col-sm-offset-1 col-sm-10 no-padding-right">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="radio-ngay" id="optionsRadios1" value="1" checked="">
+                                    Ngày tạo
+                                </label>
+                                <label style="margin-left:20px">
+                                    <input type="radio" name="radio-ngay" id="optionsRadios1" value="2" checked="">
+                                    Ngày cập nhật
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Tỉnh thành</label>
+                        <div class="col-sm-4 col-xs-12 ">
+                            <select id="provinceId" class="chosen-select form-control" data-placeholder="Tỉnh thành của courier"></select>
+                        </div>
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Courier</label>
+                        <div class="col-sm-4 col-xs-12 ">
+                            <select id="assigneeId" class="chosen-select form-control" data-placeholder="Courier">
+                                <option value="0">Tất cả</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Trạng thái</label>
+                        <div class="col-sm-4 col-xs-12 ">
+                            <select class="form-control select2 select2-hidden-accessible" id="ddlStatus" multiple=""
+                                    style="width: 100%;" data-select2-id="7" tabindex="-1" aria-hidden="true">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Mã sale</label>
+                        <div class="col-sm-4 col-xs-12 ">
+                            <input type="text" class="form-control" id="saleCode" placeholder="" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Nhóm cha</label>
+                        <div class="col-sm-4 col-xs-12 ">
+                            <select id="groupId" class="chosen-select form-control" data-placeholder="Chọn nhóm cha">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Tìm kiếm</label>
+                        <div class="col-sm-4 col-xs-12 ">
+                            <input type="text" class="form-control" id="freeText" placeholder="Tìm kiếm" />
+                        </div>
+                       
+                    </div>
+                    <div class="form-group text-right">
+                        <div class="col-xs-12 ">
+                            <a class="btn btn-primary" id="btnSearch">
+                                Tìm kiếm
+                            </a>
+                            <a class="btn btn-info" href="/Courier/Create">
+                                Tạo mới
+                            </a>
+                           
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @await Html.PartialAsync("../Shared/Partials/DownloadTemplate",
+                 new VietStar.Entities.Commons.DownloadReportPartialViewModel
+                 {
+                     ButtonName ="Import",
+                     FileName = "courier.xlsx"
+                 })
+                        </div>
+                       
+                    </div>
+                </form>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <partial name="../Shared/Partials/ExportPartial" />
+                <div class="clearfix">
+                    <div class="pull-right tableTools-container"></div>
+                </div>
+                <div class="box-header box-header-green">
+                    <h3 class="box-title">Danh sách hồ sơ</h3>
+                </div>
+
+                <div class="dataTables_wrapper form-inline no-footer mg-10">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <label>
+                                Hiển thị
+                                <select id="ddlLimit" class="form-control input-sm" onchange="onSelectLimit()">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select> dòng mỗi trang
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- div.table-responsive -->
+                <!-- div.dataTables_borderWrap -->
+                <div class="col">
+                    <div class="report-table-custom--overflow">
+                        <table id="dtSource" class="report-table-custom table table-striped table-bordered table-hover">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="center w-45">STT</th>
+                                    <th class="m-w-120">Khách hàng</th>
+                                    <th class="w-84">Số CMND</th>
+                                    <th style="width: 150px">Trạng thái</th>
+                                    <th style="width: 150px">Địa chỉ</th>
+                                    <th class="m-w-120">Nhân viên</th>
+                                    <th class="m-w-120">Sale code</th>
+                                    <th class="m-w-120">Ghi chú</th>
+                                    <th class="w-150">Ngày tạo</th>
+                                    <th class="m-w-120">Người tạo</th>
+                                    <th class="w-150">Ngày cập nhật</th>
+                                    @*<th class="w-150">Người cập nhật</th>*@
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clearfix" />
+                <div class="one-row no-gutters justify-content-between paginate mb-50">
+                    <div class="col-auto">
+                        <div class="dataTables_info" id="dtSource_info" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="one-row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <span id="totalPage"></span>
+                            </div>
+                            <div class="col ml-20">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dtSource_paginate">
+                                    <ul class="pagination" id="pagination"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+
+    </div>
+</div>
+<script>
+    var queries = new URLSearchParams(window.location.search);
+    var page = 1;
+    var limit = 10;
+    var pageMargin = 2;
+    var totalPage = 1;
+    var totalRecord = 0;
+    var lstStatus = [
+        { value: "1", display: "Mới" },
+        { value: "2", display: "Đang xử lý" },
+        { value: "3", display: "Từ chối" },
+        { value: "4", display: "Chấp nhận" },
+        { value: "5", display: "Giải ngân" },
+        { value: "6", display: "Hoàn thành" }
+    ]
+
+    $(document).ready(function e() {
+        $('#assigneeId').select2({
+            allowClear: true
+        });
+        $('#provinceId').select2({
+            allowClear: true
+        });
+        //renderStatusList('courier');
+        
+        window.addEventListener('popstate', function (e) {
+
+            queries = new URLSearchParams(window.location.search)
+            bindQueries(getData, true)
+        });
+        bindQueries(getData);
+    })
+    
+    
+
+    $('#btnImport').click(function (e) {
+
+        var formData = new FormData();
+        formData.append('file', $('#file')[0].files[0]);
+
+        $.ajax({
+            url: '/Courier/Import/' + $('#groupId').val(),
+            type: 'POST',
+            data: formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function (data) {
+
+                if (data != null && data.success) {
+                    swal({
+                        title: "Thành công",
+                        text: data.error.code,
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+                        window.location = window.location
+                    });
+                }
+
+                else {
+                    swal({
+                        title: "Không thành công",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    })
+    $("#freeText ,#fromDate, #toDate").on("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            getData(1, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#memberId").val());
+        }
+    });
+    $('#btnSearch').click(function (e) {
+        getData(page, limit, getQueryStatus($("#ddlStatus")), $("#provinceId").val(), $("#assigneeId").val(), $("#groupId").val());
+    });
+    function onSelectLimit() {
+        limit = $("#ddlLimit").val()
+        getData(page, limit, getQueryStatus($("#ddlStatus")), $("#provinceId").val(), $("#assigneeId").val(), $("#groupId").val())
+    }
+    function onClickPage(page) {
+        page = page;
+        getData(page, limit, getQueryStatus($("#ddlStatus")), $("#provinceId").val(), $("#assigneeId").val(), $("#groupId").val());
+    }
+    $('#provinceId').change(function () {
+        debugger
+        $('#assigneeId').empty();
+        $('#assigneeId').append("<option value='0'></option>");
+        GetEmployeeByProvinceId(this.value, $("#assigneeId"))
+    });
+    function bindQueries(callBack = null, isPopState = false) {
+
+        let fromDate = queries.get("fromDate");
+        if (isNullOrWhiteSpace(fromDate)) {
+            fromDate = getDateSpecific(14);
+        }
+        $("#fromDate").val(fromDate)
+        var toDate = queries.get("toDate");
+        if (isNullOrWhiteSpace(toDate)) {
+            toDate = new Date();
+            toDate = FormatDateTimeDMY(toDate, 'YYYY-MM-DD')
+        }
+        $("#toDate").val(toDate)
+        var dateType = queries.get("dateType");
+        setCheckedValueOfRadioButtonGroup("radio-ngay", dateType)
+
+        $("#freeText").val(queries.get("freeText"));
+        $('#saleCode').val(queries.get("salecode"))
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        $("#ddlLimit").val(limit);
+
+        var groupId = queries.get("groupId");
+        $('#groupId').val(groupId)
+        GetParentGroups(null, groupId)
+
+        var provinceId = queries.get("provinceId");
+        GetProvinces(null, provinceId);
+        $('#provinceId').trigger({
+            type: 'select2:change'
+        });
+        
+        var assigneeId = queries.get("assigneeId");
+        $('#assigneeId').val(assigneeId);
+        GetEmployeeByProvinceId(provinceId, $("#assigneeId"), assigneeId)
+
+        var saleCode = queries.get("saleCode");
+        $('#saleCode').val(saleCode);
+
+        
+
+
+        let status = queries.get("status");
+        if (!isNullOrWhiteSpace(status)) {
+            let arrStatus = status.split(',')
+            renderStatusList('courier', arrStatus);
+        }
+        else
+            renderStatusList('courier');
+        if (callBack != null) {
+
+            callBack(page, limit, status, provinceId, assigneeId, groupId, isPopState);
+        }
+    }
+    function onPopState(url) {
+        url = url.replace("Search", "Index")
+        window.history.pushState(url, this.title, url)
+    }
+    function processingModelSearch(page, limit, status, provinceId, assigneeId, groupId) {
+        
+        if (groupId == 0)
+            groupId = $("#groupId").val();
+        if (provinceId == 0)
+            provinceId = $("#provinceId").val();
+        if (assigneeId == 0)
+            assigneeId = $("#assigneeId").val()
+        if (isNullOrWhiteSpace(status)) {
+            status = getQueryStatus($("#ddlStatus"));
+        }
+        let model = {
+            'freeText': !isNullOrWhiteSpace($("#freeText").val()) ? $("#freeText").val() : '',
+            'fromDate': $("#fromDate").val(),
+            'toDate': $("#toDate").val(),
+            'dateType': $('input[name="radio-ngay"]:checked').val(),
+            'status': removeDuplicate(status),
+            'page': page,
+            'limit': limit,
+            'groupId': groupId,
+            'assigneeId': assigneeId,
+            'provinceId': $("#provinceId").val(),
+            'saleCode': $('#saleCode').val()
+        }
+        return model;
+    }
+    function getData(page, limit, status, provinceId, assigneeId, groupId, isPopState = false) {
+        
+
+        SearchDatas('/Courier/Search', processingModelSearch(page, limit, status, provinceId, assigneeId, groupId), isPopState, renderTableBody, renderPageList, onPopState);
+        return;
+
+    }
+    function processingExport(data) {
+        var link = document.createElement("a");
+        link.href = data;
+        link.click();
+    }
+    $("#btnExport").click(function () {
+        let groupId = $("#groupId").val();
+        let provinceId = $("#provinceId").val();
+        let assigneeId = $("#assigneeId").val()
+        let status = getQueryStatus($("#ddlStatus"));
+        SearchDatas('/courier/Export', processingModelSearch(page, limit, status, provinceId, assigneeId, groupId), true, null, null, null, processingExport);
+        return;
+
+
+    })
+    function renderAddress(item) {
+        if (item == null || item == undefined)
+            return ''
+        let result = ''
+        if (!isNullOrUndefined(item.DistrictName))
+            result += item.DistrictName
+        if (!isNullOrUndefined(item.ProvinceName))
+            result += ' - ' +  item.ProvinceName
+        
+        return result;
+    }
+    function renderRow(index, rowData) {
+
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        var stt = (page - 1) * limit + index + 1;
+
+        let result = "<tr role='row' class = 'odd'>"
+            + renderTextCenter(stt, '','center w-45')
+            + renderTextLink(rowData.CustomerName, `/Courier/edit/${rowData.Id}`, '', "min-w-120")
+            + renderTextLeft(rowData.Cmnd, '','w-84')
+            + renderStatus(rowData.StatusName)
+            + renderTextLeft(renderAddress(rowData), '', 'w-150' )
+            + renderTextLeft(rowData.AssignUser, '', "min-w-120")
+            + renderTextLeft(rowData.SaleCode, '', "min-w-120")
+            + renderTextLeft(rowData.LastNote, '', "min-w-300 tb-row-breakword")
+            + renderTextLeft(rowData.CreatedTime, 'datetime', 'w-150')
+            + renderTextLeft(rowData.CreatedUser, '', "min-w-120")
+            + renderTextLeft(rowData.UpdatedTime, 'datetime', 'w-150')
+            //+ renderTextLeft(rowData.UpdatedUser, '', "min-w-120")
+            + "</tr>";
+        return result
+    }
+    function renderTableBody(datas) {
+        var tableBody = $("#dtSource").find("tbody");
+        tableBody.empty();
+        if (isNullOrNoItem(datas))
+            return;
+        $.each(datas, function (index, item) {
+            tableBody.append(renderRow(index, item));
+        });
+
+    }
+    function renderPageList(page, limit, totalRecord) {
+        renderPaging(page, limit, totalRecord)
+    }
+    
+   
+</script>
+

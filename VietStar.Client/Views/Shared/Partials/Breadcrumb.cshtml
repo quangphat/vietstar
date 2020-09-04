@@ -1,0 +1,13 @@
+﻿@model VietStar.Entities.ViewModels.BreadcrumbModel
+<ul class="breadcrumb">
+    <li>
+        <i class="fa fa-caret-right"></i> <a href="@Model.FirstPath" class="active">@Model.FirstName</a>
+    </li>
+    @if (!string.IsNullOrWhiteSpace(Model.SecondName))
+    {
+        <li>
+            <a href="#">@Model.SecondName</a>
+        </li>
+    }
+
+</ul>

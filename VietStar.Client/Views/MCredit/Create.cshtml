@@ -1,0 +1,468 @@
+﻿
+@{
+    ViewData["Title"] = "Tạo hồ sơ MCredit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-caret-right"></i>
+                <a href="#">Tạo hồ sơ</a>
+            </li>
+        </ul>
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">1.Thông tin khách hàng:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Họ và tên <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCustomerName" placeholder="Nhập họ tên" class="form-control">
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Quê quán(trên CMND) <span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtHometown" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker" id="txtBirthDay" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số điện thoại<span class="required">(*)</span> </label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtPhone" placeholder="Nhập số điện thoại khách hàng" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CMND<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtIdNumber" placeholder="Nhập số CMND" class="form-control" />
+                        </div>
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtCCCDNumber" placeholder="Nhập số CCCD" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Ngày cấp CMND/CCCD<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker" id="txtIdDay" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                            <div style="margin-top:10px">
+                                <a class="btn btn-info" id="btn_CheckCIC">
+                                    Check CIC
+                                </a>
+                                <a class="btn btn-info" id="btn_CheckDup">
+                                    Check Duplicate
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <p id="checkdupResult" style="color:green"></p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Địa chỉ sinh sống trùng hộ khẩu *</label>
+                        <div class="col-sm-4">
+                            <label class="control-label no-padding-right">
+                                <input name="radio-isAddr" type="radio" checked="checked" value="1" class="ace">
+                                <span class="lbl"> Có</span>
+                            </label>
+                            <label class="control-label no-padding-right" style="margin-left:20px">
+                                <input name="radio-isAddr" type="radio" value="0" class="ace">
+                                <span class="lbl"> Không</span>
+                            </label>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Giới tính</label>
+                        <div class="col-sm-4">
+                            <select id="ddlGender" class="chosen-select form-control">
+                                <option value="1">Nam</option>
+                                <option value="0">Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Tỉnh/TP<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="ddlProvince" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
+                                <option value="0"></option>
+                            </select>
+                        </div>
+                        @*<label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="ddlHuyen" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
+                                <option value="0"></option>
+                            </select>
+                        </div>*@
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" id="txtAddress" placeholder="Nhập địa chỉ" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Sale (Số CMND | CCCD | Mã sale) </label>
+                        <div class="col-sm-4">
+
+                            <input type="text" id="txtSaleCode" class="form-control">
+
+                            <div style="margin-top:10px">
+                                <a class="btn btn-info" id="btn_CheckSale">
+                                    Check Sale
+                                </a>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <p id="checkSaleResult" style="color:green"></p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="header smaller lighter blue">2.Thông tin khoản vay và sản phẩm:</h3>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+
+                        <label class="col-sm-2 control-label no-padding-right">Sản phẩm vay<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <select id="ddlProduct" class="chosen-select form-control" data-placeholder="Chọn sản phẩm vay">
+                                <option value="0"></option>
+                            </select>
+                            <div class="row">
+
+                            </div>
+                        </div>
+                        <div id="checkcat-area" hidden>
+                            <label class="col-sm-2 control-label no-padding-right">Mã số thuế<span class="required">(*)</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" id="txtCatNumber" placeholder="Nhập Mã số thuế" class="form-control">
+                                <label style="color:green" id="checkcat-result"></label>
+                                <input type="button" class="btn btn-info" id="btnCheckCat" style="margin-top:20px;float:right" value="Check CAT" />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4  col-md-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input name="form-field-checkbox" id="cbbaohiem" type="checkbox" class="ace">
+                                    <span class="lbl">Tham gia bảo hiểm dư nợ tín dụng</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền đề nghị vay<span class="required">(*)</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" id="txtLoanMoney" placeholder="Nhập số tiền đề nghị vay" class="form-control">
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right">Thời hạn vay</label>
+                        <div class="col-sm-4">
+                            <select id="ddlLoanPeriod" class="chosen-select form-control" data-placeholder="Kỳ hạn vay">
+                                <option value="0">Chọn kỳ hạn vay</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">Địa điểm ký văn kiện tín dụng *<span class="required">(*)</span></label>
+                        <div class="col-sm-10">
+                            <select id="ddlLocSign" class="chosen-select form-control">
+                                <option value="0">Chọn một địa điểm</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <partial name="../Shared/Partials/CommentArea" model="false" />
+        @await Html.PartialAsync("../Shared/Partials/CommandBar",
+             new VietStar.Entities.ViewModels.CommandBar
+             {
+                 Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
+                     new VietStar.Entities.ViewModels.CommandBarButton { Id="btnNext", ClassName="btn btn-sm btn-primary", Name="Bước tiếp theo" }
+             }})
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        setTextForPTag('checkSaleResult');
+        setTextForPTag('checkdupResult');
+       
+        GetLocSigns("#ddlLocSign");
+        GetLoanPeriods("#ddlLoanPeriod");
+        GetLoanCities("#ddlProvince");
+        GetLoanProducts("#ddlProduct");
+        $("#ddlProduct").on("change", function () {
+            CallForGetIsCheckCat(this.value, "#checkcat-area");
+        })
+    });
+
+    $("#txtPhone").ForceNumericOnlyv2();
+    $("#txtPhone2").ForceNumericOnlyv2();
+    $("#txtLoanMoney").ForceNumericOnlyv2();
+    $("#txtIdNumber").ForceNumericOnlyv2();
+    $("#txtLoanMoney").change(function () {
+        $("#txtLoanMoney").val(formatCurrency($("#txtLoanMoney").val().replace(/\./g, '')));
+    });
+
+    $('#btn_CheckSale').click(function (e) {
+        let value = $("#txtSaleCode").val()
+        checkSale('checkSaleResult', value);
+    });
+    $('#btn_CheckCIC').click(function (e) {
+        let value = !isNullOrWhiteSpace($("#txtIdNumber").val()) ? $("#txtIdNumber").val() : $("#txtCCCDNumber").val();
+        checkCIC('', value, $("#txtCustomerName").val());
+    });
+    $('#btn_CheckDup').click(function (e) {
+        let value = !isNullOrWhiteSpace($("#txtIdNumber").val()) ? $("#txtIdNumber").val() : $("#txtCCCDNumber").val();
+        checkDup('checkdupResult', value);
+    });
+    function CallForGetIsCheckCat(catNumber, checkatAreaId = null) {
+        let model = JSON.stringify({
+            "Value": catNumber
+        })
+
+        $.ajax({
+            type: "POST",
+            url: '/MCredit/IsCheckCat',
+            data: model,
+            traditional: true,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                if (data != null && data.success == true) {
+                    if (data.data == true)
+                        $(checkatAreaId).show();
+                    else {
+                        $(checkatAreaId).hide();
+                        modelCat = { CatName: '', ComName: '', CatNumber: '' }
+                    }
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            }
+        });
+    }
+    let modelCat = { CatName:'',ComName:'',CatNumber:'' }
+    $('#btnCheckCat').click(function (e) {
+        let value = $("#txtCatNumber").val();
+        var objectSend = JSON.stringify({
+            'Value': value
+        });
+        $.ajax({
+            traditional: true,
+            url: '/MCredit/CheckCatApi',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+
+                if (data.success == true) {
+                    swal({
+                        title: "Thành công",
+                        text: data.error.code,
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                    $("#checkcat-result").text(`${data.data.name} - ${data.data.cat}`);
+                    modelCat = { CatName: data.data.cat, CatNumber : value, ComName: data.data.name }
+                }
+                else {
+                    swal({
+                        title: !isNullOrWhiteSpace(data.data.msg) ? data.data.msg : "Đã có lỗi xảy ra",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                    $("#checkcat-result").text(!isNullOrWhiteSpace(data.data.msg) ? data.data.msg : "");
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+
+
+
+    $('#btn_Temp').click(function (e) {
+        if ($('#txtCustomerName').val() == "" || $('#txtCustomerName').val() == undefined) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng nhập họ tên",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#txtBirthDay').val())) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn ngày sinh",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#ddlProvince').val()) || $('#ddlProvince').val() =="0") {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn tỉnh/thành",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#txtIdDay').val())) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn ngày cấp cmnd/cccd",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+
+        if ($('#ddlProduct').val() == "0" || $('#ddlProduct').val() == undefined) {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn sản phẩm vay",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#ddlLocSign').val()) || $('#ddlLocSign').val() =="0") {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn địa điểm ký văn kiện",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        if (isNullOrWhiteSpace($('#ddlLoanPeriod').val()) || $('#ddlLoanPeriod').val() =="0") {
+            swal({
+                title: errorMsg,
+                text: "Vui lòng chọn kỳ hạn vay",
+                type: "error",
+                timer: 4000,
+                showConfirmButton: true,
+            });
+            return;
+        }
+        showBlock($('#panel_body'), loadingMsg);
+        var objectSend = JSON.stringify({
+            "Id": 0,
+            "CustomerName": $("#txtCustomerName").val(),
+            "Hometown": $("#txtHometown").val(),
+            "BirthDay": $('#txtBirthDay').val(),
+            "Phone": $('#txtPhone').val(),
+            "IdNumber": $('#txtIdNumber').val(),
+            "CCCDNumber": $('#txtCCCDNumber').val(),
+            "IssueDate": $('#txtIdDay').val(),
+            "IsAddr": getRadioButtonValue('radio-isAddr'),
+            "Gender": $("#ddlGender").val() == "1" ? true : false,
+            "ProvinceId": $("#ddlProvince").val(),
+            "DistrictId": 0,
+            "Address": $("#txtAddress").val(),
+            "SaleNumber": $("#txtSaleCode").val(),
+            "ProductCode": $("#ddlProduct").val(),
+            "LoanPeriodCode": $("#ddlLoanPeriod").val(),
+            "LocSignCode": $("#ddlLocSign").val(),
+            "LastNote": $("#txtNote").val(),
+            "LoanMoney": $('#txtLoanMoney').val().replace(/\./g, ''),
+            "IsInsurrance": getCheckboxValue('cbbaohiem'),
+            "Status": 0,
+            "CatNumber": modelCat.CatNumber,
+            "ComName": modelCat.ComName,
+            "CatName": modelCat.CatName
+        });
+
+        $.ajax({
+            traditional: true,
+            url: '/MCredit/CreateDraft',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: objectSend,
+            success: function (data) {
+                if (data.success == true) {
+
+                    swal({
+                        title: successMsg,
+                            text: "Thành công",
+                            type: "success",
+                            timer: 4000,
+                            showConfirmButton: true,
+                        }, function () {
+                            window.location = "/MCredit/TempProfile/" + data.data;
+                        });
+
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    });
+
+</script>
+

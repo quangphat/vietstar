@@ -1,0 +1,268 @@
+﻿
+@{
+    ViewData["Title"] = "Nhân sự";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="page-content" id="panel_body">
+        <form class="form-horizontal" onSubmit="return false">
+            <div class="space-4"></div>
+            <div class="box-body">
+
+
+                <div class="form-group">
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Vai trò</label>
+                    <div class="col-sm-5 col-xs-12 ">
+                        <select id="ddlRole" class="chosen-select form-control" data-placeholder="Chọn vai trò">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                    <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Tìm kiếm</label>
+                    <div class="col-sm-5 col-xs-12 ">
+                        <input type="search" class="form-control" id="freeText" placeholder="Tìm kiếm" />
+                    </div>
+                </div>
+                <div class="form-group text-right">
+                    <div class="col-xs-12 ">
+                        <a class="btn btn-primary" id="btnSearch">
+                            Tìm kiếm
+                        </a>
+                        <a class="btn btn-primary" href="/Employees/Create">
+                            Tạo mới
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="clearfix">
+            <div class="pull-right tableTools-container"></div>
+        </div>
+        <div class="box-header box-header-green">
+            <h3 class="box-title">Danh sách nhân sự</h3>
+        </div>
+        <div class="dataTables_wrapper form-inline no-footer mt-10">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>
+                        Hiển thị
+                        <select id="ddlLimit" class="form-control input-sm" onchange="onSelectLimit()">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select> dòng mỗi trang
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- div.table-responsive -->
+        <!-- div.dataTables_borderWrap -->
+        <div class="col">
+            <div class="report-table-custom--overflow">
+                <table id="dtSource" class="report-table-custom table table-striped table-bordered table-hover">
+                    <thead class="table-header">
+                        <tr>
+                            <th class="center w-45">STT</th>
+                            <th class="w-20">ID</th>
+                            <th class="min-120">Họ tên</th>
+
+                            <th class="w-150">Mã</th>
+                            <th class="w-150">Tên đăng nhập</th>
+                            <th style="width: 150px">Email</th>
+                            <th class="w-84">Số điện thoại</th>
+                            <th style="width: 150px">Vai trò trên trang</th>
+                            <th class="min-w-300">Khu vực</th>
+                            <th class="w-150">Ngày vào làm</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix" />
+        <div class="one-row no-gutters justify-content-between paginate mb-50">
+            <div class="col-auto">
+                <div class="dataTables_info" id="dtSource_info" role="status" aria-live="polite"></div>
+            </div>
+            <div class="col-auto">
+                <div class="one-row no-gutters align-items-center">
+                    <div class="col-auto">
+                        <span id="totalPage"></span>
+                    </div>
+                    <div class="col ml-20">
+                        <div class="dataTables_paginate paging_simple_numbers" id="dtSource_paginate">
+                            <ul class="pagination" id="pagination"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="clearfix"></div>
+    </div>
+</div>
+<script>
+    var queries = new URLSearchParams(window.location.search);
+    var page = 1;
+    var limit = 10;
+    var pageMargin = 2;
+    var totalPage = 1;
+    var totalRecord = 0;
+    $(document).ready(function e() {
+
+        window.addEventListener('popstate', function (e) {
+            bindQueries(true)
+        });
+        bindQueries()
+    })
+    $('#btnSearch').click(function (e) {
+        getData(1, limit, $("#ddlRole").val());
+    });
+    function onClickPage(page) {
+        page = page;
+        getData(page, limit, $("#ddlRole").val());
+    }
+    function bindQueries(isPopState) {
+
+        $('#freeText').val(queries.get("freetext"))
+
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        $("#ddlLimit").val(limit)
+        let roleId = queries.get("roleId");
+        if (isNullOrUndefined(roleId) || isNullOrWhiteSpace(roleId))
+            roleId = 0;
+        getRoles($("#ddlRole"), roleId)
+        getData(page, limit, roleId, isPopState)
+    }
+
+    function onSelectLimit() {
+        limit = $("#ddlLimit").val()
+        getData(1, limit, $("#ddlRole").val())
+    }
+
+    function renderRow(index, rowData) {
+        page = queries.get("page");
+        if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+            page = 1;
+        else
+            page = parseInt(page)
+        limit = queries.get("limit")
+        if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+            limit = 10;
+        else
+            limit = parseInt(limit)
+        var stt = (page - 1) * limit + index + 1;
+        return "<tr role='row' class = 'odd'>"
+            + renderTextCenter(stt, '', 'center w-45')
+            + renderTextLink(rowData.Id, `/employees/edit/${rowData.Id}`, '', "w-20")
+            + renderTextLink(rowData.FullName, `/employees/edit/${rowData.Id}`, '', "min-120")
+           
+            + renderTextLink(rowData.Code, `/employees/edit/${rowData.Id}`, '', "w-150")
+            + renderTextLeft(rowData.UserName, '', "w-150")
+            + renderTextLeft(rowData.Email, '', 'w-150')
+            + renderTextLeft(rowData.Phone, '', 'w-84')
+            + renderTextLeft(rowData.RoleName, '', "w-150")
+            + renderTextLeft(rowData.Location, '', "min-w-300")
+            + renderTextLeft(rowData.WorkDate, 'datetime', 'w-150')
+            + "</tr>";
+    }
+    function renderTableBody(datas) {
+        var tableBody = $("#dtSource").find("tbody");
+        tableBody.empty();
+        if (isNullOrNoItem(datas))
+            return;
+        $.each(datas, function (index, item) {
+            tableBody.append(renderRow(index, item));
+        });
+
+    }
+    $("#freeText").on("keyup", function (event) {
+
+        event.preventDefault();
+        if (event.keyCode === 13) {
+
+            getData(1, limit);
+        }
+    });
+    function getData(page, limit, roleId = 0, isPopState = false) {
+        $.ajax({
+            url: '/Employees/Search',
+            type: "GET",
+            contentType: "application/json",
+
+            data: {
+                'page': page,
+                'limit': limit,
+                'workFromDate': $("#txtFromWorkDate").val(),
+                'workToDate': $("#txtToWorkDate").val(),
+                'roleId': roleId,
+                'freetext': $("#freeText").val(),
+
+            },
+            success: function (response) {
+                if (response.Message == null) {
+                    totalRecord = response.data.TotalRecord;
+                    let search = this.url.replace("/Employees/Index", "");
+
+                    search = search.replace("/Employees/Search", "")
+                    queries = new URLSearchParams(search)
+                    page = queries.get("page");
+                    if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
+                        page = 1;
+                    else
+                        page = parseInt(page)
+                    limit = queries.get("limit")
+                    if (isNullOrUndefined(limit) || isNullOrWhiteSpace(limit))
+                        limit = 10;
+                    else
+                        limit = parseInt(limit)
+                    renderTableBody(response.data.Datas)
+                    renderPaging(page, limit, totalRecord)
+                    totalPage = getTotalPage(totalRecord, limit);
+                    $("#dtSource_info").text("Tổng: " + totalRecord + " items");
+                    $("#totalPage").text("Tổng: " + totalPage + " trang");
+                }
+                else {
+                    swal({
+                        title: "",
+                        text: response.Message.ErrorMessage,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+                if (!isPopState) {
+                    var requestUrl = this.url.replace("/Search", "/index")
+                    window.history.pushState(requestUrl, this.title, requestUrl)
+                }
+
+            }
+        })
+
+    }
+</script>
+
