@@ -248,7 +248,7 @@
         $("#ddlGender").val(('@Model' != null && '@Model.Gender' == 'True') ? "1" : "0")
         getComments('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.MCreditTemp)',$("#comments"))
         setCheckboxValue('cbbIsInsurrance', '@Model' != null ? @Model.isInsur: false)
-        setCheckedValueOfRadioButtonGroup('radio-isAddr', ('@Model' != null && '@Model.isAddr' == 'true') ? "1" : "0");
+        setCheckedValueOfRadioButtonGroup('radio-isAddr', ('@Model' != null && '@Model.isAddress' == 'true') ? "1" : "0");
         displayCat();
         $("#ddlProduct").on("change", function () {
             CallForGetIsCheckCat(this.value, "#checkcat-area");
