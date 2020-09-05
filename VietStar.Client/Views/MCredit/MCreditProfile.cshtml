@@ -34,27 +34,35 @@
                     </div>
                     <div class="form-group">
 
-                        <label class="col-sm-2 control-label no-padding-right">Lý do<span class="required">(*)</span></label>
+                        <label class="col-sm-2 control-label no-padding-right">Lỗi từ MC<span class="required">(*)</span></label>
                         <div class="col-sm-10">
                             <textarea type="text" value="" readonly class="form-control">
                                 @Model.ReasonName
                             </textarea>
+                            <div class="pull-right mt-10">
+                                <a class="btn btn-sm btn-info" id="btnAddNoteFromReason">
+                                    Thêm ghi chú
+                                </a>
+                            </div>
                         </div>
-                        <a class="btn btn-sm btn-primary pull-right" id="btnAddNoteFromReason">
-                            Thêm ghi chú
-                        </a>
+                       
                     </div>
                     <div class="form-group">
 
-                        <label class="col-sm-2 control-label no-padding-right">Lỗi bên Toàn Cầu<span class="required">(*)</span></label>
+                        <label class="col-sm-2 control-label no-padding-right reason-from-global">Lỗi từ Toàn Cầu<span class="required">(*)</span></label>
                         <div class="col-sm-10">
-                            <textarea type="text" value="" readonly class="form-control">
-                                @Model.Refuse
-                            </textarea>
+                            @Html.TextAreaFor(
+                                model => model.Refuse,
+                                new { @class = "form-control", @readonly="readonly"}
+                                )
+                            <div class="pull-right mt-10">
+                                <a class="btn btn-sm btn-info" id="btnAddNoteFromRefuse">
+                                    Thêm ghi chú
+                                </a>
+                            </div>
                         </div>
-                        <a class="btn btn-sm btn-primary pull-right" id="btnAddNoteFromRefuse">
-                            Thêm ghi chú
-                        </a>
+                        
+                        
                     </div>
                 </form>
             </div>
@@ -256,7 +264,7 @@
             {
                 Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
                     new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="", Name="Quay lại", Href="/MCredit/Index" },
-                    new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="", Name="Tạo mới hồ sơ", Href="/MCredit/Create" },
+                    new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="btn btn-sm btn-info", Name="Tạo mới hồ sơ", Href="/MCredit/Create" },
                     new VietStar.Entities.ViewModels.CommandBarButton { Id="btnUpdateFiles", ClassName="btn btn-sm btn-primary", Name="Cập Nhật và Chuyển Qua MC" }
                     
                     
@@ -273,6 +281,8 @@
         setCheckboxValue('cbbIsInsurrance', '@Model.IsInsurrance' =='0' ? false : true)
         getFilesUpload();
         getNoteList();
+
+        $("#refuse").val('@Html.Raw(Model.Refuse)')
 
     });
 

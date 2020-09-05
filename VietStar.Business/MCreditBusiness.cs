@@ -495,9 +495,9 @@ namespace VietStar.Business
         public async Task<ProfileGetByIdResponseObj> GetMCreditProfileByIdAsync(int id)
         {
             var result = await _svMcredit.GetProfileById(id.ToString());
-            if (!result.success)
+            if (!result.success || result.data == null || result.data.obj ==null)
             {
-                return null;
+                return ToResponse<ProfileGetByIdResponseObj>(null, !result.success ? result.error : "Không có dữ liệu");
             }
             //result.data.obj.IsAddrSame = "1";
             //result.data.obj.IsInsurrance = "1";
@@ -507,6 +507,9 @@ namespace VietStar.Business
             //    return ToResponse(false, "Không tìm thấy hồ sơ tương ứng trong portal");
             //}
             result.data.obj.LocalProfileId = profile.success && profile.data != null ? profile.data.Id : 0;
+
+            if (!string.IsNullOrWhiteSpace(result.data.obj.Refuse))
+                result.data.obj.Refuse = result.data.obj.Refuse.Trim();
 
             if (result.data.obj != null && result.data.obj.Reason != null)
             {
