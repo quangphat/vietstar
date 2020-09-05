@@ -857,7 +857,7 @@
     });
             $('#btnUpdateFiles').click(function (e) {
             showBlock($('#panel_body'), 'Vui lòng chờ');
-            let mcId = '@ViewBag.model.MCId'
+            let mcId = '@Model.MCId'
             if (isNullOrWhiteSpace(mcId)) {
                 debugger
                 mcId =''

@@ -12,6 +12,14 @@
     )
     </div>
     <div class="page-content" id="panel_body">
+        @if (Model.LocalProfileId <= 0)
+        {
+            @await Html.PartialAsync("../Shared/Partials/Alert",
+               new VietStar.Entities.Commons.AlertModel
+               { Title = "Cảnh báo", Content = "Không tìm thấy hồ sơ tương ứng trong portal.", ActionName ="Kiểm tra hồ sơ trong portal", ActionHref = "/Mcredit/Temp" }
+               );
+        }
+
         <div class="row">
             <div class="col-xs-12">
                 <h3 class="header smaller lighter blue">Thông tin hồ sơ:</h3>
@@ -34,27 +42,38 @@
                     </div>
                     <div class="form-group">
 
-                        <label class="col-sm-2 control-label no-padding-right">Lý do<span class="required">(*)</span></label>
+                        <label class="col-sm-2 control-label no-padding-right">Lỗi từ MC<span class="required">(*)</span></label>
                         <div class="col-sm-10">
-                            <textarea type="text" value="" readonly class="form-control">
-                                @Model.ReasonName
-                            </textarea>
+                            @Html.TextAreaFor(
+                                model => model.MCReason
+,
+                                new { @class = "form-control", @readonly = "readonly" }
+                                )
+
+                            <div class="pull-right mt-10">
+                                <a class="btn btn-sm btn-info" id="btnAddNoteFromReason">
+                                    Thêm ghi chú
+                                </a>
+                            </div>
                         </div>
-                        <a class="btn btn-sm btn-primary pull-right" id="btnAddNoteFromReason">
-                            Thêm ghi chú
-                        </a>
+
                     </div>
                     <div class="form-group">
 
-                        <label class="col-sm-2 control-label no-padding-right">Lỗi bên Toàn Cầu<span class="required">(*)</span></label>
+                        <label class="col-sm-2 control-label no-padding-right reason-from-global">Lỗi từ Toàn Cầu<span class="required">(*)</span></label>
                         <div class="col-sm-10">
-                            <textarea type="text" value="" readonly class="form-control">
-                                @Model.Refuse
-                            </textarea>
+                            @Html.TextAreaFor(
+                                model => model.Refuse,
+                                new { @class = "form-control", @readonly="readonly"}
+                                )
+                            <div class="pull-right mt-10">
+                                <a class="btn btn-sm btn-info" id="btnAddNoteFromRefuse">
+                                    Thêm ghi chú
+                                </a>
+                            </div>
                         </div>
-                        <a class="btn btn-sm btn-primary pull-right" id="btnAddNoteFromRefuse">
-                            Thêm ghi chú
-                        </a>
+
+
                     </div>
                 </form>
             </div>
@@ -103,7 +122,7 @@
                         <label class="col-sm-2 control-label no-padding-right">Ngày cấp CMND/CCCD<span class="required">(*)</span></label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker"  readonly id="txtIdDay" />
+                                <input class="form-control date-picker" readonly id="txtIdDay" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
@@ -256,10 +275,10 @@
             {
                 Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
                     new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="", Name="Quay lại", Href="/MCredit/Index" },
-                    new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="", Name="Tạo mới hồ sơ", Href="/MCredit/Create" },
+                    new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="btn btn-sm btn-info", Name="Tạo mới hồ sơ", Href="/MCredit/Create" },
                     new VietStar.Entities.ViewModels.CommandBarButton { Id="btnUpdateFiles", ClassName="btn btn-sm btn-primary", Name="Cập Nhật và Chuyển Qua MC" }
-                    
-                    
+
+
             }
             })
     </div>
@@ -273,6 +292,8 @@
         setCheckboxValue('cbbIsInsurrance', '@Model.IsInsurrance' =='0' ? false : true)
         getFilesUpload();
         getNoteList();
+
+        $("#refuse").val('@Html.Raw(Model.Refuse)')
 
     });
 

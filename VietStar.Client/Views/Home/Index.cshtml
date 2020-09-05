@@ -1,9 +1,43 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using VietStar.Entities.Infrastructures;
+@{ 
+    var companyName = CurrentProcess.CurrentUser.OrgId != 2 ? "Công ty Cổ Phần Dịch Vụ Tài Chính Việt Bank"
+        : "Công ty Cổ Phần Thu Hồi Nợ Vietstar";
 }
-<section class="content-header">
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
-    </ol>
-</section>
+<div class="main-content-inner">
+   
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+               
+                <div class="space"></div>
+                <div class="row">
+                    <div class="col-xs-12">
+
+                        <img class="img-responsive center-block" src="~/img/banner.png">
+                        <p>
+                            <span style="color: #008446;"><strong>Địa chỉ liên hệ</strong></span><br>
+                            <strong>
+                                @companyName<br>
+                            </strong>
+                            Địa chỉ trụ sở: Số 126 Nguyễn Minh Hoàng, P.12, Q. Tân Bình, TP.HCM<br />
+                            Số điện thoại: 0938 068 726 (Từ 7:00-19:00, thứ 2 đến Chủ Nhật và các ngày lễ)<br />
+                            Website: <a target="_blank" href="https://vietstargroup.vn">https://vietstargroup.vn</a>
+                        </p>
+
+                    </div>
+
+                    <!-- /.col -->
+
+                    <div class="vspace-6-sm"></div>
+
+                    <div class="col-sm-6">
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- PAGE CONTENT ENDS -->
+            </div>
+            <!-- /.col -->
+        </div>
+    </div>
+</div>

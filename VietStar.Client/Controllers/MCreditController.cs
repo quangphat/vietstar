@@ -114,13 +114,13 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
-        [MyAuthorize(Permissions = "mcredit-profile")]
+        [MyAuthorize(Permissions = "mcredit.external")]
         public IActionResult Index()
         {
             return View();
         }
 
-        [MyAuthorize(Permissions = "mcprofile")]
+        [MyAuthorize(Permissions = "mcredit.external")]
         public async Task<IActionResult> Search(string freeText, string status, string type, int page = 1)
         {
             var result = await _bizMCredit.SearchsAsync(freeText, status, type, page);

@@ -237,6 +237,11 @@ namespace VietStar.Business
             {
                 return ToResponse(false, mcProfile.error);
             }
+
+            if(mcProfile.data==null || mcProfile.data.obj==null)
+            {
+                return ToResponse(false, "Không có dữ liệu");
+            }
             int status = 0;
             try
             {
@@ -249,19 +254,16 @@ namespace VietStar.Business
             if (temp.data.Status != status)
             {
                 var result = await _rpMCredit.UpdateTempProfileStatusAsync(temp.data.Id, status);
-                if (mcProfile.data.obj.Reason != null)
+                await _rpNote.AddNoteAsync(new NoteAddModel
                 {
-                    var reasonName = JsonConvert.SerializeObject(mcProfile.data.obj.Reason);
-                    await _rpNote.AddNoteAsync(new NoteAddModel
-                    {
-                        ProfileId = profileId,
-                        CommentTime = DateTime.Now,
-                        Content = reasonName,
-                        ProfileTypeId = (int)NoteType.MCreditTemp,
-                        UserId = _process.User.Id
-                    });
-                    await _rpLog.InsertLog($"AddReasonToNote-MCreditTemp-{profileId}", reasonName);
-                }
+                    ProfileId = profileId,
+                    CommentTime = DateTime.Now,
+                    Content = mcProfile.data.obj.MCReason,
+                    ProfileTypeId = (int)NoteType.MCreditTemp,
+                    UserId = _process.User.Id
+                });
+                await _rpLog.InsertLog($"AddReasonToNote-MCreditTemp-{profileId}", mcProfile.data.obj.MCReason);
+
                 await _rpNote.AddNoteAsync(new NoteAddModel
                 {
                     ProfileTypeId = profileId,
@@ -310,7 +312,7 @@ namespace VietStar.Business
         public async Task<MCredit_TempProfile> GetTempProfileByIdAsync(int id)
         {
             var result = await _rpMCredit.GetTemProfileByIdAsync(id);
-            if (result.success || result.data == null)
+            if (!result.success || result.data == null)
             {
                 return ToResponse(result);
             }
@@ -495,9 +497,9 @@ namespace VietStar.Business
         public async Task<ProfileGetByIdResponseObj> GetMCreditProfileByIdAsync(int id)
         {
             var result = await _svMcredit.GetProfileById(id.ToString());
-            if (!result.success)
+            if (!result.success || result.data == null || result.data.obj == null)
             {
-                return null;
+                return ToResponse<ProfileGetByIdResponseObj>(null, !result.success ? result.error : "Không có dữ liệu");
             }
             //result.data.obj.IsAddrSame = "1";
             //result.data.obj.IsInsurrance = "1";
@@ -508,6 +510,9 @@ namespace VietStar.Business
             //}
             result.data.obj.LocalProfileId = profile.success && profile.data != null ? profile.data.Id : 0;
 
+            if (!string.IsNullOrWhiteSpace(result.data.obj.Refuse))
+                result.data.obj.Refuse = result.data.obj.Refuse.Trim();
+
             if (result.data.obj != null && result.data.obj.Reason != null)
             {
                 result.data.obj.ReasonName = JsonConvert.SerializeObject(result.data.obj.Reason);
@@ -515,7 +520,7 @@ namespace VietStar.Business
             return result.data.obj;
         }
 
-        public async Task<string> ExportAsync(string contentRootPath, 
+        public async Task<string> ExportAsync(string contentRootPath,
             DateTime? fromDate
             , DateTime? toDate
             , int dateType = 1
@@ -550,13 +555,13 @@ namespace VietStar.Business
         {
             var result = await _rpMCredit.GetTempProfilesAsync(_process.User.Id,
                 request.fromDate,
-                request.toDate, 
+                request.toDate,
                 request.dateType,
-                request.groupId, 
+                request.groupId,
                 request.memberId,
-                request.page, 
-                request.limit, 
-                request.freeText, 
+                request.page,
+                request.limit,
+                request.freeText,
                 request.status);
             return result;
         }

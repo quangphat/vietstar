@@ -57,7 +57,7 @@ function SetFormatDateTimeDMY(datetime) {
     }
 }
 function convertStringToDMY(input) {
-    debugger
+    
     if (isNullOrWhiteSpace(input))
         return
     let mydate = new Date(input)

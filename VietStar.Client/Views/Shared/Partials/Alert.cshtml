@@ -1,0 +1,12 @@
+﻿@model VietStar.Entities.Commons.AlertModel
+<div class="alert alert-warning alert-dismissible">
+    
+    <h4><i class="icon fa fa-warning"></i> @Model.Title!</h4>
+    <span>@Model.Content</span>
+    <div>
+        <a class="" href="@Model.ActionHref" id="">
+            @Model.ActionName
+        </a>
+    </div>
+   
+</div>

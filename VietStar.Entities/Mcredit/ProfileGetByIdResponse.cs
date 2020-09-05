@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace VietStar.Entities.Mcredit
@@ -50,8 +52,6 @@ namespace VietStar.Entities.Mcredit
         public string SaleName { get; set; }
         public string SalePhone { get; set; }
         public string SaleIdNumber { get; set; }
-        public string Refuse { get; set; }
-        public object Reason { get; set; }
         public string ReasonName { get; set; }
         public string CreateUserId { get; set; }
         public string CreateUserCode { get; set; }
@@ -63,5 +63,34 @@ namespace VietStar.Entities.Mcredit
         public string SaleAddr { get; set; }
         public string SaleAvatar { get; set; }
         public int LocalProfileId { get; set; }
+
+        public string Refuse { get; set; }
+        public object Reason { get; set; }
+
+        public string MCReason
+        {
+            get
+            {
+                if (Reason == null)
+                    return string.Empty;
+                var stringContent = Reason.ToString();
+                if (string.IsNullOrWhiteSpace(stringContent))
+                    return string.Empty;
+                stringContent = stringContent.Replace("'", "\"");
+                var reasons = JsonConvert.DeserializeObject<List<ReasonObj>>(stringContent);
+               var reasonObj = reasons.OrderByDescending(p => p.Id).FirstOrDefault();
+                if (reasonObj == null)
+                    return string.Empty;
+                return $"Id: {reasonObj.Id} - Reason: {reasonObj.Reason} - Detail: {reasonObj.ReasonDetail} - UserComment: {reasonObj.UserComment}";
+            }
+        }
+    }
+
+    public class ReasonObj
+    {
+        public int Id { get; set; }
+        public string Reason { get; set; }
+        public string ReasonDetail { get; set; }
+        public string UserComment { get; set; }
     }
 }
