@@ -5,6 +5,12 @@
 }
 
 <div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+     new VietStar.Entities.ViewModels.BreadcrumbModel
+     { FirstPath="/Employees/Index", FirstName="Danh sách nhân viên"}
+     )
+    </div>
     <div class="page-content" id="panel_body">
         <form class="form-horizontal" onSubmit="return false">
             <div class="space-4"></div>

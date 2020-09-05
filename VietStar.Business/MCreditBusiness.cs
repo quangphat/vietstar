@@ -310,7 +310,13 @@ namespace VietStar.Business
         public async Task<MCredit_TempProfile> GetTempProfileByIdAsync(int id)
         {
             var result = await _rpMCredit.GetTemProfileByIdAsync(id);
-            return ToResponse(result);
+            if (result.success || result.data == null)
+            {
+                return ToResponse(result);
+            }
+            if (string.IsNullOrWhiteSpace(result.data.MCId))
+                result.data.MCId = "";
+            return result.data;
         }
 
 

@@ -5,12 +5,10 @@
 }
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
-        <ul class="breadcrumb">
-            <li>
-                <i class="fa fa-caret-right"></i>
-                <a href="#">Sửa tổ nhóm</a>
-            </li>
-        </ul>
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+    new VietStar.Entities.ViewModels.BreadcrumbModel
+    { FirstPath="/Groups/Index", FirstName="Danh sách nhóm", SecondName="Cập nhật" }
+    )
     </div>
     <div class="page-content" id="panel_body">
         <div class="row">

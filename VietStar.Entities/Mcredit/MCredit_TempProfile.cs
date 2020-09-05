@@ -50,7 +50,7 @@ namespace VietStar.Entities.Mcredit
                 return IsInsurrance == true ? "true" : "false";
             }
         }
-        public string isAddr
+        public string isAddress
         {
             get
             {

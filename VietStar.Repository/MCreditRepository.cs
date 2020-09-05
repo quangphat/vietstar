@@ -296,7 +296,7 @@ namespace VietStar.Repository
                 {
                 nameof(model.CreatedTime),
                 nameof(model.UpdatedTime),
-                nameof(model.isAddr),
+                nameof(model.isAddress),
                 nameof(model.isInsur),
                 nameof(model.MCId)
                 }, outputParam: "Id");
@@ -350,8 +350,8 @@ namespace VietStar.Repository
                 nameof(model.CreatedTime),
                 nameof(model.UpdatedTime),
                 nameof(model.CreatedBy),
-                nameof(model.isAddr),
                 nameof(model.MCId),
+                nameof(model.isAddress),
                 nameof(model.isInsur)
             });
 

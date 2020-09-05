@@ -79,7 +79,7 @@ namespace VietStar.Repository
                 using (var _con = GetConnection())
                 {
                     await _con.ExecuteAsync("sp_HO_SO_Them_v2", par, commandType: CommandType.StoredProcedure);
-                    var id = par.Get<int>(nameof(model.ID));
+                    var id = par.Get<int>("id");
                     return BaseResponse<int>.Create(id);
                 }
             }

@@ -6,11 +6,10 @@
 
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
-        <ul class="breadcrumb">
-            <li>
-                <a href="#">Danh sách hồ sơ</a>
-            </li>
-        </ul>
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+    new VietStar.Entities.ViewModels.BreadcrumbModel
+    { FirstPath="/Mcredit/Index", FirstName="Hồ sơ MCredit"}
+    )
     </div>
     <div class="page-content" id="panel_body">
         <form class="form-horizontal" onsubmit="return false">

@@ -23,6 +23,14 @@
       },
       "applicationUrl": "http://vietstar.vn:53323"
     },
+    "VietStar.Staging": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Staging"
+      },
+      "applicationUrl": "http://vietstar.vn:53323"
+    },
     "VietStar.Production": {
       "commandName": "Project",
       "launchBrowser": true,

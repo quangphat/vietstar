@@ -7,12 +7,10 @@
 
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
-        <ul class="breadcrumb">
-            <li>
-                <i class="fa fa-caret-right"></i>
-                <a href="#">Check CIC</a>
-            </li>
-        </ul>
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+     new VietStar.Entities.ViewModels.BreadcrumbModel
+     { FirstPath="/Mcredit/Index", FirstName="Hồ sơ MCredit", SecondName="Check CIC" }
+     )
     </div>
     <div class="page-content" id="panel_body">
         <div class="row">
