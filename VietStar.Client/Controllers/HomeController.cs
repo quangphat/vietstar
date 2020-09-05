@@ -12,17 +12,25 @@ using VietStar.Entities.Infrastructures;
 
 namespace VietStar.Client.Controllers
 {
+    [Authorize]
     public class HomeController : VietStarBaseController
     {
         public HomeController(CurrentProcess process) : base(process)
         {
         }
-        [MyAuthorize]
+        
         public IActionResult Index()
         {
             
             return View();
         }
+
+        public IActionResult Version()
+        {
+
+            return View();
+        }
+
 
         public IActionResult Privacy()
         {

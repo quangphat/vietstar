@@ -1,11 +1,21 @@
-﻿
+﻿@using VietStar.Entities.Infrastructures;
+@{
+    var headerName = "Hệ thống kiểm duyệt hồ sơ";
+    var iconPath = "/img/logo.png";
+    if (CurrentProcess.CurrentUser.OrgId==2)
+    {
+        headerName = "Hệ thống báo cáo";
+        iconPath = "/img//logo-revoke.png";
+    }
+
+}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>VietStar</title>
-    <link rel="icon" href="~/img/logo.png" />
+    <title>@headerName</title>
+    <link rel="icon" href="@iconPath" />
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -60,11 +70,13 @@
         <header class="main-header">
             <!-- Logo -->
             <a href="index2.html" class="logo">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><img src="~/img/logo.png" style="width:50px;" /></span>
-                <!-- logo for regular state and mobile devices -->
 
-                <span class="logo-lg"><img src="~/img//logo.png" style="width:72px;"></span>
+                
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><img src="@iconPath" style="width:50px;" /></span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg"><img src="@iconPath" style="width:72px;"></span>
+               
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top">
@@ -254,8 +266,8 @@
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu" data-widget="tree" id="left-menu">
-                    <li class="header ">HỆ THỐNG KIỂM DUYỆT HỒ SƠ</li>
-                    <li class="treeview">
+                    <li class="header "><span style="text-transform:uppercase">@headerName</span></li>
+                    <li class="treeview" id="home"  onclick="redirectTo('/home/Index')">
                         <a href="/Home">
                             <i class="fa fa-home"></i> <span>Trang chủ</span>
                             <span class="pull-right-container">
@@ -263,8 +275,8 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="active"><a href="/Home/About"><i class="fa fa-circle-o"></i> Giới thiệu</a></li>
-                            <li><a href="/Home/Version"><i class="fa fa-circle-o"></i> Phiên bản</a></li>
+                            <li id="home/index"><a href="/Home/Index"><i class="fa fa-circle-o"></i> Giới thiệu</a></li>
+                            <li id="home/version"><a href="/Home/Version"><i class="fa fa-circle-o"></i> Phiên bản</a></li>
 
                         </ul>
                     </li>
@@ -365,9 +377,9 @@
                         <li class="treeview" id="revoke" onclick="redirectTo('/revoke/Index')">
                             <a href="/revoke/Index">
                                 <i class="fa fa-refresh"></i> <span>Thu hồi nợ</span>
-                                
+
                             </a>
-                            
+
                         </li>
                     }
                     <li class="treeview" id="employees">
