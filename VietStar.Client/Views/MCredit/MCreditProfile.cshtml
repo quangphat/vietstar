@@ -36,9 +36,12 @@
 
                         <label class="col-sm-2 control-label no-padding-right">Lỗi từ MC<span class="required">(*)</span></label>
                         <div class="col-sm-10">
-                            <textarea type="text" value="" readonly class="form-control">
-                                @Model.ReasonName
-                            </textarea>
+                            @Html.TextAreaFor(
+                                model => model.MCReason
+,
+                                new { @class = "form-control", @readonly = "readonly" }
+                                )
+                            
                             <div class="pull-right mt-10">
                                 <a class="btn btn-sm btn-info" id="btnAddNoteFromReason">
                                     Thêm ghi chú
