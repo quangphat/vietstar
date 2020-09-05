@@ -170,6 +170,35 @@ namespace VietStar.Repository
             }
         }
 
+        public async Task<BaseResponse<int>> CreateAsync(GroupCreateModel model, string parentSequenceCode, int orgId, int createdBy)
+        {
+            try
+            {
+                var pars = new DynamicParameters();
+                pars.Add("Id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                pars.Add("parentId", model.ParentId);
+                pars.Add("LeaderId", model.LeaderId);
+                pars.Add("ShortName", model.ShortName);
+                pars.Add("Name", model.Name);
+                pars.Add("parentSequenceCode", parentSequenceCode);
+                pars.Add("orgId", orgId);
+                pars.Add("createdBy", createdBy);
+                pars.Add("memberIds", string.Join(',', model.MemberIds));
+                using (var con = GetConnection())
+                {
+                    var result = await con.ExecuteAsync("sp_Group_Create",
+                        pars,
+                        commandType: CommandType.StoredProcedure);
+                    return BaseResponse<int>.Create(pars.Get<int>("Id"));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BaseResponse<int>.Create(0, GetException(ex));
+            }
+        }
+
         public async Task<BaseResponse<string>> GetParentSequenceCodeAsync(int groupId)
         {
 

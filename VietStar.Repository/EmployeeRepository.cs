@@ -293,11 +293,11 @@ namespace VietStar.Repository
             }
         }
 
-        public async Task<List<OptionSimple>> GetAllEmployeePagingAsync(int orgId, int page, string freeText)
+        public async Task<List<OptionSimple>> GetAllEmployeePagingAsync(int orgId, int page, string freeText , int ignoreMemberIdGroupId)
         {
             using (var con = GetConnection())
             {
-                var rs = await con.QueryAsync<OptionSimple>("sp_Employee_GetPaging_v2", new { orgId, page, freeText }, commandType: CommandType.StoredProcedure);
+                var rs = await con.QueryAsync<OptionSimple>("sp_Employee_GetPaging_v2", new { orgId, page, freeText, ignoreMemberIdGroupId }, commandType: CommandType.StoredProcedure);
                 return rs.ToList();
             }
         }
