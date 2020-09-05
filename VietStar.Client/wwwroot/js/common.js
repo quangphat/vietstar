@@ -386,19 +386,21 @@ function GetProducts(partnerId, control = null, defaultValue = 0) {
 function GetProvinces(control = null, defaultValue = 0, districId = 0) {
     if (control == null)
         control = $("#provinceId");
+    control.empty();
+    debugger
     control.append("<option value='0'>Chọn tỉnh/thành</option>");
     let data = getLocalStorage(provinces_key);
     if (data != null && !isNullOrNoItem(data)) {
         $.each(data, function (index, item) {
             control.append("<option value='" + item.Id + "'>" + item.Name + "</option>");
         });
-        if (defaultValue != null && defaultValue > 0) {
+        if (defaultValue != null ) {
             control.val(defaultValue);
             GetDistricts(defaultValue, null, districId)
         }
         return;
     }
-    control.empty();
+    
     $.ajax({
         type: "GET",
         url: '/common/provinces',
@@ -410,7 +412,7 @@ function GetProvinces(control = null, defaultValue = 0, districId = 0) {
                 $.each(data.data, function (index, item) {
                     control.append("<option value='" + item.Id + "'>" + item.Name + "</option>");
                 });
-                if (defaultValue != null && defaultValue > 0) {
+                if (defaultValue != null ) {
                     control.val(defaultValue);
                     GetDistricts(defaultValue, null, districId)
                     // GetMemberByGroup(defaultValue, null,)
