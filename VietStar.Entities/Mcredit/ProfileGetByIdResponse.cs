@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,15 +65,20 @@ namespace VietStar.Entities.Mcredit
         public int LocalProfileId { get; set; }
 
         public string Refuse { get; set; }
-        public List<ReasonObj> Reason { get; set; }
+        public object Reason { get; set; }
 
         public string MCReason
         {
             get
             {
-                if (Reason == null || !Reason.Any())
+                if (Reason == null)
                     return string.Empty;
-                var reasonObj = Reason.OrderByDescending(p => p.Id).FirstOrDefault();
+                var stringContent = Reason.ToString();
+                if (string.IsNullOrWhiteSpace(stringContent))
+                    return string.Empty;
+                stringContent = stringContent.Replace("'", "\"");
+                var reasons = JsonConvert.DeserializeObject<List<ReasonObj>>(stringContent);
+               var reasonObj = reasons.OrderByDescending(p => p.Id).FirstOrDefault();
                 if (reasonObj == null)
                     return string.Empty;
                 return $"Id: {reasonObj.Id} - Reason: {reasonObj.Reason} - Detail: {reasonObj.ReasonDetail} - UserComment: {reasonObj.UserComment}";
