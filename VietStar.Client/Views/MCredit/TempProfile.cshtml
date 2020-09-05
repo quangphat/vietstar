@@ -23,12 +23,10 @@
 
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
-        <ul class="breadcrumb">
-            <li>
-                <i class="fa fa-caret-right"></i>
-                <a href="#">Cập nhật hồ sơ tạm</a>
-            </li>
-        </ul>
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+     new VietStar.Entities.ViewModels.BreadcrumbModel
+     { FirstPath="/Mcredit/Temp", FirstName="Danh sách tạo mới", SecondName="Cập nhật"}
+     )
     </div>
     <div class="page-content" id="panel_body">
         <div class="row">

@@ -7,7 +7,9 @@
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
         @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
-      new VietStar.Entities.ViewModels.BreadcrumbModel { FirstPath= "/Company/Index", FirstName="Công ty", SecondName="Tạo mới" })
+      new VietStar.Entities.ViewModels.BreadcrumbModel
+      { FirstPath= "/Company/Index", FirstName="Công ty", SecondName="Tạo mới" }
+      )
     </div>
     <div class="page-content" id="panel_body">
         <div class="row">

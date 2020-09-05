@@ -9,6 +9,7 @@ namespace VietStar.Entities.CheckDup
     {
         public string FullName { get; set; }
         public DateTime CheckDate { get; set; }
+        public DateTime? BirthDay { get; set; }
         public string Cmnd { get; set; }
         public int CICStatus { get; set; }
         public bool Gender { get; set; }

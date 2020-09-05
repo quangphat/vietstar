@@ -29,6 +29,11 @@ namespace VietStar.Business
             {
                 return ToResponse(false, "Dữ liệu không hợp lệ");
             }
+
+            if(!model.BirthDay.HasValue || (model.BirthDay.HasValue && model.BirthDay.Value == DateTime.MinValue))
+            {
+                return ToResponse(false, "Vui lòng chọn ngày sinh");
+            }
             if (model.PartnerId <= 0)
                 return ToResponse(false, "Vui lòng chọn đối tác");
             var checkDup = _mapper.Map<CheckDupAddSql>(model);
@@ -58,24 +63,44 @@ namespace VietStar.Business
             int page,
             int limit)
         {
-            var datas = await
-                 _rpCheckDup.GetsAsync(freeText, page, limit, _process.User.Id);
+            var datas = await _rpCheckDup.GetsAsync(freeText, page, limit, _process.User.Id);
+            if(datas==null ||!datas.Any())
+            {
+                return DataPaging.Create<List<CheckDupIndexModel>>(datas, 0);
+            }
             var result = DataPaging.Create(datas, datas.FirstOrDefault().TotalRecord);
             return result;
         }
         public async Task<CheckDupAddSql> GetByIdAsync(int id)
         {
             var result = await _rpCheckDup.GetByIdAsync(id);
+            if(result==null)
+            {
+                return ToResponse<CheckDupAddSql>(null, Errors.notfound);
+            }
+            if(result.BirthDay == null)
+            {
+                result.BirthDay = DateTime.MinValue;
+            }
             return result;
         }
         public async Task<int> CreateAsync(CheckDupAddModel model)
         {
+            if (model == null)
+                return ToResponse(0, Errors.invalid_data);
+
             if (model.PartnerId <= 0)
                 return ToResponse(0, "Vui lòng chọn đối tác");
+            if (!model.BirthDay.HasValue || (model.BirthDay.HasValue && model.BirthDay.Value == DateTime.MinValue))
+            {
+                return ToResponse(0, "Vui lòng chọn ngày sinh");
+            }
+
             var obj = _mapper.Map<CheckDupAddSql>(model);
             obj.CICStatus = (int)CheckDupCICStatus.NotDebt;
             obj.PartnerStatus = (int)CheckDupPartnerStatus.NotCheck;
             var response = await _rpCheckDup.CreateAsync(obj, _process.User.Id);
+
             if (response.data > 0)
             {
                 if (!string.IsNullOrWhiteSpace(model.Note))

@@ -309,19 +309,14 @@ namespace VietStar.Business
 
         public async Task<MCredit_TempProfile> GetTempProfileByIdAsync(int id)
         {
-            try
+            var result = await _rpMCredit.GetTemProfileByIdAsync(id);
+            if (result.success || result.data == null)
             {
-                await _rpLog.InsertLog($"GetTempProfileByIdAsync-{id}-{_process.User.Id}-before","");
-                var result = await _rpMCredit.GetTemProfileByIdAsync(id);
-                await _rpLog.InsertLog($"GetTempProfileByIdAsync-{id}-{_process.User.Id}-after", result.Dump());
                 return ToResponse(result);
             }
-            catch(Exception e)
-            {
-                await _rpLog.InsertLog($"GetTempProfileByIdAsync-{id}-{_process.User.Id}", e.Dump());
-                return null;
-            }
-            
+            if (string.IsNullOrWhiteSpace(result.data.MCId))
+                result.data.MCId = "";
+            return result.data;
         }
 
 

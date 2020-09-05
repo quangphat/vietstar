@@ -4,15 +4,10 @@
 }
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
-        <ul class="breadcrumb">
-            <li>
-                <i class="fa fa-caret-right"></i><a href="/CheckDup/Index" class="active">Danh sách CheckDup</a>
-            </li>
-            <li>
-                
-                <a href="#">Tạo Checkdup</a>
-            </li>
-        </ul>
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+      new VietStar.Entities.ViewModels.BreadcrumbModel
+      { FirstPath="/Checkdup/Index", FirstName="Danh sách checkdup", SecondName="Tạo mới" }
+      )
     </div>
     <div class="page-content" id="panel_body">
         <div class="row">
@@ -51,6 +46,19 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control date-picker" type="date"
+                                       id="BirthDay" />
+
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tính thành<span class="required">(*)</span></label>
                         <div class="col-sm-4">
                             <select id="provinceId" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
@@ -79,7 +87,7 @@
                         </div>
 
                     </div>
-                  
+
                 </form>
             </div>
         </div>
@@ -137,66 +145,80 @@
     $("#Phone").ForceNumericOnly();
     $("#Salary").ForceNumericOnly();
     $('#btnSave').click(function (e) {
-        if (isNullOrWhiteSpace($('#fullName').val())) {
-            swal({
-                title: "Không thành công",
-                text: "Vui lòng nhập họ tên",
-                type: "error",
-                timer: 4000,
-                showConfirmButton: true,
-            });
-            return;
-        }
-        if (isNullOrWhiteSpace($('#checkDate').val())) {
-            swal({
-                title: "Không thành công",
-                text: "Ngày check không hợp lệ",
-                type: "error",
-                timer: 4000,
-                showConfirmButton: true,
-            });
-            return;
-        }
+        //if (isNullOrWhiteSpace($('#fullName').val())) {
+        //    swal({
+        //        title: "Không thành công",
+        //        text: "Vui lòng nhập họ tên",
+        //        type: "error",
+        //        timer: 4000,
+        //        showConfirmButton: true,
+        //    });
+        //    return;
+        //}
+        //if (isNullOrWhiteSpace($('#checkDate').val())) {
+        //    swal({
+        //        title: "Không thành công",
+        //        text: "Ngày check không hợp lệ",
+        //        type: "error",
+        //        timer: 4000,
+        //        showConfirmButton: true,
+        //    });
+        //    return;
+        //}
 
-        if (isNullOrWhiteSpace($('#Phone').val())) {
-            swal({
-                title: "Không thành công",
-                text: "Vui lòng nhập số điện thoại",
-                type: "error",
-                timer: 4000,
-                showConfirmButton: true,
-            });
-            return;
-        }
-        if ($('#cmnd').val().length != 9 && $('#cmnd').val().length != 12) {
-            swal({
-                title: "Không thành công",
-                text: "Số CMND chỉ 9 hoặc 12 số!",
-                type: "error",
-                timer: 4000,
-                showConfirmButton: true,
-            });
-            return;
-        }
-        var objectSend = JSON.stringify({
+        //if (isNullOrWhiteSpace($('#Phone').val())) {
+        //    swal({
+        //        title: "Không thành công",
+        //        text: "Vui lòng nhập số điện thoại",
+        //        type: "error",
+        //        timer: 4000,
+        //        showConfirmButton: true,
+        //    });
+        //    return;
+        //}
+        //if ($('#cmnd').val().length != 9 && $('#cmnd').val().length != 12) {
+        //    swal({
+        //        title: "Không thành công",
+        //        text: "Số CMND chỉ 9 hoặc 12 số!",
+        //        type: "error",
+        //        timer: 4000,
+        //        showConfirmButton: true,
+        //    });
+        //    return;
+        //}
+        var model = JSON.stringify({
             'FullName': $('#fullName').val(),
             'CheckDate': $('#checkDate').val(),
             'Note': $('#Note').val(),
             'Cmnd': $('#cmnd').val(),
             'Gender': 0,
+            'BirthDay': isNullOrWhiteSpace($('#BirthDay').val()) ? null : $('#BirthDay').val(),
             'PartnerId': $("#partnerId").val(),
             'ProvinceId': $("#provinceId").val(),
             'Address': $('#address').val(),
             'Phone': $('#Phone').val(),
-            'Salary': $('#Salary').val()
+            'Salary': getDecimalValueFromMoneyInput($("#Salary").val())
 
         });
+        //let model = JSON.stringify({
+        //    "FullName": "test2",
+        //    "CheckDate": "2003-02-01",
+        //    "Note": "",
+        //    "Cmnd": "222222222",
+        //    "Gender": 0,
+        //    "BirthDay": null,
+        //    "PartnerId": "3",
+        //    "ProvinceId": "1",
+        //    "Address": "eee",
+        //    "Phone": "4444444444",
+        //    "Salary": getDecimalValueFromMoneyInput($("#Salary").val())
+        //})
         $.ajax({
             traditional: true,
             url: '/checkdup/createasync',
             type: "POST",
-            contentType: "application/json; charset=utf-8",
-            data: objectSend,
+            contentType: "application/json",
+            data: model,
             success: function (data) {
                 if (data.success == true) {
                     swal({
