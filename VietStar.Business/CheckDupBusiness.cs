@@ -86,12 +86,21 @@ namespace VietStar.Business
         }
         public async Task<int> CreateAsync(CheckDupAddModel model)
         {
+            if (model == null)
+                return ToResponse(0, Errors.invalid_data);
+
             if (model.PartnerId <= 0)
                 return ToResponse(0, "Vui lòng chọn đối tác");
+            if (!model.BirthDay.HasValue || (model.BirthDay.HasValue && model.BirthDay.Value == DateTime.MinValue))
+            {
+                return ToResponse(0, "Vui lòng chọn ngày sinh");
+            }
+
             var obj = _mapper.Map<CheckDupAddSql>(model);
             obj.CICStatus = (int)CheckDupCICStatus.NotDebt;
             obj.PartnerStatus = (int)CheckDupPartnerStatus.NotCheck;
             var response = await _rpCheckDup.CreateAsync(obj, _process.User.Id);
+
             if (response.data > 0)
             {
                 if (!string.IsNullOrWhiteSpace(model.Note))

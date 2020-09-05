@@ -234,7 +234,7 @@
             'Id':'@Model.Id',
             'FullName': $('#FullName').val(),
             'CheckDate': $('#CheckDate').val(),
-            'BirthDay': $('#BirthDay').val(),
+            'BirthDay': isNullOrWhiteSpace($('#BirthDay').val()) ? null : $('#BirthDay').val(),
             'Note': $('#txtGhiChu').val(),
             'Cmnd': $('#Cmnd').val(),
             'CICStatus':$("#CICStatus").val(),
