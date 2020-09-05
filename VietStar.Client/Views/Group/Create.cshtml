@@ -1,13 +1,13 @@
-﻿@model VietStar.Entities.GroupModels.GroupModel
+﻿
 @{
-    ViewData["Title"] = "Chi tiết tổ nhóm";
+    ViewData["Title"] = "Tạo mới nhóm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
         @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
     new VietStar.Entities.ViewModels.BreadcrumbModel
-    { FirstPath="/Groups/Index", FirstName="Danh sách nhóm", SecondName="Cập nhật" }
+    { FirstPath="/Groups/Index", FirstName="Danh sách nhóm", SecondName="Tạo mới" }
     )
     </div>
     <div class="page-content" id="panel_body">
@@ -18,11 +18,11 @@
                     <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tên <span class="required">(*)</span> </label>
                         <div class="col-sm-4">
-                            <input type="text" id="GroupName" placeholder="Nhập tên nhóm" class="form-control" value="@Model.Name" />
+                            <input type="text" id="GroupName" placeholder="Nhập tên nhóm" class="form-control" />
                         </div>
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Tên ngắn <span class="required">(*)</span> </label>
                         <div class="col-sm-4">
-                            <input type="text" id="ShortName" placeholder="Nhập tên ngắn" class="form-control" value="@Model.ShortName" />
+                            <input type="text" id="ShortName" placeholder="Nhập tên ngắn" class="form-control"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -67,8 +67,8 @@
             {
                 Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>{
                     new VietStar.Entities.ViewModels.CommandBarButton { Id="", ClassName="", Name="Quay lại", Href="/Groups/Index" },
-                     new VietStar.Entities.ViewModels.CommandBarButton { Id="btnSave", ClassName="btn btn-sm btn-primary", Name="Cập nhật" }
-                    
+                     new VietStar.Entities.ViewModels.CommandBarButton { Id="btnSave", ClassName="btn btn-sm btn-primary", Name="Lưu" }
+
             }
             })
 
@@ -78,10 +78,9 @@
 <script>
  let page = 1;
     $(document).ready(function () {
-        GetMembers();
-        GetAllEmployees($('#LeaderId'), '@Model.LeaderId');
+        GetAllEmployees($('#LeaderId'));
         GetNotMembers(page)
-        GetParentGroups($('#ParentId'), @Model.ParentCode);
+        GetParentGroups($('#ParentId'));
         //filter id = "#duallist_filter_id"
         demo1 = $('select[name="duallistbox_demo1[]"]').bootstrapDualListbox();
         var filterBox = document.getElementById('duallist_filter_id');
@@ -113,11 +112,11 @@
     function GetNotMembers(page) {
         $('#dualEmployees').empty();
 
-        
+
         let freeText = isNullOrUndefined($("#duallist_filter_id").val()) ? '' : $("#duallist_filter_id").val();
         $.ajax({
             type: "GET",
-            url: `/employees/paging?page=${page}&freeText=${freeText}&ignoreMemberIdGroupId=${@Model.Id}`,
+            url: `/employees/paging?page=${page}&freeText=${freeText}`,
             data: {},
             success: function (data) {
                 if (data.data != null && data.success == true) {
@@ -154,32 +153,7 @@
             }
         });
     }
-    function GetMembers() {
-         $('#dualEmployees').empty();
-        $.ajax({
-            type: "GET",
-            url: `/groups/members/${@Model.Id}`,
-            success: function (data) {
-                if (data != null) {
 
-                    if (data.data != null && data.data.length > 0) {
-                        $.each(data.data, function (index, item) {
-
-                            $('#dualEmployees').append("<option value='" + item.Id + "' selected='selected'>" + item.Name + "</option>");
-                        });
-
-                    }
-
-                }
-                    $('#dualEmployees').bootstrapDualListbox('refresh', true);
-                    },
-                    complete: function () {
-                    },
-                    error: function (jqXHR, exception) {
-                    showError(jqXHR, exception);
-                    }
-                    });
-            }
 
 
     $('#btnSave').click(function (e) {
@@ -220,7 +194,6 @@
             return;
         }
         var objectSend = JSON.stringify({
-            'Id': @Model.Id,
             'Name': $('#GroupName').val(),
             'ShortName': $('#ShortName').val(),
             'LeaderId': $('#LeaderId').val(),
@@ -229,7 +202,7 @@
         });
         $.ajax({
             traditional: true,
-            url: `/Groups/Update/${@Model.Id}`,
+            url: `/Groups/CreateGroup`,
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: objectSend,
@@ -237,13 +210,12 @@
                 if (data.success == true) {
                     swal({
                         title: successMsg,
-                        text: "Cập nhật thành công",
+                        text: "Tạo mới thành công",
                         type: "success",
                         timer: 4000,
                         showConfirmButton: true,
                     }, function () {
-                            removeAllGroup_Cache();
-                        window.location = window.location;
+                        window.location ="/Groups/Index"
                     });
                 }
                 else {

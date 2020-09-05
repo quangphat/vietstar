@@ -21,5 +21,6 @@ namespace VietStar.Repository.Interfaces
         Task<BaseResponse<string>> GetParentSequenceCodeAsync(int groupId);
         Task<BaseResponse<bool>> CreateConfigAsync(int userId, List<int> groupIds);
         Task<int> GetGroupIdByLeaderIdAsync(int leaderId);
+        Task<BaseResponse<int>> CreateAsync(GroupCreateModel model, string parentSequenceCode, int orgId, int createdBy);
     }
 }

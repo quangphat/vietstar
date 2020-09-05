@@ -255,9 +255,9 @@ namespace VietStar.Business
             return account;
         }
 
-        public async Task<List<OptionSimple>> GetAllEmployeePagingAsync(int page, string freeText)
+        public async Task<List<OptionSimple>> GetAllEmployeePagingAsync(int page, string freeText, int ignoreMemberIdGroupId = 0)
         {
-            var result = await _rpEmployee.GetAllEmployeePagingAsync(_process.User.OrgId, page, freeText);
+            var result = await _rpEmployee.GetAllEmployeePagingAsync(_process.User.OrgId, page, freeText, ignoreMemberIdGroupId);
             return result;
         }
 
