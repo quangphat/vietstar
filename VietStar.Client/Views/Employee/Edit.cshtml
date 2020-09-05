@@ -5,12 +5,10 @@
 }
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
-        <ul class="breadcrumb">
-            <li>
-                <i class="ace-icon fa fa-home home-icon"></i>
-                <a href="/employee">Nhân sự</a><span><a href="#">Cập nhật nhân viên</a></span>
-            </li>
-        </ul>
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+      new VietStar.Entities.ViewModels.BreadcrumbModel
+      { FirstPath="/Employees/Index", FirstName="Danh sách nhân viên", SecondName="Cập nhật" }
+      )
     </div>
     <div class="page-content" id="page_content_panel">
         <div class="page-header">

@@ -5,15 +5,10 @@
 }
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
-        <ul class="breadcrumb">
-            <li>
-                <i class="fa fa-caret-right"></i>
-                <a href="/CheckDup/Index">Danh sách checkdup</a>
-            </li>
-            <li>
-                <a href="#">Chi tiết checkdup</a>
-            </li>
-        </ul>
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+     new VietStar.Entities.ViewModels.BreadcrumbModel
+     { FirstPath="/Checkdup/Index", FirstName="Danh sách checkdup", SecondName="Cập nhật" }
+     )
     </div>
     <div class="page-content" id="panel_body">
         <div class="row">
@@ -31,7 +26,7 @@
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày Check<span class="required">(*)</span></label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker" type="date"  id="CheckDate" />
+                                <input class="form-control date-picker" type="date" id="CheckDate" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
@@ -45,11 +40,32 @@
                         </div>
 
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Điện thoại</label>
                         <div class="col-sm-4">
                             <input type="text" id="Phone" placeholder="Điện thoại khách hàng " value="@Model.Phone" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                @if (Model.BirthDay != null)
+                                {
+                                    <input class="form-control date-picker" type="date"
+                                           id="BirthDay" />
+                                }
+                                else
+                                {
+                                    <input class="form-control date-picker" type="date"
+                                           value="@DateTime.MinValue.ToString("yyyy/MM/dd")" id="BirthDay" />
+                                }
+
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -154,6 +170,10 @@
     $(document).ready(function () {
         
         //$("#Salary").val(formatCurrency('@Model.Salary'.replace(/\./g, '')));
+        
+        
+        $("#BirthDay").val(FormatDateTimeDMY('@Model.BirthDay.Value.ToString("yyyy/MM/dd")', 'YYYY-MM-DD'))
+        debugger
         $("#CheckDate").val(FormatDateTimeDMY('@Model.CheckDate.ToString("yyyy/MM/dd")', 'YYYY-MM-DD'))
         
         if ('@Model.PartnerStatus' == '0') {
@@ -214,6 +234,7 @@
             'Id':'@Model.Id',
             'FullName': $('#FullName').val(),
             'CheckDate': $('#CheckDate').val(),
+            'BirthDay': $('#BirthDay').val(),
             'Note': $('#txtGhiChu').val(),
             'Cmnd': $('#Cmnd').val(),
             'CICStatus':$("#CICStatus").val(),
