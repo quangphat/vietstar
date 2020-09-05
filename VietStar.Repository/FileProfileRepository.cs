@@ -29,7 +29,7 @@ namespace VietStar.Repository
                 var p = new DynamicParameters();
                 p.Add("profileId", profileId);
                 p.Add("profileTypeId", profileType);
-                var result = await con.QueryAsync<FileUploadModel>("getTailieuByHosoId", p,
+                var result = await con.QueryAsync<FileUploadModel>("getTailieuByHosoId_v2", p,
                     commandType: CommandType.StoredProcedure);
                 return result.ToList();
             }

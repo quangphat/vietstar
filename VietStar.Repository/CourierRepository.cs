@@ -49,7 +49,7 @@ namespace VietStar.Repository
             ProcessInputPaging(ref page, ref limit, out offset);
             using (var con = GetConnection())
             {
-                var result = await con.QueryAsync<CourierIndexModel>("sp_GetHosoCourier",
+                var result = await con.QueryAsync<CourierIndexModel>("sp_GetHosoCourier_v2",
                     new { freeText, fromDate, toDate, dateType, status, page, limit_tmp = limit, assigneeId, groupId, provinceId, saleCode, userId },
                     commandType: CommandType.StoredProcedure);
                 return result.ToList();

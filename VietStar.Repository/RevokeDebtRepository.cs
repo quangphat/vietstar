@@ -35,7 +35,7 @@ namespace VietStar.Repository
         {
             using (var con = GetConnection())
             {
-                var result = await con.QueryAsync<RevokeDebtSearch>("sp_RevokeDebt_Search",
+                var result = await con.QueryAsync<RevokeDebtSearch>("sp_RevokeDebt_Search_v2",
                     new { freeText, page, limit_tmp = limit, status, groupId, userId, assigneeId, fromDate, toDate, dateType, processStatus }
                     , commandType: CommandType.StoredProcedure);
                 return result.ToList();
@@ -104,7 +104,7 @@ namespace VietStar.Repository
         {
             using (var con = GetConnection())
             {
-                await con.ExecuteAsync("sp_RevokeDebt_UpdateSimple",
+                await con.ExecuteAsync("sp_RevokeDebt_UpdateSimple_v2",
                      new { profileId, updateBy, model.Status, model.AssigneeId, model.DistrictId, model.ProvinceId, model.GroupId }
                      , commandType: CommandType.StoredProcedure);
                 return true;
