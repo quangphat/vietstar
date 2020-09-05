@@ -147,17 +147,51 @@ namespace VietStar.Business
             if (model == null || model.Id <= 0)
                 return ToResponse(false, Errors.invalid_data);
 
+            if(string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.ShortName))
+            {
+                return ToResponse(false, "Vui lòng nhập tên nhóm");
+            }
+
             if (model.MemberIds == null)
                 model.MemberIds = new List<int>();
 
             string parentSequenceCode = "0";
             if (model.ParentId > 0)
             {
-                var parentCode = _rpGroup.GetParentSequenceCodeAsync(model.ParentId);
-                parentSequenceCode = parentCode + "." + model.ParentId;
+                var parentCodeResponse = await _rpGroup.GetParentSequenceCodeAsync(model.ParentId);
+                if (parentCodeResponse.success)
+                {
+                    parentSequenceCode = parentCodeResponse.data + "." + model.ParentId;
+                }
+            }
+            model.MemberIds = model.MemberIds != null ? model.MemberIds.Distinct().ToList() : new List<int>();
+            return ToResponse(await _rpGroup.UpdateAsync(model, parentSequenceCode, _process.User.OrgId));
+        }
+
+        public async Task<int> CreateAsync(GroupCreateModel model)
+        {
+            if (model == null)
+                return ToResponse(0, Errors.invalid_data);
+            if (string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.ShortName))
+            {
+                return ToResponse(0, "Vui lòng nhập tên nhóm");
             }
 
-            return ToResponse(await _rpGroup.UpdateAsync(model, parentSequenceCode, _process.User.OrgId));
+            if (model.MemberIds == null)
+                model.MemberIds = new List<int>();
+
+            string parentSequenceCode = "0";
+            if (model.ParentId > 0)
+            {
+                var parentCodeResponse = await _rpGroup.GetParentSequenceCodeAsync(model.ParentId);
+                if(parentCodeResponse.success)
+                {
+                    parentSequenceCode = parentCodeResponse.data + "." + model.ParentId;
+                }
+                
+            }
+            model.MemberIds = model.MemberIds != null ? model.MemberIds.Distinct().ToList() : new List<int>();
+            return ToResponse(await _rpGroup.CreateAsync(model, parentSequenceCode, _process.User.OrgId, _process.User.Id));
         }
 
         public async Task<bool> CreateConfigAsync(CreateConfigModel model)

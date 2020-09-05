@@ -36,9 +36,9 @@ namespace VietStar.Client.Controllers
         }
 
         [HttpGet("paging")]
-        public async Task<IActionResult> GetAllEmployeePaging(string freeText, int page = 1)
+        public async Task<IActionResult> GetAllEmployeePaging(string freeText, int page = 1, int ignoreMemberIdGroupId = 0)
         {
-            var result = await _bizEmployee.GetAllEmployeePagingAsync(page, freeText);
+            var result = await _bizEmployee.GetAllEmployeePagingAsync(page, freeText, ignoreMemberIdGroupId);
             return ToResponse(result);
         }
 

@@ -26,7 +26,7 @@ namespace VietStar.Repository.Interfaces
         Task<List<OptionSimple>> GetMemberByGroupIdAsync(int groupId, int userId);
         Task<List<int>> GetPeopleCanViewMyProfileAsync(int profileId);
         Task<List<OptionSimple>> GetAllEmployeeAsync(int orgId);
-        Task<List<OptionSimple>> GetAllEmployeePagingAsync(int orgId, int page, string freeText);
+        Task<List<OptionSimple>> GetAllEmployeePagingAsync(int orgId, int page, string freeText,int ignoreMemberIdGroupId = 0);
         Task<List<EmployeeViewModel>> GetsAsync(
            int roleId,
            string freeText,
