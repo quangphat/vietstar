@@ -8,7 +8,7 @@
     <div class="breadcrumbs" id="breadcrumbs">
         @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
     new VietStar.Entities.ViewModels.BreadcrumbModel
-    { FirstPath="/Mcredit/Temp", FirstName="Danh sách tạo mới"}
+    { FirstPath="/Mcredit/Temp", FirstName="Danh sách tạo mới", SecondName="Tạo mới"}
     )
     </div>
     <div class="page-content" id="panel_body">
@@ -102,8 +102,7 @@
 
                         <label class="col-sm-2 control-label no-padding-right">Tỉnh/TP<span class="required">(*)</span></label>
                         <div class="col-sm-4">
-                            <select id="ddlProvince" class="chosen-select form-control" data-placeholder="Chọn tỉnh thành phố">
-                                <option value="0"></option>
+                            <select id="ddlProvince" class="chosen-select form-control  select2" data-placeholder="Chọn tỉnh thành phố">
                             </select>
                         </div>
                         @*<label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
@@ -151,7 +150,7 @@
 
                         <label class="col-sm-2 control-label no-padding-right">Sản phẩm vay<span class="required">(*)</span></label>
                         <div class="col-sm-4">
-                            <select id="ddlProduct" class="chosen-select form-control" data-placeholder="Chọn sản phẩm vay">
+                            <select id="ddlProduct" class="chosen-select form-control select2" data-placeholder="Chọn sản phẩm vay">
                                 <option value="0"></option>
                             </select>
                             <div class="row">
@@ -195,7 +194,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label no-padding-right">Địa điểm ký văn kiện tín dụng *<span class="required">(*)</span></label>
                         <div class="col-sm-10">
-                            <select id="ddlLocSign" class="chosen-select form-control">
+                            <select id="ddlLocSign" class="chosen-select form-control select2">
                                 <option value="0">Chọn một địa điểm</option>
                             </select>
                         </div>
