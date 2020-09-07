@@ -8,19 +8,24 @@
 
     if (string.IsNullOrWhiteSpace(Model.MCId) && CurrentProcess.CurrentUser.isAdmin)
     {
-        
+
         buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
         buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnSubmit", Name = "Nộp hồ sơ qua MCredit" });
     }
     else
     {
-        buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdateFiles", Name = "Cập Nhật File và Chuyển Qua MC" });
         if(CurrentProcess.CurrentUser.isAdmin)
         {
-
+            buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdateFiles", Name = "Cập Nhật File và Chuyển Qua MC" });
             buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnCreate", Name = "Tạo hồ sơ mới từ hồ sơ này" });
         }
+        else if (Model.Status != (int)VietStar.Entities.Commons.Enums.ProfileStatus.Cancel)
+        {
+            buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdateFiles", Name = "Cập Nhật File và Chuyển Qua MC" });
+        }
+       
     }
+    
 }
 
 <div class="main-content-inner">
