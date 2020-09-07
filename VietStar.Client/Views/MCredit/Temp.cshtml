@@ -217,14 +217,14 @@
         sortField = queries.get('sortField');
         if (callBack != null) {
 
-            callBack(page, limit, sort, sortField, status, isPopState);
+            callBack(page, limit, status, isPopState);
         }
 
     }
     $("#freeText,#fromDate, #toDate").on("keyup", function (event) {
         if (event.keyCode === 13) {
             event.preventDefault();
-            getData(1, limit, null, null, getQueryStatus($("#ddlStatus")));
+            getData(1, limit,  getQueryStatus($("#ddlStatus")));
         }
     });
     $('#btnSearch').click(function (e) {
@@ -278,7 +278,7 @@
     }
 
     function renderMcId(mcid) {
-        debugger
+        
         if (isNullOrWhiteSpace(mcid))
             return renderTextLeft('', '', 'w-20');
         return renderTextLink(mcid, '/MCredit/MCreditProfile/' + mcid)
@@ -305,7 +305,7 @@
                         timer: 4000,
                         showConfirmButton: true,
                     }, function () {
-
+                            getData(page, limit,  getQueryStatus($("#ddlStatus")));
                     });
                 }
                 else {
@@ -361,8 +361,7 @@
     function renderPageList(page, limit, totalRecord) {
         renderPaging(page, limit, totalRecord)
     }
-function getData(page, limit,status, isPopState = false)
-{
+function getData(page, limit,status, isPopState = false){
     SearchDatas('/mcredit/SearchTemps', processingModelSearch(page, limit, status), isPopState, renderTableBody, renderPageList, onPopState);
     return;
     }
