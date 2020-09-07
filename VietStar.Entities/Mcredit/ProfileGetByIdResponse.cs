@@ -73,15 +73,23 @@ namespace VietStar.Entities.Mcredit
             {
                 if (Reason == null)
                     return string.Empty;
-                var stringContent = Reason.ToString();
-                if (string.IsNullOrWhiteSpace(stringContent))
-                    return string.Empty;
-                stringContent = stringContent.Replace("'", "\"");
-                var reasons = JsonConvert.DeserializeObject<List<ReasonObj>>(stringContent);
-               var reasonObj = reasons.OrderByDescending(p => p.Id).FirstOrDefault();
-                if (reasonObj == null)
-                    return string.Empty;
-                return $"Id: {reasonObj.Id} - Reason: {reasonObj.Reason} - Detail: {reasonObj.ReasonDetail} - UserComment: {reasonObj.UserComment}";
+                try
+                {
+                    var stringContent = Reason.ToString();
+                    if (string.IsNullOrWhiteSpace(stringContent))
+                        return string.Empty;
+                    stringContent = stringContent.Replace("'", "\"");
+                    var reasons = JsonConvert.DeserializeObject<List<ReasonObj>>(stringContent);
+                    var reasonObj = reasons.OrderByDescending(p => p.Id).FirstOrDefault();
+                    if (reasonObj == null)
+                        return string.Empty;
+                    return $"Id: {reasonObj.Id} - Reason: {reasonObj.Reason} - Detail: {reasonObj.ReasonDetail} - UserComment: {reasonObj.UserComment}";
+                }
+                catch
+                {
+                    return JsonConvert.SerializeObject(Reason);
+                }
+                
             }
         }
     }

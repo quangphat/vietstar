@@ -112,13 +112,14 @@
                                 <tr>
                                     <th class="center w-45">STT</th>
                                     <th class="w-20">ID</th>
+                                    <th class="w-20">MCId</th>
                                     <th class="m-w-150">Tên khách hàng</th>
                                     <th class="w-94">Phone</th>
                                     <th class="w-94">CMND</th>
                                     <th class="w-94">Sale</th>
                                     <th style="width: 150px">Trạng thái</th>
-                                    <th class="m-w-300">Lỗi toàn cầu</th>
-                                    <th class="m-w-300">Lỗi MC</th>
+                                    <th class="min-w-300">Lỗi toàn cầu</th>
+                                    <th class="min-w-300">Lỗi MC</th>
                                     <th class="w-94">Sản phẩm</th>
                                     <th class="w-94">Kỳ hạn</th>
                                     <th class="w-84">Người tạo</th>
@@ -244,6 +245,7 @@
 
     function renderRow(index, rowData) {
 
+        
         page = queries.get("page");
         if (isNullOrUndefined(page) || isNullOrWhiteSpace(page))
             page = 1;
@@ -257,7 +259,8 @@
         var stt = (page - 1) * limit + index + 1;
         return "<tr role='row' class = 'odd'>"
             + renderTextCenter(stt)
-            + renderTextLeft(rowData.Id,'','w-20')
+            + renderTextLink(rowData.Id, '/MCredit/TempProfile/' + rowData.Id, '', 'w-20')
+            + renderMcId(rowData.McId)
             + renderTextLink(rowData.CustomerName, '/MCredit/TempProfile/' + rowData.Id)
             + renderTextLeft(rowData.Phone)
             + renderTextLeft(rowData.IdNumber)
@@ -274,6 +277,12 @@
             + "</tr>";
     }
 
+    function renderMcId(mcid) {
+        debugger
+        if (isNullOrWhiteSpace(mcid))
+            return renderTextLeft('', '', 'w-20');
+        return renderTextLink(mcid, '/MCredit/MCreditProfile/' + mcid)
+    }
     function renderStatusWithRefresh(status, profileId) {
         let btnRefresh = "<a class='pull-right' onclick='updateStatus(" + profileId + ")' style='cursor: pointer;'><i class='fa fa-refresh bigger - 110'></i></a>"
         return renderStatus(status, btnRefresh)

@@ -275,7 +275,7 @@ namespace VietStar.Business
                 await _rpLog.InsertLog($"AddRefuseToNote-MCreditGlobal-{profileId}", mcProfile.data.obj.Refuse);
                 return ToResponse(result);
             }
-            return true;
+            return ToResponse(false, "Không có thay đổi trạng thái");
         }
 
         public async Task<bool> UpdateDraftAsync(MCredit_TempProfileAddModel model)
