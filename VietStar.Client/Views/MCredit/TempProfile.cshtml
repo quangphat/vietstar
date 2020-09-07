@@ -5,9 +5,11 @@
     ViewData["Title"] = "Cập nhật hồ sơ tạm";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>();
-    buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
-    if (string.IsNullOrWhiteSpace(Model.MCId))
+
+    if (string.IsNullOrWhiteSpace(Model.MCId) && CurrentProcess.CurrentUser.isAdmin)
     {
+        
+        buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
         buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnSubmit", Name = "Nộp hồ sơ qua MCredit" });
     }
     else
