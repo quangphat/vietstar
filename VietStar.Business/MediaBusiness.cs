@@ -327,47 +327,55 @@ namespace VietStar.Business
             };
         }
 
-        public async Task<string> ProcessFilesToSendToMC(int portalProfileId, string rootPath)
+        public async Task<(bool success, string result)> ProcessFilesToSendToMC(int portalProfileId, string rootPath)
         {
             var profile = await _rpMCredit.GetTemProfileByIdAsync(portalProfileId);
             if (!profile.success)
             {
-                return ToResponse(string.Empty, profile.error);
+                return (false, profile.error);
             }
             if (string.IsNullOrWhiteSpace(profile.data.MCId))
             {
-                return ToResponse(string.Empty, "Không tìm thấy McId");
+                return (false, "Không tìm thấy McId");
             }
             var files = await _rpFile.GetFilesByProfileIdAsync(portalProfileId, (int)ProfileType.MCredit);
             if (files == null || !files.Any())
             {
-                return "files_is_empty";
+                return (false,"files are empty");
             }
             var jsonFile = new McJsonFile();
             var filePaths = new List<string>();
-            foreach (var f in files)
+            try
             {
-                var group = jsonFile.groups.FirstOrDefault(p => p.id == f.MC_GroupId);
-                if (group == null)
+                foreach (var f in files)
                 {
-                    group = new McJsonFileGroup { id = f.MC_GroupId, docs = new List<MCJsonFileGroupDoc>() };
-                    jsonFile.groups.Add(group);
-                }
-                var doc = group.docs.FirstOrDefault(p => p.code == f.DocumentCode);
-                if (doc == null)
-                {
-                    doc = new MCJsonFileGroupDoc { code = f.DocumentCode, files = new List<MCJsonFileGroupDocFile>() };
-                    group.docs.Add(doc);
-                }
+                    var group = jsonFile.groups.FirstOrDefault(p => p.id == f.MC_GroupId);
+                    if (group == null)
+                    {
+                        group = new McJsonFileGroup { id = f.MC_GroupId, docs = new List<MCJsonFileGroupDoc>() };
+                        jsonFile.groups.Add(group);
+                    }
+                    var doc = group.docs.FirstOrDefault(p => p.code == f.DocumentCode);
+                    if (doc == null)
+                    {
+                        doc = new MCJsonFileGroupDoc { code = f.DocumentCode, files = new List<MCJsonFileGroupDocFile>() };
+                        group.docs.Add(doc);
+                    }
 
-                doc.files.Add(new MCJsonFileGroupDocFile { name = f.FileName });
+                    doc.files.Add(new MCJsonFileGroupDocFile { name = f.FileName });
 
-                filePaths.Add(System.IO.Path.Combine(f.Folder, f.FileName));
+                    filePaths.Add(System.IO.Path.Combine(f.Folder, f.FileName));
+                }
+                var jsonFileInfo = CreateJsonFile(jsonFile, profile.data.MCId, rootPath);
+                filePaths.Add(jsonFileInfo.FullPath);
+                var result = await CreateZipFile(filePaths, jsonFileInfo.Folder, profile.data.MCId);
+                return (true,result);
             }
-            var jsonFileInfo = CreateJsonFile(jsonFile, profile.data.MCId, rootPath);
-            filePaths.Add(jsonFileInfo.FullPath);
-            var result = await CreateZipFile(filePaths, jsonFileInfo.Folder, profile.data.MCId);
-            return result;
+            catch(Exception e)
+            {
+                return (false, e.Dump());
+            }
+            
         }
 
         protected FileModel CreateJsonFile(McJsonFile model, string profileId, string rootPath)

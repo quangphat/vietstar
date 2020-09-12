@@ -405,7 +405,11 @@ namespace VietStar.Business
             var bizMedia = _svProvider.GetService<IMediaBusiness>();
 
             var zipFile = await bizMedia.ProcessFilesToSendToMC(profile.data.Id, Utility.FileUtils._profile_parent_folder);
-            var sendFileResult = await _svMcredit.SendFiles(zipFile, profile.data.MCId);
+            if(!zipFile.success)
+            {
+                return ToResponse<MCResponseModelBase>(null, zipFile.result);
+            }
+            var sendFileResult = await _svMcredit.SendFiles(zipFile.result, profile.data.MCId);
             await _rpLog.InsertLog("ReSendFileToEC", sendFileResult != null ? sendFileResult.Dump() : "ReSendFileToEC = null");
             return ToResponse(sendFileResult);
         }
