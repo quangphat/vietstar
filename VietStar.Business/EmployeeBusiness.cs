@@ -78,6 +78,13 @@ namespace VietStar.Business
             {
                 return ToResponse(false, Errors.invalid_data);
             }
+            if(!_process.User.isAdmin)
+            {
+                if (!_process.User.Permissions.Contains("employee.me"))
+                    return ToResponse(false, "Bạn không có quyền");
+                if(model.Id != _process.User.Id)
+                    return ToResponse(false, "Bạn không có quyền");
+            }
 
             if (!string.IsNullOrWhiteSpace(model.Email) && !BusinessExtensions.IsValidEmail(model.Email.Trim(), 50))
             {

@@ -22,7 +22,7 @@ namespace VietStar.Entities.ViewModels
         {
             get
             {
-                return RoleCode == "admin" ? true : false;
+                return (RoleCode == "admin" || RoleCode == "head") ? true : false;
             }
         }
     }
