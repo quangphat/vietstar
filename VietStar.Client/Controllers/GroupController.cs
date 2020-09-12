@@ -12,7 +12,6 @@ using VietStar.Entities.Infrastructures;
 namespace VietStar.Client.Controllers
 {
     [Route("Groups")]
-    [MyAuthorize(Permissions = "Group")]
     public class GroupController : VietStarBaseController
     {
         protected readonly IGroupBusiness _bizGroup;
@@ -21,7 +20,8 @@ namespace VietStar.Client.Controllers
             _bizGroup = groupBusiness;
         }
 
-        
+
+        [MyAuthorize(Permissions = "group")]
         [Route("Index")]
         [HttpGet]
         public IActionResult Index()
@@ -29,7 +29,8 @@ namespace VietStar.Client.Controllers
             return View();
         }
 
-        
+
+        [MyAuthorize(Permissions = "group,group.read")]
         [HttpGet("GroupsByUserId")]
         public async Task<IActionResult> GetGroupsByUserId()
         {
@@ -37,7 +38,7 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
-        
+        [MyAuthorize(Permissions = "group,group.read")]
         [HttpGet("ApproveGroupsByUserId")]
         public async Task<IActionResult> GetApproveGroupsByUserId()
         {
@@ -45,7 +46,7 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
-        
+        [MyAuthorize(Permissions = "group,group.read")]
         [HttpGet("ParentGroups")]
         public async Task<IActionResult> GetParentGroups()
         {
@@ -53,7 +54,7 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
-        
+        [MyAuthorize(Permissions = "group,group.read")]
         [HttpGet("Childrens")]
         public async Task<IActionResult> GetChildByParentGroupId(int parentId, int page = 1, int limit = 10)
         {
@@ -61,7 +62,7 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
-        
+        [MyAuthorize(Permissions = "group,group.write")]
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
@@ -69,7 +70,7 @@ namespace VietStar.Client.Controllers
             return View(result);
         }
 
-        
+        [MyAuthorize(Permissions = "group,group.write")]
         [HttpPost("Update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] GroupEditModel model)
         {
@@ -77,7 +78,7 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
-        
+        [MyAuthorize(Permissions = "group,group.read")]
         [HttpGet("members/{groupId}")]
         public async Task<IActionResult> GetMembers(int groupId)
         {
@@ -85,14 +86,14 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
-        
+        [MyAuthorize(Permissions = "group,group.write")]
         [HttpGet("Config")]
         public IActionResult Config()
         {
             return View();
         }
 
-        
+        [MyAuthorize(Permissions = "group,group.write")]
         [HttpPost("CreateConfig")]
         public async Task<IActionResult> CreateConfig([FromBody]CreateConfigModel model)
         {
@@ -100,12 +101,14 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
+        [MyAuthorize(Permissions = "group,group.write")]
         [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [MyAuthorize(Permissions = "group,group.write")]
         [HttpPost("CreateGroup")]
         public async Task<IActionResult> CreateGroup([FromBody]GroupCreateModel model)
         {

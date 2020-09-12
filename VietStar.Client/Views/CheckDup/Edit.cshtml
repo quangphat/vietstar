@@ -277,6 +277,9 @@
                 }
             },
             error: function (jqXHR, exception) {
+                if (jqXHR.status === 401) {
+                    returnTo401Page(this.url);
+                }
                 showError(jqXHR, exception);
             },
             complete: function () {
