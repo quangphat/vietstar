@@ -90,15 +90,19 @@ namespace VietStar.Client.Controllers
         }
 
         [HttpGet("Edit/{id}")]
-        [MyAuthorize(Permissions = "employee,employee.write")]
+        [MyAuthorize(Permissions = "employee,employee.write,employee.me")]
         public async Task<IActionResult> Edit(int id)
         {
+            if (!_process.User.isAdmin && !_process.User.Permissions.Contains("employee.me"))
+            {
+                return Redirect("UnAuthorize/UnAuthorize");
+            }
             var employee = await _bizEmployee.GetByIdAsync(id);
             return View(employee);
         }
 
         [HttpPost("update")]
-        [MyAuthorize(Permissions = "employee,employee.write")]
+        [MyAuthorize(Permissions = "employee,employee.write,employee.me")]
         public async Task<IActionResult> Update([FromBody] UserEditModel model)
         {
             var result = await _bizEmployee.UpdateAsync(model);
