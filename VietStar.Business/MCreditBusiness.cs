@@ -478,11 +478,11 @@ namespace VietStar.Business
 
                 var zipFile = await bizMedia.ProcessFilesToSendToMC(profile.data.Id, Utility.FileUtils._profile_parent_folder);
 
-                if (zipFile == "files_is_empty")
+                if (!zipFile.success)
                 {
-                    return ToResponse<MCResponseModelBase>(null, "Vui lòng upload hồ sơ");
+                    return ToResponse<MCResponseModelBase>(null, zipFile.result);
                 }
-                var sendFileResult = await _svMcredit.SendFiles(zipFile, result.data.id);
+                var sendFileResult = await _svMcredit.SendFiles(zipFile.result, result.data.id);
                 if (!sendFileResult.success)
                 {
                     return ToResponse<MCResponseModelBase>(null, sendFileResult.error);
