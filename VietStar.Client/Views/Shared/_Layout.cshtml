@@ -267,7 +267,7 @@
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu" data-widget="tree" id="left-menu">
                     <li class="header "><span style="text-transform:uppercase">@headerName</span></li>
-                    <li class="treeview" id="home"  onclick="redirectTo('/home/Index')">
+                    <li class="treeview" id="home" onclick="redirectTo('/home/Index')">
                         <a href="/Home">
                             <i class="fa fa-home"></i> <span>Trang chủ</span>
                             <span class="pull-right-container">
@@ -370,6 +370,25 @@
 
                             </a>
                         </li>
+                        <li class="treeview" id="config">
+                            <a href="#">
+                                <i class="fa fa-gears"></i> <span>Cấu hình</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li id="config/UpdateLogSign">
+                                    <a href="/config/UpdateLogSign">
+                                        <i class="fa fa-circle-o"></i> <span>Địa điểm ký văn kiện</span>
+
+                                    </a>
+                                </li>
+                                <li id="Groups/Index"><a href="/Groups/Index"><i class="fa fa-circle-o"></i> Quản lý</a></li>
+                                <li id="Groups/Config"><a href="/Groups/Config"><i class="fa fa-circle-o"></i> Cấu hình duyệt</a></li>
+                            </ul>
+
+                        </li>
 
                     }
                     else
@@ -382,17 +401,12 @@
 
                         </li>
                     }
-                    <li class="treeview" id="employees">
+                    <li class="treeview" id="employees" onclick="redirectTo('/employees/Index')">
                         <a href="#">
                             <i class="fa fa-user"></i> <span>Nhân sự</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
+                            
                         </a>
-                        <ul class="treeview-menu">
-                            <li id="employees/index"><a href="/employees/Index"><i class="fa fa-circle-o"></i> Danh sách</a></li>
-
-                        </ul>
+                       
                     </li>
 
                 </ul>

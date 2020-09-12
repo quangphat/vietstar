@@ -20,7 +20,7 @@
                 <div class="form-group">
                     <label class="col-sm-1  col-xs-12 control-label no-padding-right" for="form-field-1">Vai trò</label>
                     <div class="col-sm-5 col-xs-12 ">
-                        <select id="ddlRole" class="chosen-select form-control" data-placeholder="Chọn vai trò">
+                        <select id="ddlRole" class="chosen-select form-control select2" data-placeholder="Chọn vai trò">
                             <option value="0"></option>
                         </select>
                     </div>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group text-right">
                     <div class="col-xs-12 ">
-                        <a class="btn btn-primary" id="btnSearch">
+                        <a class="btn btn-info" id="btnSearch">
                             Tìm kiếm
                         </a>
                         <a class="btn btn-primary" href="/Employees/Create">
@@ -85,7 +85,7 @@
                             <th class="w-84">Số điện thoại</th>
                             <th style="width: 150px">Vai trò trên trang</th>
                             <th class="min-w-300">Khu vực</th>
-                            <th class="w-150">Ngày vào làm</th>
+                            <th class="w-150">Ngày tạo</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -137,6 +137,9 @@
         page = page;
         getData(page, limit, $("#ddlRole").val());
     }
+    $('#ddlRole').on('select2:select', function (e) {
+        getData(1, limit, $("#ddlRole").val());
+    });
     function bindQueries(isPopState) {
 
         $('#freeText').val(queries.get("freetext"))
@@ -187,7 +190,7 @@
             + renderTextLeft(rowData.Phone, '', 'w-84')
             + renderTextLeft(rowData.RoleName, '', "w-150")
             + renderTextLeft(rowData.Location, '', "min-w-300")
-            + renderTextLeft(rowData.WorkDate, 'datetime', 'w-150')
+            + renderTextLeft(rowData.CreatedTime, 'datetime', 'w-150')
             + "</tr>";
     }
     function renderTableBody(datas) {
