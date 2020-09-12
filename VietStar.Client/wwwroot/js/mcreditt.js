@@ -123,7 +123,7 @@ function checkCAT(controlId, value) {
             if (data.success == true) {
                 swal({
                     title: "Thành công",
-                    text: data.error.code,
+                    text: data.data,
                     type: "success",
                     timer: 4000,
                     showConfirmButton: true,

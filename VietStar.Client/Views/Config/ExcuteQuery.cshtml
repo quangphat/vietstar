@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewData["Title"] = "Hồ sơ MCredit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="page-content" id="panel_body">
+        <form class="form-horizontal">
+          
+                <div class="row">
+                    <div class="col-xs-12">
+                        
+                            <h4 class="header lighter orange"><i class="ace-icon"></i>Query</h4>
+                            <div class="">
+                                <textarea class="form-control" id="query-content" style="margin: 0px -4.5px 0px 0px; height: 50px;" placeholder=""></textarea>
+                               
+                                    <div class="pull-right mt-10">
+                                        <a class="btn btn-sm btn-info" id="btnExcute">
+                                            Excute
+                                        </a>
+                                    </div>
+                                
+
+                            </div>
+                            
+                    </div>
+                </div>
+
+            
+        </form>
+        <div class="row mt-10">
+            <div class="col-sm-12">
+                
+                <div class="box-header box-header-green">
+                    <h3 class="box-title">Kết quả</h3>
+                </div>
+                
+                <div class="col">
+                    <div class="report-table-custom--overflow">
+                        <table id="dtSource" class="report-table-custom table table-striped table-bordered table-hover">
+                            <thead class="table-header" id="grid-header">
+                                <tr>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="clearfix" />
+                <div class="one-row no-gutters justify-content-between paginate">
+                    <div class="col-auto">
+                        <div class="dataTables_info" id="dtSource_info" role="status" aria-live="polite"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="one-row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <span id="totalPage"></span>
+                            </div>
+                            <div class="col ml-20">
+                                <div class="dataTables_paginate paging_simple_numbers" id="dtSource_paginate">
+                                    <ul class="pagination" id="pagination"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+    </div>
+</div>
+<script>
+    $('#btnExcute').click(function (e) {
+
+        let value = $("#query-content").val();
+        Excute(value)
+    });
+
+    function Excute(value) {
+
+        var objectSend = JSON.stringify({
+            'Value': value
+        });
+        $.ajax({
+            traditional: true,
+            url: '/config/ExcuteSql',
+            type: "POST",
+            contentType: "application/json;",
+            data: objectSend,
+            success: function (data) {
+
+                if (data.success == true) {
+                    $("#totalPage").text("Tổng: " + data.data.length + " dòng")
+                    generateGridFromDictionaryData(data.data, '#dtSource');
+                }
+                else {
+                    swal({
+                        title: "Đã có lỗi xảy ra",
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+    }
+</script>
+

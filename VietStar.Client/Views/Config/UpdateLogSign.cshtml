@@ -1,0 +1,74 @@
+﻿@model VietStar.Entities.Mcredit.CheckCICModel
+@{
+    ViewData["Title"] = "Check CIC";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
+     new VietStar.Entities.ViewModels.BreadcrumbModel
+     { FirstPath="/Mcredit/Index", FirstName="Cấu hình", SecondName="Cập  nhật địa điểm ký văn kiện" }
+     )
+    </div>
+    <div class="page-content" id="panel_body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-xs-4">
+                    <form>
+                        <button type="button" id="btnSave" class="btn btn-info">Cập nhật</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $("#btnSave").click(function () {
+        UpdateLogSign()
+    })
+    function UpdateLogSign() {
+       
+        $.ajax({
+            traditional: true,
+            url: '/config/UpdateLogSign/3',
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.success == true) {
+                    swal({
+                        title: successMsg,
+                        text: `Cập nhật thành công`,
+                        type: "success",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    }, function () {
+
+                    });
+                }
+                else {
+                    swal({
+                        title: errorMsg,
+                        text: data.error.code,
+                        type: "error",
+                        timer: 4000,
+                        showConfirmButton: true,
+                    });
+                }
+            },
+            error: function (jqXHR, exception) {
+                showError(jqXHR, exception);
+            },
+            complete: function () {
+                $('#panel_body').unblock();
+            },
+        });
+
+
+    }
+
+</script>
+

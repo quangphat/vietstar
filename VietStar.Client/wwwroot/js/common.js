@@ -1025,3 +1025,38 @@ function GetAllEmployees(control, defaultValue = 0) {
         }
     });
 }
+
+function generateGridFromDictionaryData(datas, tableId) {
+    if (isNullOrUndefined(datas) || isNullOrNoItem(datas))
+        return
+    let headerContent = ''
+    
+    let tbheader = $(tableId).find("thead");
+    tbheader.empty();
+   
+    let tbbody = $(tableId).find("tbody");
+    tbbody.empty();
+    let fields = getFieldsFromModel(datas[0])
+    $.each(fields, function (index, item) {
+        headerContent +=`<th class="center w-45">${item}</th>`;
+    });
+    tbheader.append(`<tr>${headerContent}</tr>`)
+    let rowContent = ''
+    $.each(datas, function (index, item) {
+        for (let prop in item) {
+            rowContent += `<td>${item[prop]}</td>`
+        }
+        tbbody.append(`<tr>${rowContent}</tr>`)
+        rowContent=''
+    });
+
+}
+function getFieldsFromModel(model) {
+    let fields = []
+
+    debugger
+    for (let prop in model) {
+        fields.push(prop)
+    }
+    return fields;
+}
