@@ -821,7 +821,7 @@ function GetLocSigns(controlId, defaultValue = 0) {
     if (controlId == null)
         return;
     $(controlId).empty();
-    control.append("<option value='0'>Chọn địa điểm</option>");
+    $(controlId).append("<option value='0'>Chọn địa điểm</option>");
     let data = getLocalStorage(mcredit_location_key)
     if (data != null) {
         $.each(data, function (index, item) {
@@ -903,11 +903,10 @@ function GetLoanCities(controlId, defaultValue = 0) {
     if (controlId == null)
         return;
     $(controlId).empty();
-    control.append("<option value='0'>Chọn tỉnh/thành</option>");
+    $(controlId).append("<option value='0'>Chọn tỉnh/thành</option>");
     let data = getLocalStorage(mcredit_city_key)
     if (!isNullOrNoItem(data)) {
         $.each(data, function (index, item) {
-            console.log(item.Id)
             $(controlId).append("<option value='" + item.Code + "'>" + item.Name + "</option>");
         });
         if (!isNullOrWhiteSpace(defaultValue) && defaultValue > 0) {
@@ -945,7 +944,7 @@ function GetLoanProducts(controlId, defaultValue = 0) {
     if (controlId == null)
         return;
     $(controlId).empty();
-    control.append("<option value='0'>Chọn sản phẩm vay</option>");
+    $(controlId).append("<option value='0'>Chọn sản phẩm vay</option>");
     let data = getLocalStorage(mcredit_product)
     if (data != null) {
         $.each(data, function (index, item) {
