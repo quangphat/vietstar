@@ -22,7 +22,7 @@ namespace VietStar.Client.Controllers
             _bizProfile = profileBusiness;
             _hosting = hosting;
         }
-        [MyAuthorize(Permissions ="profile,profile.view")]
+        [MyAuthorize(Permissions = "profile,profile.view,profile.me")]
         public IActionResult Index()
         {
             return View();

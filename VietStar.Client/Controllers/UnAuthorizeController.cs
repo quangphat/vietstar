@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace VietStar.Client.Controllers
 {
     [AllowAnonymous]
-    public class UnAuthorizeController : Controller
+    public class ErrorPageController : Controller
     {
-        public IActionResult UnAuthorize()
+        public IActionResult UnAuthorized(string unAuthorizedUrl)
         {
+            ViewBag.unAuthorizedUrl = unAuthorizedUrl;
             return View();
         }
     }

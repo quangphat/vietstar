@@ -206,7 +206,7 @@
         });
     }
     $("#btnAddNote").click(function () {
-        debugger
+        
         AddNote('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.Courier)', $('#comment').val(), $('#comment'), $('#comments'))
     })
     var successMsg = 'Thành công'
@@ -274,6 +274,9 @@
                 }
             },
             error: function (jqXHR, exception) {
+                if (jqXHR.status === 401) {
+                    returnTo401Page(this.url);
+                }
                 showError(jqXHR, exception);
             },
             complete: function () {

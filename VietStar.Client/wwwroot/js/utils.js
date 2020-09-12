@@ -3,6 +3,10 @@
     //$('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
 
 });
+function returnTo401Page(queryPath) {
+    debugger
+    window.location = `${unauthorizedUrl}?unAuthorizedUrl=${queryPath}`
+}
 (function ($) {
     $.fn.inputFilter = function (inputFilter) {
         return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function () {

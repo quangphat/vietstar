@@ -8,8 +8,23 @@ function SearchDatas(apiPath, model, isPopState, callback1 = null, callback2 = n
     let fullPath = `${apiPath}?${query}`
     
     showBlock($('#panel_body'));
-    fetch(fullPath)
-        .then(response => response.json())
+    fetch(fullPath, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With':'XMLHttpRequest'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 401) {
+                   
+                    returnTo401Page(fullPath);
+                }
+            }
+            return response.json();
+        })
+        //.then(response => response.json())
         .then(response => {
             if (response.success == true) {
                 if (callback1 != null) {
@@ -37,8 +52,10 @@ function SearchDatas(apiPath, model, isPopState, callback1 = null, callback2 = n
             }
             $('#panel_body').unblock();
         })
-        .catch(err => {
+        .catch(error => {
+            
             $('#panel_body').unblock();
+            throw (error);
             swal({
                 title: errorMsg,
                 text: "Đã có lỗi xảy ra",
