@@ -265,8 +265,9 @@
         });
     })
     $("#freeText ,#fromDate, #toDate").on("keyup", function (event) {
+        event.preventDefault();
         if (event.keyCode === 13) {
-            event.preventDefault();
+            
             getData(1, limit, null, null, getQueryStatus($("#ddlStatus")), $("#groupId").val(), $("#memberId").val());
         }
     });

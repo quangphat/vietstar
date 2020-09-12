@@ -118,7 +118,7 @@
                                 <tr role="row">
                                     <th class="w-45">STT</th>
                                     <th class="w-98">Mã</th>
-                                    <th class="min-150">Tên khách hàng</th>
+                                    <th class="min-200">Tên khách hàng</th>
                                     <th class="w-105">CMND</th>
                                     <th class="w-105">Phone</th>
                                     <th style="width:150px">Trạng thái</th>
@@ -172,7 +172,7 @@
     var pageMargin = 2;
     var totalPage = 1;
     var totalRecord = 0;
-    var sort = 'desc'
+    let sort = 'desc'
     var sortField ='updatedtime'
     var model = { status:'', freeText :'', fromDate:'',toDate:'', groupId:0, memberId:0};
     $(document).ready(function e() {
@@ -211,9 +211,9 @@ function onClickPage(page) {
     //alert(limit)
     }
     function onSort(sortField) {
-
+        debugger
         sortField = sortField;
-        if (sort == 'desc')
+        if (sort == 'desc' || isNullOrUndefined(sort))
             sort = 'asc'
         else
             sort = 'desc'

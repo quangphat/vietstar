@@ -244,7 +244,8 @@
     $(document).ready(function () {
         setTextForPTag('checkSaleResult');
         setTextForPTag('checkdupResult');
-        renderStatusList('mcredit', '@Model.Status') 
+        renderStatusList('mcredit', '@Model.Status')
+        
         GetLocSigns("#ddlLocSign",'@Model.LocSignCode');
         GetLoanPeriods("#ddlLoanPeriod", '@Model.LoanPeriodCode');
         GetLoanCities("#ddlProvince",'@Model.ProvinceId');
@@ -282,18 +283,18 @@
             url: url,
             data: {},
             success: function (data) {
-                if (data.data != null) {
+                if (data.success && data.data != null) {
                     var i = 0;
                     var htmlContent = "";
                     let keys = [];
                     let groupIds = [];
                     let groupName = '';
                     let _imgExts = ["jpg", "jpeg", "png", "pdf"];
-                    let groupRequire =''
+                    let groupRequire = ''
                     $.each(data.data, function (index, item) {
                         if (groupIds.indexOf(item.GroupId) >= 0) {
                             groupName = ''
-                            groupRequire =''
+                            groupRequire = ''
                         }
                         else {
                             groupName = item.GroupName;
@@ -310,7 +311,7 @@
                                 var extn = file.FileUrl.split('.').pop();
                                 var isImg = isExtension(extn, _imgExts);
                                 if (isImg) {
-                                    
+
                                     _initialPreview.push(file.FileUrl);
                                     _initialPreviewConfig.push({
                                         caption: file.FileName,
@@ -319,7 +320,7 @@
                                         width: "120px"
                                     });
                                 }
-                                
+
                                 let titleName = keys.indexOf(file.Key) < 0 ? item.Name : ''
                                 renderOneItemFile({
                                     key: item.FileKey,
@@ -340,50 +341,55 @@
 
                                 keys.push(item.FileKey);
                             });
-                            
-                           renderOneItemFile({
-                                    key: item.FileKey,
-                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
-                                    profileId: '@Model.Id',
-                                    fileId: 0,
-                                    isRequire: false,
-                                    titleName: '',
-                                    itemId: i,
-                                    guidId: '',
-                                    documentName: item.DocumentName,
-                                    documentCode: item.DocumentCode,
-                                    documentId: item.DocumentId,
-                               groupId: item.GroupId,
-                               isMCredit: true,
-                                    mcId: '@Model.MCId'
-                                }, '', [], [], true, true);
+
+                            renderOneItemFile({
+                                key: item.FileKey,
+                                type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
+                                profileId: '@Model.Id',
+                                fileId: 0,
+                                isRequire: false,
+                                titleName: '',
+                                itemId: i,
+                                guidId: '',
+                                documentName: item.DocumentName,
+                                documentCode: item.DocumentCode,
+                                documentId: item.DocumentId,
+                                groupId: item.GroupId,
+                                isMCredit: true,
+                                mcId: '@Model.MCId'
+                            }, '', [], [], true, true);
                         }
                         else {
-                            
+
                             renderOneItemFile({
-                                    key: item.FileKey,
-                                    type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
-                                    profileId: '@Model.Id',
-                                    fileId:0,
-                                    isRequire: false,
-                                    titleName: item.Name,
-                                    itemId: i,
-                                    guidId: '',
-                                    documentName: item.DocumentName,
-                                    documentCode: item.DocumentCode,
-                                    documentId: item.DocumentId,
+                                key: item.FileKey,
+                                type: '@((int)VietStar.Entities.Commons.Enums.ProfileType.MCredit)',
+                                profileId: '@Model.Id',
+                                fileId: 0,
+                                isRequire: false,
+                                titleName: item.Name,
+                                itemId: i,
+                                guidId: '',
+                                documentName: item.DocumentName,
+                                documentCode: item.DocumentCode,
+                                documentId: item.DocumentId,
                                 groupId: item.GroupId,
-                                isMCredit:true,
-                                    mcId: '@Model.MCId'
-                                }, '', [], [], true, true);
+                                isMCredit: true,
+                                mcId: '@Model.MCId'
+                            }, '', [], [], true, true);
                         }
                     })
+                }
+                else {
+                    debugger
+                    $("#upload-area-error").text(data.error.code)
                 }
 
             },
             complete: function () {
             },
             error: function (jqXHR, exception) {
+
                 showError(jqXHR, exception);
             }
         });

@@ -114,7 +114,6 @@
                                     <th class="w-20">ID</th>
                                     <th class="w-20">MCId</th>
                                     <th class="m-w-150">Tên khách hàng</th>
-                                    <th class="w-94">Phone</th>
                                     <th class="w-94">CMND</th>
                                     <th class="w-94">Sale</th>
                                     <th style="width: 150px">Trạng thái</th>
@@ -262,7 +261,6 @@
             + renderTextLink(rowData.Id, '/MCredit/TempProfile/' + rowData.Id, '', 'w-20')
             + renderMcId(rowData.McId)
             + renderTextLink(rowData.CustomerName, '/MCredit/TempProfile/' + rowData.Id)
-            + renderTextLeft(rowData.Phone)
             + renderTextLeft(rowData.IdNumber)
             + renderTextLeft(rowData.SaleName)
             + renderStatusWithRefresh(rowData.StatusName, rowData.Id)
