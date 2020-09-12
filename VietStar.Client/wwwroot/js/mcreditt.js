@@ -123,13 +123,12 @@ function checkCAT(controlId, value) {
             if (data.success == true) {
                 swal({
                     title: "Thành công",
-                    text: data.data,
+                    text: data.code,
                     type: "success",
                     timer: 4000,
                     showConfirmButton: true,
-                }, function () {
-
                 });
+                $("#checkresult").text(`${data.data.name} - ${data.data.cat}`);
             }
             else {
                 swal({
