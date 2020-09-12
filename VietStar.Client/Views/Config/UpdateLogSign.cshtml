@@ -17,7 +17,7 @@
             <div class="col-xs-12">
                 <div class="col-xs-4">
                     <form>
-                        <button type="button" id="btnSave" class="btn btn-info pull-right">Cập nhật</button>
+                        <button type="button" id="btnSave" class="btn btn-info">Cập nhật</button>
                     </form>
                 </div>
             </div>
@@ -37,12 +37,11 @@
             url: '/config/UpdateLogSign/3',
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            data: objectSend,
             success: function (data) {
                 if (data.success == true) {
                     swal({
-                        title: "Thành công",
-                        text: `${getCICMessage(data.data)}`,
+                        title: successMsg,
+                        text: `Cập nhật thành công`,
                         type: "success",
                         timer: 4000,
                         showConfirmButton: true,
@@ -52,7 +51,7 @@
                 }
                 else {
                     swal({
-                        title: "Đã có lỗi xảy ra",
+                        title: errorMsg,
                         text: data.error.code,
                         type: "error",
                         timer: 4000,

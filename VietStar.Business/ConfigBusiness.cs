@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using VietStar.Business.Interfaces;
+using VietStar.Entities.Commons;
 using VietStar.Entities.Infrastructures;
 using VietStar.Entities.Messages;
 using VietStar.Entities.ViewModels;
@@ -21,6 +22,18 @@ namespace VietStar.Business
             _rpConfig = configRepository;
         }
 
+        public async Task<List<IDictionary<string, object>>> ExcuteQueryAsync(StringModel model)
+        {
+            if (_process.User == null)
+                return null;
+            if (model == null || string.IsNullOrWhiteSpace(model.Value))
+                return null;
+            
+            var sqltemp = model.Value.ToUpper();
+            if (sqltemp.Contains("DELETE ") || sqltemp.Contains("DROP "))
+                return null;
+            return await _rpConfig.QuerySQLAsync(model.Value);
+        }
 
     }
 }

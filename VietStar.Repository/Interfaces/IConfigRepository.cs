@@ -8,7 +8,7 @@ namespace VietStar.Repository.Interfaces
 {
     public interface IConfigRepository
     {
-
+        Task<List<IDictionary<string, object>>> QuerySQLAsync(string sql);
     }
 }
 
