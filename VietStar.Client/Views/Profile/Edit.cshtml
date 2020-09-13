@@ -5,12 +5,13 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>();
-    buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton{
+    buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton
+    {
         Id = "btnBack",
-        Href="/Profile/Index",
+        Href = "/Profile/Index",
         Name = "Quay lại"
     });
-    if (CurrentProcess.CurrentUser.isAdmin)
+    if (CurrentProcess.CurrentUser.isAdmin || CurrentProcess.CurrentUser.isRsmAsmSS)
     {
         buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton
         {
@@ -19,7 +20,7 @@
             Name = Model.Status == (int)VietStar.Entities.Commons.Enums.ProfileStatus.Draft ? "Nộp hồ sơ" : "Cập nhật"
         });
     }
-    else if (CurrentProcess.CurrentUser.isAdmin && Model.Status == (int)Enums.ProfileStatus.Draft)
+    else if (CurrentProcess.CurrentUser.isSale && Model.Status == (int)Enums.ProfileStatus.Draft)
     {
         buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton
         {

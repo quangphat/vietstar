@@ -81,7 +81,7 @@ namespace VietStar.Business
                 {
                     isReadOnly = false;
                 }
-                if(_process.User.isSale && profileResult.data.Ma_Trang_Thai != (int)ProfileStatus.Draft)
+                if((_process.User.isSale || _process.User.isRsmAsmSS)&& profileResult.data.Ma_Trang_Thai != (int)ProfileStatus.Draft)
                 {
                     isReadOnly = true;
                 }

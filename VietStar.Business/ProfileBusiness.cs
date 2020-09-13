@@ -80,6 +80,18 @@ namespace VietStar.Business
                 await _rpProfile.UpdateStatusAsync(model.Id, (int)ProfileStatus.New, _process.User.Id);
                 return true;
             }
+            if(_process.User.isRsmAsmSS)
+            {
+                if(model.Status == (int)ProfileStatus.Compared || model.Status == (int)ProfileStatus.Additional || model.Status == (int)ProfileStatus.New)
+                {
+                    await _rpProfile.UpdateStatusAsync(model.Id, model.Status, _process.User.Id);
+                    return true;
+                }
+                else
+                {
+                    return ToResponse(false, "Bạn chỉ được cập nhật trạng thái đã đối chiếu hoặc bổ sung hồ sơ");
+                }
+            }
 
             model.Status = model.Status == (int)ProfileStatus.Draft ? (int)ProfileStatus.New : model.Status;
 

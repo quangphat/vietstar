@@ -29,7 +29,14 @@ namespace VietStar.Entities.ViewModels
         {
             get
             {
-                return (RoleCode == "sale" || RoleCode == "rsm" || RoleCode =="asm" || RoleCode =="ss") ? true : false;
+                return (RoleCode == "sale" ) ? true : false;
+            }
+        }
+        public bool isRsmAsmSS
+        {
+            get
+            {
+                return (RoleCode == "rsm" || RoleCode == "asm" || RoleCode == "ss") ? true : false;
             }
         }
     }
