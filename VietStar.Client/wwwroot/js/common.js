@@ -692,8 +692,9 @@ function renderOneItemFile(model, className = '',
         let params = `key=${model.key}&profileType=${model.profileType}&profileId=${model.profileId}&fileId=${model.fileId}&guidId=${guidId}`;
         uploadUrl = `/media/UploadFile?${params}`
     }
+    debugger
     item.fileinput({
-        uploadUrl: allowUpload === true ? uploadUrl : null,
+        uploadUrl: model.isReadOnly === true ? null : uploadUrl,
         validateInitialCount: true,
         maxFileSize: 25 * 1024,
         msgSizeTooLarge: 'File "{name}" (<b>{size} KB</b>)'

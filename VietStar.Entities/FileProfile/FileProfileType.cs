@@ -16,6 +16,7 @@ namespace VietStar.Entities.FileProfile
         public string Folder { get; set; }
         public string FileName { get; set; }
         public string RootPath { get; set; }
+        public bool IsReadOnly { get; set; }
 
         //for mcredit
         public string DocumentName { get; set; }
@@ -26,5 +27,6 @@ namespace VietStar.Entities.FileProfile
         public bool IsRequireGroup { get; set; }
         public int GroupId { get; set; }
         public bool AllowUpload { get; set; }
+        
     }
 }

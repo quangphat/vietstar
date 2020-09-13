@@ -25,5 +25,12 @@ namespace VietStar.Entities.ViewModels
                 return (RoleCode == "admin" || RoleCode == "head") ? true : false;
             }
         }
+        public bool isSale
+        {
+            get
+            {
+                return (RoleCode == "sale" || RoleCode == "rsm" || RoleCode =="asm" || RoleCode =="ss") ? true : false;
+            }
+        }
     }
 }

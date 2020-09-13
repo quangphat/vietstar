@@ -75,7 +75,14 @@ namespace VietStar.Business
             {
                 model.SaleId = _process.User.Id;
             }
+            if(_process.User.isSale)
+            {
+                await _rpProfile.UpdateStatusAsync(model.Id, (int)ProfileStatus.New, _process.User.Id);
+                return true;
+            }
+
             model.Status = model.Status == (int)ProfileStatus.Draft ? (int)ProfileStatus.New : model.Status;
+
             var sqlmodel = _mapper.Map<ProfileAddSql>(model);
             var result = await _rpProfile.UpdateAsync(sqlmodel, model.Id, _process.User.Id);
             if (result.data == true)

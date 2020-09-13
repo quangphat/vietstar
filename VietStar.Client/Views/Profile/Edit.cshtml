@@ -1,7 +1,34 @@
 ﻿@model VietStar.Entities.Profile.ProfileEditView
+@using VietStar.Entities.Infrastructures;
+@using VietStar.Entities.Commons;
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>();
+    buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton{
+        Id = "btnBack",
+        Href="/Profile/Index",
+        Name = "Quay lại"
+    });
+    if (CurrentProcess.CurrentUser.isAdmin)
+    {
+        buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton
+        {
+            Id = "btnSubmit",
+            ClassName = "btn btn-sm btn-primary",
+            Name = Model.Status == (int)VietStar.Entities.Commons.Enums.ProfileStatus.Draft ? "Nộp hồ sơ" : "Cập nhật"
+        });
+    }
+    else if (CurrentProcess.CurrentUser.isAdmin && Model.Status == (int)Enums.ProfileStatus.Draft)
+    {
+        buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton
+        {
+            Id = "btnSubmit",
+            ClassName = "btn btn-sm btn-primary",
+            Name = "Nộp hồ sơ"
+        });
+    }
+
 }
 <div class="main-content-inner">
     <div class="breadcrumbs" id="breadcrumbs">
@@ -141,7 +168,7 @@
                     <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền đề nghị vay<span class="required">(*)</span></label>
                         <div class="col-sm-4">
-                            <input type="text" id="loanAmount" inputmode="numeric" value="@Model.LoanAmount.ToString()" placeholder="Nhập số tiền đề nghị vay" class="form-control">
+                            <input type="text" id="loanAmount" inputmode="numeric" value="@VietStar.Utility.Utils.FormatCurrentCy(Model.LoanAmount)" placeholder="Nhập số tiền đề nghị vay" class="form-control">
                         </div>
                         <label class="col-sm-2 control-label no-padding-right">Thời hạn vay</label>
                         <div class="col-sm-2">
@@ -157,14 +184,7 @@
         @await Html.PartialAsync("../Shared/Partials/CommandBar",
         new VietStar.Entities.ViewModels.CommandBar
         {
-            Buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>
-                 {
-                 new VietStar.Entities.ViewModels.CommandBarButton
-                 {
-                     Id ="btnSubmit",
-                     ClassName ="btn btn-sm btn-primary",
-                     Name = Model.Status == (int)VietStar.Entities.Commons.Enums.ProfileStatus.Draft ?"Nộp hồ sơ" : "Cập nhật" }
-                 }
+            Buttons = buttons
         })
     </div>
 </div>
@@ -186,12 +206,12 @@
         if ('@Model.Status' != '@((int)VietStar.Entities.Commons.Enums.ProfileStatus.Draft)') {
             renderStatusList('common', ['@Model.Status']);
         }
-        
+
         GetSales(null,'@Model.SaleId');
         GetCouriers();
         GetProvinces(null, '@Model.ProvinceId','@Model.DistrictId');
         getComments('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.Common)', $('#comments'))
-        $("#receiveDate").val(FormatDateTimeDMY('@Model.ReceiveDate.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
+        //$("#receiveDate").val(FormatDateTimeDMY('@Model.ReceiveDate.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
         //$("#receiveDate").val('2020-08-06')
         $("#birthDay").val(FormatDateTimeDMY('@Model.BirthDay.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
         $("#cmndDay").val(FormatDateTimeDMY('@Model.CmndDay.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
@@ -211,7 +231,7 @@
     //    console.log('Key = ' + key);
     //});
     function btnRemoveFile(id, guidId) {
-        
+
         onDeleteFile(id, guidId)
     }
     $("#btnAddNote").click(function () {
@@ -230,6 +250,7 @@
                     let groupName = '';
                     let _imgExts = ["jpg", "jpeg", "png", "pdf"];
                     $.each(data.data, function (index, item) {
+                        debugger
                         $("#uploadArea").append(`<div class='form-group'><div class='col-sm-12' id='tailieu-${item.Id}'><h5>${groupName}</h5></div></div > `);
                         if (!isNullOrNoItem(item.ProfileFiles)) {
                             let _initialPreview = [];
@@ -240,7 +261,7 @@
                                 var extn = file.FileUrl.split('.').pop();
                                 var isImg = isExtension(extn, _imgExts);
                                 if (isImg) {
-                                    
+
                                     _initialPreview.push(file.FileUrl);
                                     _initialPreviewConfig.push({
                                         caption: file.FileName,
@@ -249,9 +270,9 @@
                                         width: "120px"
                                     });
                                 }
-                                
+
                                 let titleName = keys.indexOf(file.Key) < 0 ? item.Name : ''
-                                
+
                                 renderOneItemFile({
                                     key: item.FileKey,
                                     profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Common)',
@@ -259,26 +280,28 @@
                                     fileId: file.FileId,
                                     isRequire: item.IsRequire,
                                     titleName: titleName,
+                                    isReadOnly: item.IsReadOnly,
                                     itemId: i,
                                     guidId: file.GuidId
                                 }, '', _initialPreview, _initialPreviewConfig, true, true);
 
                                 keys.push(item.FileKey);
                             });
-                            
+
                            renderOneItemFile({
-                                    key: item.FileKey,
-                               profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Common)',
-                                    profileId: '@Model.Id',
-                               fileId: 0,
-                               isRequire: false,
-                                    titleName: '',
-                                    itemId: i,
-                                    guidId: ''
+                                key: item.FileKey,
+                                profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Common)',
+                                profileId: '@Model.Id',
+                                fileId: 0,
+                                isRequire: false,
+                                titleName: '',
+                                itemId: i,
+                               isReadOnly: item.IsReadOnly,
+                                guidId: ''
                                 }, '', [], [], true, true);
                         }
                         else {
-                            
+
                             renderOneItemFile({
                                     key: item.FileKey,
                                 profileType: '@((int)VietStar.Entities.Commons.Enums.ProfileType.Common)',
@@ -286,7 +309,8 @@
                                     fileId:0,
                                     isRequire: item.IsRequire,
                                     titleName: item.Name,
-                                    itemId: i,
+                                itemId: i,
+                                isReadOnly: item.IsReadOnly,
                                     guidId: ''
                                 }, '', [], [], true, true);
                         }
@@ -403,7 +427,7 @@
                         timer: 4000,
                         showConfirmButton: true,
                     }, function () {
-                        //window.location = window.location
+                        //window.location = `/profile/edit/${data.data}`
                     });
                 }
                 else {

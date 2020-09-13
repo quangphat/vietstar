@@ -376,8 +376,7 @@
                         timer: 4000,
                         showConfirmButton: true,
                     }, function () {
-                        alert(data.data)
-                        //uploadHoso2(data.data, true);
+                            window.location = `/profile/edit/${data.data}`
                     });
                 }
                 else {
@@ -398,38 +397,4 @@
             },
         });
     });
-         function uploadHoso2(hosoId, reloadOnSuccess = false) {
-            if (isNullOrNoItem(filesUpload))
-                return;
-            $.ajax({
-                traditional: true,
-                url: `/HoSo/UploadToHoso?hosoId=${hosoId}&isReset=true`,
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                //dataType: 'json',
-                data: JSON.stringify(filesUpload),
-                success: function (data) {
-                    if (data.success == true) {
-                        if (reloadOnSuccess == true) {
-                            window.location = window.location;
-                        }
-                }
-                else {
-                    swal({
-                        title: "",
-                        text: data.error.code,
-                        type: "error",
-                        timer: 4000,
-                        showConfirmButton: true,
-                    });
-                }
-            },
-            error: function (jqXHR, exception) {
-                showError(jqXHR, exception);
-            },
-            complete: function () {
-                $('#panel_body').unblock();
-            },
-        });
-        }
 </script>
