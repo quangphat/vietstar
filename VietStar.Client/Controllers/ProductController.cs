@@ -27,7 +27,7 @@ namespace VietStar.Client.Controllers
             return View();
         }
 
-        [HttpGet("Search")]
+        [HttpPost("Search")]
         public async Task<IActionResult> Search(
             int page = 1
             , int limit = 20
