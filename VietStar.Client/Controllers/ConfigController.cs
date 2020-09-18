@@ -33,6 +33,20 @@ namespace VietStar.Client.Controllers
             return View();
         }
 
+        [MyAuthorize(Permissions = "mcredit.product.update")]
+        [HttpGet("UpdateProduct")]
+        public IActionResult UpdateProduct()
+        {
+            return View();
+        }
+
+        [MyAuthorize(Permissions = "mcredit.loanperiod.update")]
+        [HttpGet("UpdateloanPeriod")]
+        public IActionResult UpdateloanPeriod()
+        {
+            return View();
+        }
+
         [MyAuthorize(Permissions = "mcredit.logsign.update")]
         [HttpPost("UpdateLogSign/{id}")]
         public async Task<IActionResult> UpdateFromMcAsync(int id)

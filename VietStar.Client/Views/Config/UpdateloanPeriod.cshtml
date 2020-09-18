@@ -9,7 +9,7 @@
     <div class="breadcrumbs" id="breadcrumbs">
         @await Html.PartialAsync("../Shared/Partials/Breadcrumb",
      new VietStar.Entities.ViewModels.BreadcrumbModel
-     { FirstPath="/Mcredit/Index", FirstName="Cấu hình", SecondName="Cập nhật địa điểm ký văn kiện" }
+     { FirstPath="/Mcredit/Index", FirstName="Cấu hình", SecondName="Cập nhật kỳ hạn vay" }
      )
     </div>
     <div class="page-content" id="panel_body">
@@ -31,10 +31,10 @@
         UpdateLogSign()
     })
     function UpdateLogSign() {
-       
+
         $.ajax({
             traditional: true,
-            url: '/config/UpdateLogSign/3',
+            url: '/config/UpdateLogSign/2',
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
