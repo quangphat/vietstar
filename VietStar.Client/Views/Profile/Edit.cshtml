@@ -48,22 +48,12 @@
                         <div class="col-sm-4">
                             <input type="text" id="customerName" value="@Model.CustomerName" placeholder="Nhập họ tên" class="form-control">
                         </div>
-                        <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày nhận đơn đề nghị<span class="required">(*)</span></label>
-                        <div class="col-sm-4">
-                            <input class="form-control" type="date" value="@(Model.ReceiveDate.HasValue ? Model.ReceiveDate.Value.ToString("dd/MM/yyyy") :DateTime.Now.ToString("dd/MM/yyyy")) Date" id="receiveDate" />
-                        </div>
-
-                    </div>
-                    <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày tháng năm sinh<span class="required">(*)</span> </label>
                         <div class="col-sm-4">
                             <input class="form-control " type="date" id="birthDay" />
                         </div>
-
-                        <div class="col-sm-4">
-
-                        </div>
                     </div>
+                    
                     <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Điện thoại khách hàng<span class="required">(*)</span> </label>
                         <div class="col-sm-4">
@@ -175,6 +165,7 @@
                         <div class="col-sm-2">
                             <input type="number" class="form-control" id="period" step="3" value="@Model.Period" />
                         </div>
+                        <label class="control-label">tháng</label>
                     </div>
                 </form>
             </div>
@@ -212,8 +203,6 @@
         GetCouriers();
         GetProvinces(null, '@Model.ProvinceId','@Model.DistrictId');
         getComments('@Model.Id', '@((int)VietStar.Entities.Commons.Enums.NoteType.Common)', $('#comments'))
-        //$("#receiveDate").val(FormatDateTimeDMY('@Model.ReceiveDate.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
-        //$("#receiveDate").val('2020-08-06')
         $("#birthDay").val(FormatDateTimeDMY('@Model.BirthDay.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
         $("#cmndDay").val(FormatDateTimeDMY('@Model.CmndDay.Value.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
         $('#partnerId').on('change', function () {
@@ -396,7 +385,6 @@
             "CustomerName": $("#customerName").val(),
             "Phone": $("#phone").val(),
             "SalePhone": $("#salePhone").val(),
-            "ReceiveDate": $("#receiveDate").val(),
             "Cmnd": $("#cmnd").val(),
             "Gender": $('#gender').val(),
             "DistrictId": parseInt($("#districtId").val()),
