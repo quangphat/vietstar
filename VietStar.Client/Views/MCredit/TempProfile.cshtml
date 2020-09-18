@@ -379,14 +379,16 @@
                             }, '', [], [], true, true);
                         }
                     })
+                    $("#upload-area-error").css("display", "block")
                 }
                 else {
-                    debugger
-                    $("#upload-area-error").text(data.error.code)
+                    $("#upload-area-error").css("display","block")
+                    $("#upload-area-error-msg").text(data.error.code)
                 }
 
             },
             complete: function () {
+                $('#panel_body').unblock();
             },
             error: function (jqXHR, exception) {
 
@@ -394,6 +396,10 @@
             }
         });
     }
+    $("#btnReloadGetFormUpload").click(function () {
+        showBlock($('#panel_body'), loadingMsg);
+        GetProfileFiles();
+    });
     function displayCat() {
         if (!isNullOrWhiteSpace(@Model.CatNumber)) {
             $("#checkcat-area").show();

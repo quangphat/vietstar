@@ -3,7 +3,8 @@
  * ------------
  */
 .skin-yellow .main-header .navbar {
-  background-color: #f39c12;
+    /*background-color: #f39c12;*/
+    background-color: #e38008;
 }
 .skin-yellow .main-header .navbar .nav > li > a {
   color: #ffffff;
@@ -43,13 +44,14 @@
   }
 }
 .skin-yellow .main-header .logo {
-  background-color: #e08e0b;
+  /*background-color: #e08e0b;*/
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
-.skin-yellow .main-header .logo:hover {
-  background-color: #db8b0b;
-}
+    .skin-yellow .main-header .logo:hover {
+        /*background-color: #db8b0b;*/
+        background-color: #e38008;
+    }
 .skin-yellow .main-header li.user-header {
   background-color: #f39c12;
 }

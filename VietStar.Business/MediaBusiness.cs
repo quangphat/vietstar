@@ -28,16 +28,19 @@ namespace VietStar.Business
         protected readonly IMCreditRepository _rpMCredit;
         protected readonly IMCreditService _svMcredit;
         protected readonly ILogRepository _rpLog;
+        protected readonly IProfileRepository _rpProfile;
         public MediaBusiness(IFileProfileRepository fileProfileRepository,
             IMCreditRepository mCreditRepository,
             IMCreditService mCreditService,
             ILogRepository logRepository,
+            IProfileRepository profileRepository,
             IMapper mapper, CurrentProcess process) : base(mapper, process)
         {
             _rpFile = fileProfileRepository;
             _rpMCredit = mCreditRepository;
             _rpLog = logRepository;
             _svMcredit = mCreditService;
+            _rpProfile = profileRepository;
         }
         public async Task<List<FileProfile>> GetProfileFileTypeByTypeAsync(string profileType, int profileId = 0, string webRootPath = null, string mcId = null)
         {
@@ -67,7 +70,22 @@ namespace VietStar.Business
                     break;
             }
             if (profileType == "mcredit")
+            {
                 return await GetFileUploadMcreditAsync(profileId, mcId, webRootPath);
+            }
+            bool isReadOnly = false;
+            if(type== (int)ProfileType.Common)
+            {
+                var profileResult = await _rpProfile.GetByIdAsync(profileId);
+                if(!profileResult.success || profileResult.data == null)
+                {
+                    isReadOnly = false;
+                }
+                if((_process.User.isSale || _process.User.isRsmAsmSS)&& profileResult.data.Ma_Trang_Thai != (int)ProfileStatus.Draft)
+                {
+                    isReadOnly = true;
+                }
+            }
 
             var fileTypes = await _rpFile.GetByType(type);
             if (fileTypes == null || !fileTypes.Any())
@@ -90,6 +108,7 @@ namespace VietStar.Business
                     IsRequire = kind.IsRequire,
                     Name = kind.Name,
                     ProfileTypeId = kind.ProfileTypeId,
+                    IsReadOnly = isReadOnly,
                     ProfileFiles = filesByType != null ? filesByType.ToList() : new List<FileUploadModel>()
                 };
                 result.Add(item);

@@ -89,6 +89,21 @@ namespace VietStar.Repository
             }
 
         }
+
+        public async Task<bool> UpdateStatusAsync( int profileId, int status, int userId)
+        {
+                using (var _con = GetConnection())
+                {
+                    await _con.ExecuteAsync("sp_Profile_UpdateStatus", new {
+                        profileId,
+                        status,
+                        userId
+                    }, commandType: CommandType.StoredProcedure);
+
+                    return true;
+                }
+        }
+
         public async Task<BaseResponse<bool>> UpdateAsync(ProfileAddSql model,int profileId, int updatedBy)
         {
             model.ID = profileId;

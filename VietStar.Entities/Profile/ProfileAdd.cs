@@ -11,7 +11,7 @@ namespace VietStar.Entities.Profile
         public string CustomerName { get; set; }
         public string Phone { get; set; }
         public string SalePhone { get; set; }
-        public DateTime? ReceiveDate { get; set; }
+        public DateTime? ReceiveDate { get; set; } = DateTime.Now;
         public string Cmnd { get; set; }
         public int Gender { get; set; }
         public int DistrictId { get; set; }

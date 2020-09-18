@@ -87,7 +87,7 @@ namespace VietStar.Client.Controllers
             
             return View(result ?? new ProfileEditView());
         }
-        [Authorize]
+        [MyAuthorize(Permissions = "profile.update,profile.updatestatus")]
         [HttpPost("profile/update")]
         public async Task<IActionResult> UpdateAsync([FromBody]ProfileAdd model)
         {
