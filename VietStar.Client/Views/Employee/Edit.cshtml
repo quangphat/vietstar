@@ -131,7 +131,8 @@
         $.ajax({
             traditional: true,
             url: `/employees/delete/${@Model.Id}`,
-            type: "delete",
+            type: "post",
+            contentType: "application/json; charset=utf-8",
             success: function (data) {
                 if (data.success == true ) {
                     swal({

@@ -82,7 +82,7 @@ namespace VietStar.Client.Controllers
         }
 
         [MyAuthorize(Permissions = "product,product.write")]
-        [HttpDelete("delete/{id}")]
+        [HttpPost("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _bizProduct.DeleteByIdAync(id);

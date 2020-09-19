@@ -68,7 +68,7 @@ namespace VietStar.Client.Controllers
         }
 
         [MyAuthorize(Permissions = "revoke.delete")]
-        [HttpDelete("revoke/{profileId}")]
+        [HttpPost("revoke/{profileId}")]
         public async Task<IActionResult> Delete(int profileId)
         {
 
