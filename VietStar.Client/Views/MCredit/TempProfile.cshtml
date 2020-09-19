@@ -71,7 +71,7 @@
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh<span class="required">(*)</span> </label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker" value="@Model.BirthDay.ToShortDateString()" id="txtBirthDay" />
+                                <input class="form-control date-picker" type="date" value="@Model.BirthDay.ToShortDateString()" id="txtBirthDay" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
@@ -97,7 +97,7 @@
                         <label class="col-sm-2 control-label no-padding-right">Ngày cấp CMND/CCCD<span class="required">(*)</span></label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker" value="@Model.IssueDate.ToShortDateString()" id="txtIdDay" />
+                                <input class="form-control date-picker" type="date" value="@Model.IssueDate.ToShortDateString()" id="txtIdDay" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
