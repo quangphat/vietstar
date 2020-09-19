@@ -23,6 +23,7 @@ namespace VietStar.Repository
             _rpLog = logRepository;
         }
 
+
         public async Task<int> GetProfileIdByIdNumberAsync(string idNumber)
         {
             using (var con = GetConnection())

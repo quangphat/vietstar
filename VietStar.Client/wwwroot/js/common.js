@@ -387,7 +387,7 @@ function GetProvinces(control = null, defaultValue = 0, districId = 0) {
     if (control == null)
         control = $("#provinceId");
     control.empty();
-    debugger
+    
     control.append("<option value='0'>Chọn tỉnh/thành</option>");
     let data = getLocalStorage(provinces_key);
     if (data != null && !isNullOrNoItem(data)) {
@@ -591,7 +591,7 @@ function GetMemberByGroup(groupId, control = null, defaultValue = 0) {
         return;
     if (control == null)
         control = $("#memberId");
-    debugger
+    
     control.empty();
     $.ajax({
         type: "GET",
@@ -692,7 +692,7 @@ function renderOneItemFile(model, className = '',
         let params = `key=${model.key}&profileType=${model.profileType}&profileId=${model.profileId}&fileId=${model.fileId}&guidId=${guidId}`;
         uploadUrl = `/media/UploadFile?${params}`
     }
-    debugger
+    
     item.fileinput({
         uploadUrl: model.isReadOnly === true ? null : uploadUrl,
         validateInitialCount: true,
@@ -942,6 +942,7 @@ function GetLoanCities(controlId, defaultValue = 0) {
 
 function GetLoanProducts(controlId, defaultValue = 0) {
 
+   
     if (controlId == null)
         return;
     $(controlId).empty();
@@ -951,7 +952,7 @@ function GetLoanProducts(controlId, defaultValue = 0) {
         $.each(data, function (index, item) {
             $(controlId).append("<option value='" + item.Code + "'>" + item.Name + "</option>");
         });
-        if (!isNullOrWhiteSpace(defaultValue) && defaultValue > 0) {
+        if (!isNullOrWhiteSpace(defaultValue)) {
             $(controlId).val(defaultValue);
         }
         return
@@ -1055,7 +1056,7 @@ function generateGridFromDictionaryData(datas, tableId) {
 function getFieldsFromModel(model) {
     let fields = []
 
-    debugger
+    
     for (let prop in model) {
         fields.push(prop)
     }

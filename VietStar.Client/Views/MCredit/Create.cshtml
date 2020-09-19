@@ -30,7 +30,7 @@
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh<span class="required">(*)</span> </label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker" id="txtBirthDay" />
+                                <input class="form-control date-picker" type="date" id="txtBirthDay" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
@@ -56,7 +56,7 @@
                         <label class="col-sm-2 control-label no-padding-right">Ngày cấp CMND/CCCD<span class="required">(*)</span></label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker" id="txtIdDay" />
+                                <input class="form-control date-picker" type="date" id="txtIdDay" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
@@ -134,6 +134,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <p id="checkSaleResult" style="color:green"></p>
+                                <p id="nameSale" style="color:green"></p>
                             </div>
                         </div>
 
@@ -322,7 +323,7 @@
 
 
 
-    $('#btn_Temp').click(function (e) {
+    $('#btnNext').click(function (e) {
         if ($('#txtCustomerName').val() == "" || $('#txtCustomerName').val() == undefined) {
             swal({
                 title: errorMsg,

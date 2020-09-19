@@ -11,6 +11,7 @@ namespace VietStar.Business.Interfaces
 {
     public interface IMCreditBusiness
     {
+        Task<int> CopyAsync(int profileId);
         Task<CheckSaleResponseModel> CheckSaleAsync(CheckSaleModel model);
         Task<CheckCatResponseModel> CheckCatAsync(StringModel model);
         Task<bool> IsCheckCatAsync(StringModel model);

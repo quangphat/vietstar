@@ -883,7 +883,8 @@
             },
         });
     });
-            $('#btnUpdateFiles').click(function (e) {
+    $('#btnUpdateFiles').click(function (e) {
+        debugger
             showBlock($('#panel_body'), 'Vui lòng chờ');
             let mcId = '@Model.MCId'
             if (isNullOrWhiteSpace(mcId)) {
@@ -894,7 +895,7 @@
                 
         $.ajax({
             traditional: true,
-            url: '/MCredit/ReSendFileToEC?profileId=' + mcId,
+            url: '/MCredit/ReSendFileToEC?mcProfileId=' + mcId,
             type: "POST",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
@@ -910,7 +911,7 @@
                 else {
                     swal({
                         title: errorMsg,
-                        text: data.data.message,
+                        text: data.error.code,
                         type: "error",
                         timer: 10000,
                         showConfirmButton: true,
