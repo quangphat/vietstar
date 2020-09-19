@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace VietStar.Client.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class MCreditController : VietStarBaseController
     {
         protected readonly IMCreditBusiness _bizMCredit;
@@ -176,7 +176,7 @@ namespace VietStar.Client.Controllers
 
         public async Task<IActionResult> ReSendFileToEC(int mcProfileId)
         {
-            var result = await _bizMCredit.ReSendFileToECAsync(mcProfileId);
+            var result = await _bizMCredit.ReSendFileToECAsync(mcProfileId, _hosting.ContentRootPath);
             return ToResponse(result);
         }
 
@@ -194,7 +194,7 @@ namespace VietStar.Client.Controllers
         [MyAuthorize(Permissions = "mcprofile.submit")]
         public async Task<IActionResult> SubmitToMCredit([FromBody]MCredit_TempProfileAddModel model)
         {
-            var result = await _bizMCredit.SubmitToMCreditAsync(model);
+            var result = await _bizMCredit.SubmitToMCreditAsync(model, _hosting.ContentRootPath);
             return ToResponse(result);
         }
 

@@ -45,10 +45,10 @@ namespace VietStar.Business.Interfaces
         Task<MCredit_TempProfile> GetTempProfileByIdAsync(int id);
         Task<List<OptionSimple>> GetSimpleListByTypeAsync(string type);
 
-        Task<MCResponseModelBase> ReSendFileToECAsync(int mcProfileId);
+        Task<MCResponseModelBase> ReSendFileToECAsync(int mcProfileId, string rootPath);
         Task<List<NoteObj>> GetNotesAsync(int mcProfileId);
         Task<bool> AddNoteToMcAsync(string mcId, StringModel model);
-        Task<MCResponseModelBase> SubmitToMCreditAsync(MCredit_TempProfileAddModel model);
+        Task<MCResponseModelBase> SubmitToMCreditAsync(MCredit_TempProfileAddModel model, string rootPath);
 
         Task<ProfileGetByIdResponseObj> GetMCreditProfileByIdAsync(int id);
     }
