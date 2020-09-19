@@ -18,6 +18,20 @@ namespace VietStar.Entities.ViewModels
         public bool IsActive { get; set; }
         public int OrgId { get; set; }
 
+        public bool isHead
+        {
+            get
+            {
+                return (RoleCode == "head") ? true : false;
+            }
+        }
+        public bool isDev
+        {
+            get
+            {
+                return (RoleCode == "dev") ? true : false;
+            }
+        }
         public bool isAdmin
         {
             get
