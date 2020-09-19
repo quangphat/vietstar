@@ -164,7 +164,7 @@ function checkSale(controlId, value, controlToSetId = null, profileId = 0) {
             if (data.success == true) {
                 swal({
                     title: "Thành công",
-                    text: data.error.code,
+                    text: data.data.obj.name,
                     type: "success",
                     timer: 4000,
                     showConfirmButton: true,
