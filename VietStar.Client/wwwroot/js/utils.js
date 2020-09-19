@@ -3,6 +3,18 @@
     //$('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
 
 });
+
+function getRadioButtonValue(controlId) {
+
+    let value = $('input[name="' + controlId + '"]:checked').val();
+    
+    return value == "1" ? true : false;
+}
+
+function getCheckboxValue(controlId) {
+    return $('#' + controlId).is(":checked");
+}
+
 function returnTo401Page(queryPath) {
     debugger
     window.location = `${unauthorizedUrl}?unAuthorizedUrl=${queryPath}`

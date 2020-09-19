@@ -45,6 +45,31 @@ namespace VietStar.Business
         }
 
 
+        public async Task<int> CopyAsync(int profileId)
+        {
+            if (profileId <= 0)
+                return ToResponse(0, "Dữ liệu không hợp lệ");
+
+            var profileResult = await _rpMCredit.GetTemProfileByIdAsync(profileId);
+
+            if (profileResult.data == null || !profileResult.success)
+                return ToResponse(0, profileResult.error);
+
+            profileResult.data.MCId = string.Empty;
+            profileResult.data.UpdatedBy = 0;
+            profileResult.data.Status = 0;
+            var createResult = await _rpMCredit.CreateDraftProfileAsync(profileResult.data);
+
+            if (createResult.data > 0)
+            {
+                await _rpFile.CopyFileFromProfileAsync(profileId, (int)ProfileType.MCredit, createResult.data);
+                await _rpMCredit.DeleteByIdAsync(profileId);
+                return createResult.data;
+            }
+
+            return ToResponse(0, createResult.error);
+        }
+
         public async Task<CheckSaleResponseModel> CheckSaleAsync(CheckSaleModel model)
         {
             if (model == null || string.IsNullOrWhiteSpace(model.SaleCode))
@@ -62,7 +87,10 @@ namespace VietStar.Business
                 }
                 return result.data;
             }
-
+            if(result.success)
+            {
+                return result.data;
+            }
             return ToResponse<CheckSaleResponseModel>(null, result.data.msg.ToString());
         }
 
@@ -238,7 +266,7 @@ namespace VietStar.Business
                 return ToResponse(false, mcProfile.error);
             }
 
-            if(mcProfile.data==null || mcProfile.data.obj==null)
+            if (mcProfile.data == null || mcProfile.data.obj == null)
             {
                 return ToResponse(false, "Không có dữ liệu");
             }
@@ -389,7 +417,7 @@ namespace VietStar.Business
             return result;
         }
 
-        public async Task<MCResponseModelBase> ReSendFileToECAsync(int mcProfileId,string rootPath)
+        public async Task<MCResponseModelBase> ReSendFileToECAsync(int mcProfileId, string rootPath)
         {
             var profile = await _rpMCredit.GetTemProfileByMcIdAsync(mcProfileId.ToString());
             if (!profile.success)
@@ -404,13 +432,14 @@ namespace VietStar.Business
                 return ToResponse<MCResponseModelBase>(null, "Hồ sơ không tồn tại hoặc chưa được gửi qua MCredit");
             var bizMedia = _svProvider.GetService<IMediaBusiness>();
 
-            var zipFile = await bizMedia.ProcessFilesToSendToMC(profile.data.Id,$"{rootPath}/{Utility.FileUtils._profile_parent_folder}");
-            if(!zipFile.success)
+            var zipFile = await bizMedia.ProcessFilesToSendToMC(profile.data.Id, $"{rootPath}/{Utility.FileUtils._profile_parent_folder}");
+            if (!zipFile.success)
             {
                 return ToResponse<MCResponseModelBase>(null, zipFile.result);
             }
             var sendFileResult = await _svMcredit.SendFiles(zipFile.result, profile.data.MCId);
             await _rpLog.InsertLog("ReSendFileToEC", sendFileResult != null ? sendFileResult.Dump() : "ReSendFileToEC = null");
+            await bizMedia.DeleteFile(zipFile.result);
             return ToResponse(sendFileResult);
         }
 
@@ -437,7 +466,7 @@ namespace VietStar.Business
             return true;
         }
 
-        public async Task<MCResponseModelBase> SubmitToMCreditAsync(MCredit_TempProfileAddModel model,string rootPath )
+        public async Task<MCResponseModelBase> SubmitToMCreditAsync(MCredit_TempProfileAddModel model, string rootPath)
         {
             try
             {
@@ -482,11 +511,14 @@ namespace VietStar.Business
                 {
                     return ToResponse<MCResponseModelBase>(null, zipFile.result);
                 }
+
                 var sendFileResult = await _svMcredit.SendFiles(zipFile.result, result.data.id);
                 if (!sendFileResult.success)
                 {
                     return ToResponse<MCResponseModelBase>(null, sendFileResult.error);
                 }
+                await bizMedia.DeleteFile(zipFile.result);
+
                 return sendFileResult.data;
             }
             catch (Exception e)

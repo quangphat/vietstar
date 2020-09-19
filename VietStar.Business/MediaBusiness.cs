@@ -401,12 +401,15 @@ namespace VietStar.Business
         {
             if (model == null)
                 return null;
+
             var fileInfo = GetFileUploadUrl("info", rootPath, Utility.FileUtils.GenerateProfileFolderForMc(), true);
             if (fileInfo == null)
                 return null;
+
             var content = JsonConvert.SerializeObject(model, Formatting.None);
             fileInfo.FullPath = $"{fileInfo.FullPath}.txt";
             Utility.FileUtils.WriteToFile(fileInfo.FullPath, content);
+
             return fileInfo;
         }
         protected Task<string> CreateZipFile(IEnumerable<string> filePaths, string folder, string fileName)
@@ -447,6 +450,25 @@ namespace VietStar.Business
                 Folder = fullFolder
             };
 
+        }
+
+        public Task<bool> DeleteFile(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                return Task.FromResult(false);
+
+            if (!File.Exists(filePath))
+                return Task.FromResult(false); 
+
+            try
+            {
+                File.Delete(filePath);
+                return Task.FromResult(true); 
+            }
+            catch(Exception e)
+            {
+                return Task.FromResult(false); 
+            }
         }
     }
 }

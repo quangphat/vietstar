@@ -171,7 +171,8 @@ function checkSale(controlId, value, controlToSetId = null, profileId = 0) {
                 }, function () {
                     //document.getElementById(con)
                     document.getElementById(controlId).innerHTML ='Thành công'
-                    $(controlToSetId).val(data.data.obj.id);
+                        $(controlToSetId).val(data.data.obj.id);
+                        
                     $("#nameSale").text("Tên sale: " + data.data.obj.name);
                 });
                 

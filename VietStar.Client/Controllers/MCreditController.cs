@@ -95,6 +95,12 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
+        public async Task<IActionResult> IsCheckCat(StringModel model)
+        {
+            var result = await _bizMCredit.IsCheckCatAsync(model);
+            return ToResponse(result);
+        }
+
         public IActionResult Temp()
         {
             return View();
@@ -214,6 +220,12 @@ namespace VietStar.Client.Controllers
         {
             var result = await _bizMCredit.ExportAsync(_hosting.ContentRootPath, fromDate, toDate, dateType, groupId,memberId, status, freeText, page, limit);
 
+            return ToResponse(result);
+        }
+
+        public async Task<IActionResult> Copy(int profileId)
+        {
+            var result = await _bizMCredit.CopyAsync(profileId);
             return ToResponse(result);
         }
     }
