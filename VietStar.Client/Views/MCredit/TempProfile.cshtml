@@ -472,19 +472,19 @@
                 if (data.success == true) {
                     swal({
                         title: "Thành công",
-                        text: data.error.code,
+                        text: "Check cat thành công",
                         type: "success",
                         timer: 4000,
                         showConfirmButton: true,
                     });
-                    debugger
+                    
                     $("#checkcat-result").text(`${data.data.name} - ${data.data.cat}`);
                     modelCat = { CatName: data.data.cat, CatNumber: value, ComName: data.data.name }
                 }
                 else {
                     swal({
-                        title: !isNullOrWhiteSpace(data.data.msg) ? data.data.msg : "Đã có lỗi xảy ra",
-                        text: data.error.code,
+                        title: errorMsg,
+                        text: !isNullOrWhiteSpace(data.error.code) ? data.error.code : "Đã có lỗi xảy ra",
                         type: "error",
                         timer: 4000,
                         showConfirmButton: true,
