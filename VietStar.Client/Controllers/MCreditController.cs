@@ -95,7 +95,7 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
-        public async Task<IActionResult> IsCheckCat(StringModel model)
+        public async Task<IActionResult> IsCheckCat([FromBody]StringModel model)
         {
             var result = await _bizMCredit.IsCheckCatAsync(model);
             return ToResponse(result);

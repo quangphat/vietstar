@@ -5,9 +5,9 @@
     ViewData["Title"] = "Cập nhật hồ sơ tạm";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>();
-    if(string.IsNullOrWhiteSpace(Model.MCId))
+    if (string.IsNullOrWhiteSpace(Model.MCId))
     {
-        if(!((CurrentProcess.CurrentUser.isRsmAsmSS || CurrentProcess.CurrentUser.isSale) && Model.Status == (int)VietStar.Entities.Commons.Enums.ProfileStatus.Cancel))
+        if (!((CurrentProcess.CurrentUser.isRsmAsmSS || CurrentProcess.CurrentUser.isSale) && Model.Status == (int)VietStar.Entities.Commons.Enums.ProfileStatus.Cancel))
         {
             buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
             buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnSubmit", Name = "Nộp hồ sơ qua MCredit" });
@@ -16,7 +16,7 @@
     else
     {
         buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdateFiles", Name = "Cập Nhật File và Chuyển Qua MC" });
-        if(CurrentProcess.CurrentUser.isAdmin)
+        if (CurrentProcess.CurrentUser.isAdmin)
         {
             buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
             buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnCreate", Name = "Tạo hồ sơ mới từ hồ sơ này" });
@@ -148,11 +148,11 @@
                             </select>
                         </div>
                         @*<label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
-                        <div class="col-sm-4">
-                            <select id="ddlHuyen" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
-                                <option value="0"></option>
-                            </select>
-                        </div>*@
+                            <div class="col-sm-4">
+                                <select id="ddlHuyen" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
+                                    <option value="0"></option>
+                                </select>
+                            </div>*@
                     </div>
                     <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ</label>
@@ -190,7 +190,6 @@
                 <h3 class="header smaller lighter blue">2.Thông tin khoản vay và sản phẩm:</h3>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-
                         <label class="col-sm-2 control-label no-padding-right">Sản phẩm vay<span class="required">(*)</span></label>
                         <div class="col-sm-4">
                             <select id="ddlProduct" class="chosen-select form-control select2" data-placeholder="Chọn sản phẩm vay">
@@ -202,11 +201,10 @@
                             <div class="col-sm-4">
                                 <input type="text" id="txtCatNumber" placeholder="Nhập Mã số thuế" value="@Model.CatNumber" class="form-control">
                                 <label style="color:green" id="checkcat-result"></label>
-                                <input type="button" class="btn btn-info" id="btnCheckCat" style="margin-top:20px;float:right" value="Check CAT" />
+                                <input type="button" class="btn btn-info" id="btnCheckCat" style="margin-top:10px;float:right;color:white" value="Check CAT" />
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <div class="col-sm-4  col-md-offset-2">
                             <div class="checkbox">
@@ -221,7 +219,7 @@
                     <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền đề nghị vay<span class="required">(*)</span></label>
                         <div class="col-sm-4">
-                            <input type="text" id="txtLoanMoney" value="@Model.LoanMoney.ToString("#,##0")" placeholder="Nhập số tiền đề nghị vay" class="form-control">
+                            <input type="text" id="txtLoanMoney" value="@VietStar.Utility.Utils.FormatCurrentCy(@Model.LoanMoney)" placeholder="Nhập số tiền đề nghị vay" class="form-control">
                         </div>
                         <label class="col-sm-2 control-label no-padding-right">Thời hạn vay</label>
                         <div class="col-sm-4">
@@ -262,7 +260,7 @@
         setTextForPTag('checkSaleResult');
         setTextForPTag('checkdupResult');
         renderStatusList('mcredit', '@Model.Status')
-        
+
         GetLocSigns("#ddlLocSign",'@Model.LocSignCode');
         GetLoanPeriods("#ddlLoanPeriod", '@Model.LoanPeriodCode');
         GetLoanCities("#ddlProvince",'@Model.ProvinceId');
@@ -279,7 +277,7 @@
 
     });
     function btnRemoveFile(id, guidId) {
-        
+
         onDeleteFile(id, guidId)
     }
     $("#btnAddNote").click(function () {
@@ -287,7 +285,7 @@
     })
     function GetProfileFiles() {
         let url = '';
-        
+
         let mcId = '@Model.MCId'
         if (isNullOrWhiteSpace(mcId)) {
             url = `/media/GetFileType/mcredit/${'@Model.Id'}`
@@ -441,7 +439,8 @@
             success: function (data) {
 
                 if (data != null && data.success == true) {
-                    if (data.data == true)
+                    debugger
+                    if (data.success == true)
                         $(checkatAreaId).show();
                     else {
                         $(checkatAreaId).hide();
@@ -909,7 +908,7 @@
                 mcId =''
                 return
             }
-                
+
         $.ajax({
             traditional: true,
             url: '/MCredit/ReSendFileToEC?mcProfileId=' + mcId,
