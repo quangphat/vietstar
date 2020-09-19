@@ -71,7 +71,7 @@
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh<span class="required">(*)</span> </label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker" type="date" value="@Model.BirthDay.ToShortDateString()" id="txtBirthDay" />
+                                <input class="form-control date-picker" type="date" id="txtBirthDay" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
@@ -97,7 +97,7 @@
                         <label class="col-sm-2 control-label no-padding-right">Ngày cấp CMND/CCCD<span class="required">(*)</span></label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker" type="date" value="@Model.IssueDate.ToShortDateString()" id="txtIdDay" />
+                                <input class="form-control date-picker" type="date"  id="txtIdDay" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
@@ -229,7 +229,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label no-padding-right">Địa điểm ký văn kiện tín dụng *<span class="required">(*)</span></label>
+                        <label class="col-sm-2 control-label no-padding-right">Địa điểm ký văn kiện tín dụng<span class="required">(*)</span></label>
                         <div class="col-sm-10">
                             <select id="ddlLocSign" class="chosen-select form-control select2">
                                 <option value="0">Chọn một địa điểm</option>
@@ -260,7 +260,8 @@
         setTextForPTag('checkSaleResult');
         setTextForPTag('checkdupResult');
         renderStatusList('mcredit', '@Model.Status')
-
+        $("#txtBirthDay").val(FormatDateTimeDMY('@Model.BirthDay.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
+        $("#txtIdDay").val(FormatDateTimeDMY('@Model.IssueDate.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
         GetLocSigns("#ddlLocSign",'@Model.LocSignCode');
         GetLoanPeriods("#ddlLoanPeriod", '@Model.LoanPeriodCode');
         GetLoanCities("#ddlProvince",'@Model.ProvinceId');
