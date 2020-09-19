@@ -109,7 +109,7 @@ namespace VietStar.Client.Controllers
             return ToResponse(result);
         }
 
-        [HttpDelete("delete/{userId}")]
+        [HttpPost("delete/{userId}")]
         [MyAuthorize(Permissions = "employee,employee.delete")]
         public async Task<IActionResult> Delete(int userId)
         {

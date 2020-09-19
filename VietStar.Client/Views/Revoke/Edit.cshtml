@@ -526,7 +526,7 @@
 
             $.ajax({
                 url: `/Revoke/${@Model.Id}`,
-                type: "Delete",
+                type: "post",
                 contentType: "application/json; charset=utf-8",
 
                 success: function (data) {
