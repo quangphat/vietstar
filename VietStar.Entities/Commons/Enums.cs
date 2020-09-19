@@ -71,5 +71,20 @@ namespace VietStar.Entities.Commons
             Addinional = -4,
             Updated = -5
         }
+
+        public enum RoleType
+        {
+            Head =1,
+            Sale =2,
+            Courier =3,
+            Admin =4,
+            Sup =6,
+            Call =7,
+            Field = 8,
+            Dev =9,
+            Rsm =10,
+            Asm = 11,
+            SS =12
+        }
     }
 }

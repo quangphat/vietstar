@@ -365,6 +365,10 @@
             },
         });
     }
+    $("#btnReloadGetFormUpload").click(function () {
+        showBlock($('#panel_body'), loadingMsg);
+        getFilesUpload();
+    });
     function getFilesUpload() {
             let url = `/media/GetFileType/mcredit/${@Model.LocalProfileId}`
         $.ajax({
@@ -372,7 +376,7 @@
             url: url,
             data: {},
             success: function (data) {
-                if (data.data != null) {
+                if (data.success && data.data != null) {
                     var i = 0;
                     var htmlContent = "";
                     let keys = [];
@@ -468,10 +472,15 @@
                                 }, '', [], [], true, true);
                         }
                     })
+                    $("#upload-area-error").css("display", "none")
                 }
-
+                else {
+                    $("#upload-area-error").css("display", "block")
+                    $("#upload-area-error-msg").text(data.error.code)
+                }
             },
             complete: function () {
+                $('#panel_body').unblock();
             },
             error: function (jqXHR, exception) {
                 showError(jqXHR, exception);

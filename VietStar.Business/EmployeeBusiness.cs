@@ -13,6 +13,7 @@ using VietStar.Entities.Messages;
 using VietStar.Entities.ViewModels;
 using VietStar.Repository.Interfaces;
 using VietStar.Utility;
+using static VietStar.Entities.Commons.Enums;
 
 namespace VietStar.Business
 {
@@ -109,6 +110,22 @@ namespace VietStar.Business
             user = _mapper.Map<UserSql>(model);
             user.UpdatedBy = _process.User.Id;
             user.Email = string.IsNullOrWhiteSpace(user.Email) ? string.Empty : user.Email.Trim().ToLower();
+
+            var existUser = await _rpEmployee.GetByIdAsync(model.Id);
+            if(!_process.User.isHead && model.RoleId == (int)RoleType.Head)
+            {
+                return ToResponse(false, "Vai trò không hợp lệ");
+            }
+
+            if (!_process.User.isAdmin &&( model.RoleId == (int)RoleType.Admin || model.RoleId == (int)RoleType.Head))
+            {
+                return ToResponse(false, "Vai trò không hợp lệ");
+            }
+
+            if(_process.User.isRsmAsmSS || _process.User.isSale)
+            {
+                user.RoleId = existUser.RoleId;
+            }
             return ToResponse(await _rpEmployee.UpdateAsync(user));
         }
 
