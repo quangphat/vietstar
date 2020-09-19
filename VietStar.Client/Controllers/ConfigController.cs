@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using VietStar.Business.Interfaces;
 using VietStar.Entities.Commons;
 using VietStar.Entities.Infrastructures;
+using VietStar.Entities.Mcredit;
 
 namespace VietStar.Client.Controllers
 {
-    [Authorize]
     [Route("Config")]
     public class ConfigController : VietStarBaseController
     {
@@ -24,6 +24,14 @@ namespace VietStar.Client.Controllers
         {
             _bizConfig = configBusiness;
             _svMcredit = mCreditService;
+        }
+
+        public async Task<IActionResult> AuthenMC([FromBody]AuthenMcRequestModel model)
+        {
+            if (model == null)
+                return ToResponse(false);
+            var result = await _svMcredit.AuthenByUserId(model.UserId, model.TableToUpdateIds);
+            return ToResponse(result);
         }
 
         [MyAuthorize(Permissions ="mcredit.logsign.update")]

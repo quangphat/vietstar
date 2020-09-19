@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using VietStar.Entities;
-using VietStar.Entities.Mcredit;
+
 
 namespace McreditServiceCore.Interfaces
 {
