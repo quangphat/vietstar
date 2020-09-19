@@ -31,13 +31,7 @@ namespace VietStar.Client.Controllers
             _hosting = hosting;
         }
 
-        public async Task<IActionResult> AuthenMC(AuthenMcRequestModel model)
-        {
-            if (model == null)
-                return ToResponse(false);
-            var result = await _svMcredit.AuthenByUserId(model.UserId, model.TableToUpdateIds);
-            return ToResponse(result);
-        }
+       
 
         [HttpPost]
         public async Task<IActionResult> CheckSaleApi([FromBody]CheckSaleModel model)
