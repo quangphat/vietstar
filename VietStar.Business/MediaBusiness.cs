@@ -357,7 +357,7 @@ namespace VietStar.Business
             {
                 return (false, "Không tìm thấy McId");
             }
-            var files = await _rpFile.GetFilesByProfileIdAsync(portalProfileId, (int)ProfileType.MCredit);
+            var files = await _rpFile.GetFilesByProfileIdAsync((int)ProfileType.MCredit, portalProfileId);
             if (files == null || !files.Any())
             {
                 return (false,"files are empty");
