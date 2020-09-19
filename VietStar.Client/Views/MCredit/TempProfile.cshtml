@@ -5,9 +5,9 @@
     ViewData["Title"] = "Cập nhật hồ sơ tạm";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var buttons = new List<VietStar.Entities.ViewModels.CommandBarButton>();
-    if(string.IsNullOrWhiteSpace(Model.MCId))
+    if (string.IsNullOrWhiteSpace(Model.MCId))
     {
-        if(!((CurrentProcess.CurrentUser.isRsmAsmSS || CurrentProcess.CurrentUser.isSale) && Model.Status == (int)VietStar.Entities.Commons.Enums.ProfileStatus.Cancel))
+        if (!((CurrentProcess.CurrentUser.isRsmAsmSS || CurrentProcess.CurrentUser.isSale) && Model.Status == (int)VietStar.Entities.Commons.Enums.ProfileStatus.Cancel))
         {
             buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
             buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnSubmit", Name = "Nộp hồ sơ qua MCredit" });
@@ -16,7 +16,7 @@
     else
     {
         buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdateFiles", Name = "Cập Nhật File và Chuyển Qua MC" });
-        if(CurrentProcess.CurrentUser.isAdmin)
+        if (CurrentProcess.CurrentUser.isAdmin)
         {
             buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnUpdate", Name = "Cập nhật" });
             buttons.Add(new VietStar.Entities.ViewModels.CommandBarButton { ClassName = "btn btn-sm btn-primary", Id = "btnCreate", Name = "Tạo hồ sơ mới từ hồ sơ này" });
@@ -71,7 +71,7 @@
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Ngày sinh<span class="required">(*)</span> </label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker" value="@Model.BirthDay.ToShortDateString()" id="txtBirthDay" />
+                                <input class="form-control date-picker" type="date" id="txtBirthDay" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
@@ -97,7 +97,7 @@
                         <label class="col-sm-2 control-label no-padding-right">Ngày cấp CMND/CCCD<span class="required">(*)</span></label>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input class="form-control date-picker" value="@Model.IssueDate.ToShortDateString()" id="txtIdDay" />
+                                <input class="form-control date-picker" type="date"  id="txtIdDay" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar bigger-110"></i>
                                 </span>
@@ -148,11 +148,11 @@
                             </select>
                         </div>
                         @*<label class="col-sm-2 control-label no-padding-right">Quận/huyện<span class="required">(*)</span></label>
-                        <div class="col-sm-4">
-                            <select id="ddlHuyen" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
-                                <option value="0"></option>
-                            </select>
-                        </div>*@
+                            <div class="col-sm-4">
+                                <select id="ddlHuyen" class="chosen-select form-control" data-placeholder="Chọn quận huyện">
+                                    <option value="0"></option>
+                                </select>
+                            </div>*@
                     </div>
                     <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Địa chỉ</label>
@@ -190,7 +190,6 @@
                 <h3 class="header smaller lighter blue">2.Thông tin khoản vay và sản phẩm:</h3>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-
                         <label class="col-sm-2 control-label no-padding-right">Sản phẩm vay<span class="required">(*)</span></label>
                         <div class="col-sm-4">
                             <select id="ddlProduct" class="chosen-select form-control select2" data-placeholder="Chọn sản phẩm vay">
@@ -202,11 +201,10 @@
                             <div class="col-sm-4">
                                 <input type="text" id="txtCatNumber" placeholder="Nhập Mã số thuế" value="@Model.CatNumber" class="form-control">
                                 <label style="color:green" id="checkcat-result"></label>
-                                <input type="button" class="btn btn-info" id="btnCheckCat" style="margin-top:20px;float:right" value="Check CAT" />
+                                <input type="button" class="btn btn-info" id="btnCheckCat" style="margin-top:10px;float:right;color:white" value="Check CAT" />
                             </div>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <div class="col-sm-4  col-md-offset-2">
                             <div class="checkbox">
@@ -221,7 +219,7 @@
                     <div class="form-group">
                         <label for="form-field-1" class="col-sm-2 control-label no-padding-right">Số tiền đề nghị vay<span class="required">(*)</span></label>
                         <div class="col-sm-4">
-                            <input type="text" id="txtLoanMoney" value="@Model.LoanMoney.ToString("#,##0")" placeholder="Nhập số tiền đề nghị vay" class="form-control">
+                            <input type="text" id="txtLoanMoney" value="@VietStar.Utility.Utils.FormatCurrentCy(@Model.LoanMoney)" placeholder="Nhập số tiền đề nghị vay" class="form-control">
                         </div>
                         <label class="col-sm-2 control-label no-padding-right">Thời hạn vay</label>
                         <div class="col-sm-4">
@@ -231,7 +229,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label no-padding-right">Địa điểm ký văn kiện tín dụng *<span class="required">(*)</span></label>
+                        <label class="col-sm-2 control-label no-padding-right">Địa điểm ký văn kiện tín dụng<span class="required">(*)</span></label>
                         <div class="col-sm-10">
                             <select id="ddlLocSign" class="chosen-select form-control select2">
                                 <option value="0">Chọn một địa điểm</option>
@@ -262,7 +260,8 @@
         setTextForPTag('checkSaleResult');
         setTextForPTag('checkdupResult');
         renderStatusList('mcredit', '@Model.Status')
-        
+        $("#txtBirthDay").val(FormatDateTimeDMY('@Model.BirthDay.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
+        $("#txtIdDay").val(FormatDateTimeDMY('@Model.IssueDate.ToString("yyyy-MM-dd")', 'YYYY-MM-DD'))
         GetLocSigns("#ddlLocSign",'@Model.LocSignCode');
         GetLoanPeriods("#ddlLoanPeriod", '@Model.LoanPeriodCode');
         GetLoanCities("#ddlProvince",'@Model.ProvinceId');
@@ -279,7 +278,7 @@
 
     });
     function btnRemoveFile(id, guidId) {
-        
+
         onDeleteFile(id, guidId)
     }
     $("#btnAddNote").click(function () {
@@ -287,7 +286,7 @@
     })
     function GetProfileFiles() {
         let url = '';
-        
+
         let mcId = '@Model.MCId'
         if (isNullOrWhiteSpace(mcId)) {
             url = `/media/GetFileType/mcredit/${'@Model.Id'}`
@@ -441,7 +440,8 @@
             success: function (data) {
 
                 if (data != null && data.success == true) {
-                    if (data.data == true)
+                    debugger
+                    if (data.success == true)
                         $(checkatAreaId).show();
                     else {
                         $(checkatAreaId).hide();
@@ -473,19 +473,19 @@
                 if (data.success == true) {
                     swal({
                         title: "Thành công",
-                        text: data.error.code,
+                        text: "Check cat thành công",
                         type: "success",
                         timer: 4000,
                         showConfirmButton: true,
                     });
-                    debugger
+                    
                     $("#checkcat-result").text(`${data.data.name} - ${data.data.cat}`);
                     modelCat = { CatName: data.data.cat, CatNumber: value, ComName: data.data.name }
                 }
                 else {
                     swal({
-                        title: !isNullOrWhiteSpace(data.data.msg) ? data.data.msg : "Đã có lỗi xảy ra",
-                        text: data.error.code,
+                        title: errorMsg,
+                        text: !isNullOrWhiteSpace(data.error.code) ? data.error.code : "Đã có lỗi xảy ra",
                         type: "error",
                         timer: 4000,
                         showConfirmButton: true,
@@ -908,7 +908,7 @@
                 mcId =''
                 return
             }
-                
+
         $.ajax({
             traditional: true,
             url: '/MCredit/ReSendFileToEC?mcProfileId=' + mcId,
