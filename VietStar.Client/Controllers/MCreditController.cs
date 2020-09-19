@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace VietStar.Client.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class MCreditController : VietStarBaseController
     {
         protected readonly IMCreditBusiness _bizMCredit;
@@ -92,6 +92,12 @@ namespace VietStar.Client.Controllers
         public async Task<IActionResult> CheckStatusApi([FromBody]StringModel model)
         {
             var result = await _bizMCredit.CheckStatusAsync(model);
+            return ToResponse(result);
+        }
+
+        public async Task<IActionResult> IsCheckCat(StringModel model)
+        {
+            var result = await _bizMCredit.IsCheckCatAsync(model);
             return ToResponse(result);
         }
 
@@ -214,6 +220,12 @@ namespace VietStar.Client.Controllers
         {
             var result = await _bizMCredit.ExportAsync(_hosting.ContentRootPath, fromDate, toDate, dateType, groupId,memberId, status, freeText, page, limit);
 
+            return ToResponse(result);
+        }
+
+        public async Task<IActionResult> Copy(int profileId)
+        {
+            var result = await _bizMCredit.CopyAsync(profileId);
             return ToResponse(result);
         }
     }

@@ -22,6 +22,17 @@ namespace VietStar.Repository
         {
             _rpLog = logRepository;
         }
+
+        public async Task<bool> CopyFileFromProfileAsync(int copyProfileId, int profileTypeId, int newProfileId)
+        {
+            using (var con = GetConnection())
+            {
+                await con.ExecuteAsync("sp_ProfileFile_CopyFromProfile",
+                     new { copyProfileId, profileTypeId, newProfileId }, commandType: CommandType.StoredProcedure);
+                return true;
+            }
+        }
+
         public async Task<List<FileUploadModel>> GetFilesByProfileIdAsync(int profileType, int profileId)
         {
             using (var con = GetConnection())

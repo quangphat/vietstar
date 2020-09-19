@@ -942,6 +942,7 @@ function GetLoanCities(controlId, defaultValue = 0) {
 
 function GetLoanProducts(controlId, defaultValue = 0) {
 
+    debugger
     if (controlId == null)
         return;
     $(controlId).empty();
@@ -951,7 +952,7 @@ function GetLoanProducts(controlId, defaultValue = 0) {
         $.each(data, function (index, item) {
             $(controlId).append("<option value='" + item.Code + "'>" + item.Name + "</option>");
         });
-        if (!isNullOrWhiteSpace(defaultValue) && defaultValue > 0) {
+        if (!isNullOrWhiteSpace(defaultValue)) {
             $(controlId).val(defaultValue);
         }
         return
