@@ -942,7 +942,7 @@ function GetLoanCities(controlId, defaultValue = 0) {
 
 function GetLoanProducts(controlId, defaultValue = 0) {
 
-   
+
     if (controlId == null)
         return;
     $(controlId).empty();

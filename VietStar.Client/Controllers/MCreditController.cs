@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace VietStar.Client.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class MCreditController : VietStarBaseController
     {
         protected readonly IMCreditBusiness _bizMCredit;
