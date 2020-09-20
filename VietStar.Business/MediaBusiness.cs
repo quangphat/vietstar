@@ -122,6 +122,16 @@ namespace VietStar.Business
             if (!profile.success || profile.data == null)
                 return ToResponse<List<FileProfile>>(null, "Hồ sơ không tồn tại");
 
+            if(string.IsNullOrWhiteSpace(profile.data.ProductCode))
+            {
+                return ToResponse<List<FileProfile>>(null, "Vui lòng chọn sản phẩm vay");
+            }
+
+            if (string.IsNullOrWhiteSpace(profile.data.LocSignCode))
+            {
+                return ToResponse<List<FileProfile>>(null, "Vui lòng chọn địa điểm ký văn kiện");
+            }
+
             var data = await _svMcredit.GetFileUpload(new GetFileUploadRequest
             {
                 Code = profile.data.ProductCode.Trim(),
