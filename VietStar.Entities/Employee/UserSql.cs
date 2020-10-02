@@ -15,6 +15,7 @@ namespace VietStar.Entities.Employee
         public string Phone { get; set; }
         public int RoleId { get; set; }
         public string Code { get; set; }
+        public bool FirstLogin { get; set; }
         public int OrgId { get; set; }
     }
 }
