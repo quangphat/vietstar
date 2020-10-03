@@ -16,7 +16,7 @@
         {
             @await Html.PartialAsync("../Shared/Partials/Alert",
                new VietStar.Entities.Commons.AlertModel
-               { Title = "Cảnh báo", Content = "Không tìm thấy hồ sơ tương ứng trong portal.", ActionName ="Kiểm tra hồ sơ trong portal", ActionHref = "/Mcredit/Temp" }
+               { Title = "Cảnh báo", Content = "Không tìm thấy hồ sơ tương ứng trong portal.", ActionName = "Kiểm tra hồ sơ trong portal", ActionHref = "/Mcredit/Temp" }
                );
         }
 
@@ -64,7 +64,7 @@
                         <div class="col-sm-10">
                             @Html.TextAreaFor(
                                 model => model.Refuse,
-                                new { @class = "form-control", @readonly="readonly"}
+                                new { @class = "form-control", @readonly = "readonly" }
                                 )
                             <div class="pull-right mt-10">
                                 <a class="btn btn-sm btn-info" id="btnAddNoteFromRefuse">

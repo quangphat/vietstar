@@ -79,7 +79,7 @@ namespace VietStar.Business
             {
                 return ToResponse(false, Errors.invalid_data);
             }
-            if(!_process.User.isAdmin)
+            if(!_process.User.isAdmin && !_process.User.isDev)
             {
                 if (!_process.User.Permissions.Contains("employee.me"))
                     return ToResponse(false, "Bạn không có quyền");

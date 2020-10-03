@@ -14,19 +14,9 @@
             <p>
                 Bạn không có quyền truy cập vào tính năng này. <a href="/Home">Trở lại trang chủ</a> hoặc liên hệ với admin.
             </p>
-
-            <form class="search-form">
-                <div class="input-group">
-                    <input type="text" name="search" readonly value="@ViewBag.unAuthorizedUrl" class="form-control">
-
-                    <div class="input-group-btn">
-                        @*<button type="submit" name="submit" class="btn btn-warning btn-flat">
-                            <i class="fa fa-search"></i>
-                        </button>*@
-                    </div>
-                </div>
-                <!-- /.input-group -->
-            </form>
+            <textarea readonly style="width:100%">@ViewBag.unAuthorizedUrl</textarea>
+            <textarea readonly style="width:100%">@ViewBag.user</textarea>
+            
         </div>
         <!-- /.error-content -->
     </div>
