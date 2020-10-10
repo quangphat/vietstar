@@ -42,7 +42,7 @@ namespace VietStar.Repository
 
         }
 
-        public async Task<BaseResponse<bool>> ResetPassordAsync(int id, string password, int updatedBy)
+        public async Task<BaseResponse<bool>> ResetPassordAsync(int id, string password, int updatedBy, bool isFirstLogin = false)
         {
 
             try
@@ -54,7 +54,8 @@ namespace VietStar.Repository
                         {
                             id,
                             password,
-                            updatedBy
+                            updatedBy,
+                            isFirstLogin
                         }, commandType: CommandType.StoredProcedure);
                     return BaseResponse<bool>.Create(true);
                 }

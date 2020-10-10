@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VietStar.Business.Interfaces;
 using VietStar.Entities.Infrastructures;
 using VietStar.Entities.ViewModels;
+using VietStar.Repository.Interfaces;
 
 namespace KingOffice.Infrastructures
 {
@@ -17,7 +18,7 @@ namespace KingOffice.Infrastructures
         {
             _next = next;
         }
-        public async Task Invoke(HttpContext httpContext, CurrentProcess process, IEmployeeBusiness rpEmployee)
+        public async Task Invoke(HttpContext httpContext, CurrentProcess process, IEmployeeRepository rpEmployee)
         {
             var raw = httpContext.Session.Get(SESSION_KEY);
             if (raw == null)
@@ -32,13 +33,18 @@ namespace KingOffice.Infrastructures
                 httpContext.Session.Set(SESSION_KEY, raw);
             }
             var account = Utils.FromBinary(raw);
-            var isActive = await rpEmployee.GetStatusAsync(account.Id);
-            if(!isActive && httpContext.Request.Path.Value != "/Account/Login")
+            var userInSql = await rpEmployee.GetByIdAsync(account.Id);
+            if((userInSql == null  || userInSql.FirstLogin))
             {
                 httpContext.Response.Redirect("/Account/Login");
                 return;
             }
-            account.IsActive = isActive;
+            if(userInSql.IsDeleted && httpContext.Request.Path.Value != "/Account/Login")
+            {
+                httpContext.Response.Redirect("/Account/Login");
+                return;
+            }
+            account.IsActive = !userInSql.IsDeleted;
             process.User = account;
             CurrentProcess.CurrentUser = account;
             await _next(httpContext);
