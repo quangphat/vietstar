@@ -15,8 +15,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using VietStar.Business.Infrastructures;
+using VietStar.Client.Infrastructures;
 using VietStar.Entities.Infrastructures;
 using VietStar.Repository.Infrastructures;
+using VietStar.Repository.Interfaces;
 
 namespace VietStar.Client
 {
@@ -69,7 +71,7 @@ namespace VietStar.Client
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogRepository logRepository)
         {
             if (env.IsDevelopment())
             {
@@ -82,6 +84,7 @@ namespace VietStar.Client
                 //// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 //app.UseHsts();
             }
+            app.ConfigureexceptionHandler(logRepository);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
