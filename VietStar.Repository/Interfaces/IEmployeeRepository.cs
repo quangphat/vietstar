@@ -11,7 +11,7 @@ namespace VietStar.Repository.Interfaces
 {
     public interface IEmployeeRepository
     {
-        Task<BaseResponse<bool>> ResetPassordAsync(int id, string password, int updatedBy);
+        Task<BaseResponse<bool>> ResetPassordAsync(int id, string password, int updatedBy, bool isFirstLogin = false);
         Task<BaseResponse<bool>> UpdateAsync(UserSql model);
         Task<UserSql> GetByIdAsync(int userId);
         Task<UserSql> GetByUserNameAsync(string userName, int userId);

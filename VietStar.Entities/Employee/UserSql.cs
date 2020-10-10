@@ -17,5 +17,6 @@ namespace VietStar.Entities.Employee
         public string Code { get; set; }
         public bool FirstLogin { get; set; }
         public int OrgId { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

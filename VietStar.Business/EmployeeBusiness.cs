@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using NPOI.OpenXmlFormats.Vml;
 using VietStar.Business.Infrastructures;
 using VietStar.Business.Interfaces;
 using VietStar.Entities.Commons;
@@ -41,7 +42,7 @@ namespace VietStar.Business
 
         public async Task<bool> ResetPassordAsync(ChangePasswordModel model)
         {
-            if (model == null || model.Id<=0)
+            if (model == null || model.Id <= 0)
             {
                 return ToResponse(false, Errors.invalid_data);
             }
@@ -79,11 +80,11 @@ namespace VietStar.Business
             {
                 return ToResponse(false, Errors.invalid_data);
             }
-            if(!_process.User.isAdmin)
+            if (!_process.User.isAdmin)
             {
                 if (!_process.User.Permissions.Contains("employee.me"))
                     return ToResponse(false, "Bạn không có quyền");
-                if(model.Id != _process.User.Id)
+                if (model.Id != _process.User.Id)
                     return ToResponse(false, "Bạn không có quyền");
             }
 
@@ -112,17 +113,17 @@ namespace VietStar.Business
             user.Email = string.IsNullOrWhiteSpace(user.Email) ? string.Empty : user.Email.Trim().ToLower();
 
             var existUser = await _rpEmployee.GetByIdAsync(model.Id);
-            if(!_process.User.isHead && model.RoleId == (int)RoleType.Head)
+            if (!_process.User.isHead && model.RoleId == (int)RoleType.Head)
             {
                 return ToResponse(false, "Vai trò không hợp lệ");
             }
 
-            if (!_process.User.isAdmin &&( model.RoleId == (int)RoleType.Admin || model.RoleId == (int)RoleType.Head))
+            if (!_process.User.isAdmin && (model.RoleId == (int)RoleType.Admin || model.RoleId == (int)RoleType.Head))
             {
                 return ToResponse(false, "Vai trò không hợp lệ");
             }
 
-            if(_process.User.isRsmAsmSS || _process.User.isSale)
+            if (_process.User.isRsmAsmSS || _process.User.isSale)
             {
                 user.RoleId = existUser.RoleId;
             }
@@ -165,7 +166,7 @@ namespace VietStar.Business
                 return ToResponse(0, "Mật khẩu không khớp");
             }
 
-            if (model.RoleId <=0)
+            if (model.RoleId <= 0)
             {
                 return ToResponse(0, "Vui lòng chọn vai trò");
             }
@@ -303,6 +304,48 @@ namespace VietStar.Business
         {
             var result = await _rpEmployee.GetRoleListAsync(_process.User.Id);
             return result;
+        }
+
+        public async Task<bool> ChangePasswordRequired(ChangePasswordFirstLogin model)
+        {
+            if (model == null)
+            {
+                return ToResponse(false, Errors.invalid_data);
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.PasswordNew) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
+                return ToResponse(false, Errors.username_or_password_must_not_be_empty);
+            try
+            {
+                var user = await _rpEmployee.LoginAsync(model.UserName, Utils.getMD5(model.Password));
+
+                if (user == null)
+                {
+                    return ToResponse(false, Errors.invalid_username_or_pass);
+                }
+
+                if (model.PasswordNew != model.ConfirmPassword)
+                {
+                    return ToResponse(false, Errors.password_not_match);
+                }
+                if (model.PasswordNew.Trim().Length < Constants.PasswordMinLengthRequire)
+                {
+                    return ToResponse(false, Errors.password_not_match_min_length);
+                }
+                if(Utils.getMD5(model.PasswordNew.Trim()) == Utils.getMD5(model.Password.Trim()))
+                {
+                    return ToResponse(false, "Mật khẩu mới không được giống mật khẩu cũ");
+                }
+
+                var resultRespone = await _rpEmployee.ResetPassordAsync(user.Id, Utils.getMD5(model.PasswordNew.Trim()), user.Id, false);
+                return ToResponse(resultRespone);
+
+            }
+            catch (Exception ex)
+            {
+                return ToResponse(false, ex.Message);
+            }
+
         }
     }
 }

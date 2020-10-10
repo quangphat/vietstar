@@ -17,6 +17,7 @@ namespace VietStar.Entities.ViewModels
         public string Phone { get; set; }
         public bool IsActive { get; set; }
         public int OrgId { get; set; }
+        public bool FirstLogin { get; set; }
 
         public bool isHead
         {

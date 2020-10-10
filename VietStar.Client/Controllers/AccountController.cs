@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using VietStar.Business.Interfaces;
+using VietStar.Entities.Employee;
 using VietStar.Entities.Infrastructures;
 using VietStar.Entities.ViewModels;
 
@@ -33,6 +34,12 @@ namespace VietStar.Client.Controllers
             var account = await _bizEmployee.LoginAsync(model);
             if (account == null || !account.IsActive)
                 return ToResponse(false);
+
+            if(account.FirstLogin)
+            {
+                return ToResponse($"/Account/ChangePassword?userName={account.UserName}");
+            }
+
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim("Id", account.Id.ToString()));
             claims.Add(new Claim("UserName", account.UserName));
@@ -66,6 +73,18 @@ namespace VietStar.Client.Controllers
             HttpContext.Session.Clear();
             await  HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return new SignOutResult(new[] { "Cookies" });
+        }
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordFirstLogin model)
+        {
+            var result = await _bizEmployee.ChangePasswordRequired(model);
+            return ToResponse(result);
         }
     }
 }

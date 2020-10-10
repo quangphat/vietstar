@@ -11,6 +11,7 @@ namespace VietStar.Business.Interfaces
 {
     public interface IEmployeeBusiness
     {
+        Task<bool> ChangePasswordRequired(ChangePasswordFirstLogin model);
         Task<bool> DeleteAsync(int userId);
         Task<bool> ResetPassordAsync(ChangePasswordModel model);
         Task<bool> UpdateAsync(UserEditModel model);
